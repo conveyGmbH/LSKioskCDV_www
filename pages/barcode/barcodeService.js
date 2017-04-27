@@ -19,14 +19,20 @@
         },
         contactView: {
             select: function(complete, error, recordId) {
-                Log.call(Log.l.trace, "contactView.");
+                Log.call(Log.l.trace, "Barcode.contactView.");
                 var ret = Barcode._contactView.selectById(complete, error, recordId);
                 Log.ret(Log.l.trace);
                 return ret;
             },
             update: function (complete, error, recordId, viewResponse) {
-                Log.call(Log.l.trace, "contactView.");
+                Log.call(Log.l.trace, "Barcode.contactView.");
                 var ret = Barcode._contactEdit.update(complete, error, recordId, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            deleteRecord: function (complete, error, recordId) {
+                Log.call(Log.l.trace, "Barcode.contactView.");
+                var ret = Barcode._contactEdit.deleteRecord(complete, error, recordId);
                 Log.ret(Log.l.trace);
                 return ret;
             },

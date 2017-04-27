@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <link href="finished.css" rel="stylesheet" />
     <script type="text/javascript" src="finishedService.js"></script>
     <script type="text/javascript" src="finishedController.js"></script>
@@ -11,7 +11,28 @@
     <div class="finished">
         <div id="startController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
-                <div class="contentarea win-type-body">
+                <div class="contentarea win-type-body" id="finishedScreen">
+
+                    <div class="nx-header">
+                        <div class="nx-header__content">
+                            <div class="nx-header__title_black" data-win-res="{textContent: 'finished.title'}"></div>
+                        </div>
+                    </div>
+
+                    <div class="finished-image">
+                        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="136px" height="136px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="evenodd" viewBox="0 0 136 136" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <path id="a" fill="#39cb2c" d="M68 0c37.555 0 68 30.444 68 68 0 37.555-30.445 68-68 68-37.556 0-68-30.445-68-68C0 30.444 30.444 0 68 0zm0 133c35.841 0 65-29.159 65-65 0-35.842-29.159-65-65-65C32.16 3 3 32.158 3 68c0 35.841 29.16 65 65 65zm27.091-92h.002L101 47.003 53.728 95 36 77l5.907-6 11.821 12.003L95.091 41z" />
+                    </svg>
+                    </div>
+                    <div class="finished-text">
+                        You will receive an email with the<br>requested information
+                    </div>
+                    <div class="finished-button">
+                        <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <span class="win-type-subtitle" data-win-res="{textContent: 'finished.complete'}"></span>
+                        </button>
+                    </div>
+                    <!--
                     <div class="header-separator"></div>
                     <div class="content-header">
                         <div class="half-circle half-circle-textcolor">&nbsp;</div>
@@ -22,7 +43,7 @@
                         </div>
                     </div>
                     <div class="error-message"
-                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>-->
                 </div>
             </section>
         </div>

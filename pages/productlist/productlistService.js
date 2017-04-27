@@ -19,6 +19,12 @@
                 var ret = ProductList._contactView.insert(complete, error, viewResponse);
                 Log.ret(Log.l.trace);
                 return ret;
+            },
+            deleteRecord: function (complete, error, recordId) {
+                Log.call(Log.l.trace, "ProductList.contactView.");
+                var ret = ProductList._contactView.deleteRecord(complete, error, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
             }
         },
         _productView: {

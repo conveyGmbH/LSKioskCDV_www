@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="failed.css" rel="stylesheet" />
+    <script type="text/javascript" src="failedService.js"></script>
+    <script type="text/javascript" src="failedController.js"></script>
+    <script type="text/javascript" src="failed.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="failed">
+        <div id="startController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body" id="failedScreen">
+
+                    <div class="nx-header">
+                        <div class="nx-header__content">
+                            <div class="nx-header__title_black" data-win-res="{textContent: 'failed.title'}"></div>
+                        </div>
+                        <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <span data-win-res="{textContent: 'general.cancel'}"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" viewBox="0 0 65 65">
+                                <g fill="none" fill-rule="evenodd">
+                                    <circle cx="32.5" cy="32.5" r="31" stroke="#00417F" stroke-width="3" />
+                                    <path fill="#00417F" d="M30.379 32.5L19.065 43.814l2.121 2.121L32.5 34.621l11.314 11.314 2.121-2.121L34.621 32.5l11.314-11.314-2.121-2.121L32.5 30.379 21.186 19.065l-2.121 2.121L30.379 32.5z" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="failed-image">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="260" height="260" viewBox="0 0 260 260">
+                            <defs>
+                                <path id="a" d="M130 0c71.796 0 130 58.202 130 130 0 71.796-58.204 130-130 130C58.202 260 0 201.796 0 130 0 58.202 58.202 0 130 0zm0 254.265c68.52 0 124.265-55.745 124.265-124.265C254.265 61.479 198.52 5.735 130 5.735 61.48 5.735 5.735 61.48 5.735 130c0 68.52 55.745 124.265 124.265 124.265zm-7.647-185.441h15.294v97.5h-15.294v-97.5zm0 107.058h15.294v15.294h-15.294v-15.294z" />
+                            </defs>
+                            <g fill="none" fill-rule="evenodd">
+                                <mask id="b" fill="#fff">
+                                    <use xlink:href="#a" />
+                                </mask>
+                                <use fill="#D8D8D8" xlink:href="#a" />
+                                <g fill="#DC453A" mask="url(#b)">
+                                    <path d="M0 0h260v260H0z" />
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="failed-text">
+                        Scanning your batch wasn´t successful<br>Please try again
+                    </div>
+                    <div class="failed-button">
+                        <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <span class="win-type-subtitle" data-win-res="{textContent: 'failed.scanagain'}"></span>
+                        </button>
+                    </div>
+
+                    <!--
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'failed.title'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>-->
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

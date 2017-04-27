@@ -13,31 +13,31 @@
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
-                        <div class="list-header">
-                            <div class="header-separator"></div>
-                            <div class="content-header">
-                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                                <div class="content-header-line win-type-caption">
-                                    <div class="idAndDate win-type-caption">
-                                        <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
-                                        <span class="caption-field" data-win-res="{textContent: 'productlist.title'}"></span>
-                                        <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
-                                    </div>
-                                </div>
+                        <div class="list-header nx-header">
+                            <div class="nx-header__content">
+                                <div class="nx-header__title_black"
+                                     data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">Choose products to get<br>more information</div>
+                                <div class="nx-header__title_gray"
+                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                     data-win-res="{textContent: 'productlist.selected'}"></div>
                             </div>
+                            <button class="nx-button nx-button--centered nx-header__button"
+                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                    onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                <span class="win-type-subtitle" data-win-res="{textContent: 'productlist.continue'}"></span>
+                            </button>
                         </div>
                     </div>
-                    <div class="products-template"
-                         data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="overlaid-item-template">
-                            <div class="list-image-bkg" 
-                                 data-win-bind="style.backgroundColor: color"></div>
-                            <div class="list-image-container"
-                                 data-win-bind="docId: ProduktID">
-                                <div class="list-image-fgd"></div>
+                    <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="nx-proitem">
+                            <div class="nx-proitem__img-container list-image-container" data-win-bind="docId: ProduktID">
+                                <div class="nx-proitem__preload-bg-color" data-win-bind="style.backgroundColor: color"></div>
                             </div>
-                            <div class="win-type-subtitle window-color overlay">
-                                <div class="item-title" data-win-bind="textContent: Name"></div>
+                            <div class="nx-proitem__title" data-win-bind="textContent: Name"></div>
+                            <div class="nx-proitem__overlay">
+                                <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="136px" height="136px" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="nonzero" clip-rule="evenodd" viewBox="0 0 136 136" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <path id="a" fill="#ffffff" d="M68 0c37.555 0 68 30.444 68 68 0 37.555-30.445 68-68 68-37.556 0-68-30.445-68-68C0 30.444 30.444 0 68 0zm0 133c35.841 0 65-29.159 65-65 0-35.842-29.159-65-65-65C32.16 3 3 32.158 3 68c0 35.841 29.16 65 65 65zm27.091-92h.002L101 47.003 53.728 95 36 77l5.907-6 11.821 12.003L95.091 41z" />
+                            </svg>
                             </div>
                         </div>
                     </div>

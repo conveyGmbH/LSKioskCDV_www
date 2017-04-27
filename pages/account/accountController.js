@@ -22,7 +22,9 @@
             Application.Controller.apply(this, [pageElement, {
                 dataLogin: {
                     Login: AppData._persistentStates.odata.login,
-                    Password: AppData._persistentStates.odata.password
+                    Password: AppData._persistentStates.odata.password,
+                    INITSpracheID: 0,
+                    LanguageID: null
                 },
                 doEdit: false,
                 doReloadDb: false,
@@ -32,6 +34,9 @@
                     show: null
                 }
             }]);
+
+            // select combo
+            var initSprache = pageElement.querySelector("#InitSprache");
 
             var prevLogin = AppData._persistentStates.odata.login;
             var prevPassword = AppData._persistentStates.odata.password;
@@ -182,6 +187,73 @@
             };
             that.openDb = openDb;
 
+            var setLanguage = function (results) {
+                Log.call(Log.l.trace, "Account.Controller.");
+                if (initSprache && results) {
+                    for (var i = 0; i < results.length; i++) {
+                        var row = results[i];
+                        if (row.LanguageID === AppData.getLanguageId()) {
+                            Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
+                            that.binding.dataLogin.INITSpracheID = row.INITSpracheID;
+                            break;
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            var getLanguage = function () {
+                var ret = null;
+                Log.call(Log.l.trace, "Account.Controller.");
+                var results = Account.initSpracheView.getResults();
+                var map = Account.initSpracheView.getMap();
+                if (map && results) {
+                    var curIndex = map[that.binding.dataLogin.INITSpracheID];
+                    if (typeof curIndex !== "undefined") {
+                        var row = results[curIndex];
+                        Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
+                        ret = row.LanguageID;
+                    }
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+
+            var loadData = function () {
+                Log.call(Log.l.trace, "Account.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    if (!Account.initSpracheView.getResults().length) {
+                        Log.print(Log.l.trace, "calling select initSpracheView...");
+                        //@nedra:25.09.2015: load the list of INITAnrede for Combobox
+                        return Account.initSpracheView.select(function (json) {
+                            Log.print(Log.l.trace, "initSpracheView: success!");
+                            if (json && json.d) {
+                                var results = json.d.results;
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initSprache && initSprache.winControl) {
+                                    initSprache.winControl.data = new WinJS.Binding.List(results);
+                                    setLanguage(results);
+                                }
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        if (initSprache && initSprache.winControl) {
+                            var results = Account.initSpracheView.getResults();
+                            initSprache.winControl.data = new WinJS.Binding.List(results);
+                            setLanguage(results);
+                        }
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            };
+            this.loadData = loadData;
+
             var saveData = function (complete, error) {
                 var err = null, ret;
                 Log.call(Log.l.trace, "Account.Controller.");
@@ -191,6 +263,11 @@
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
                 if (!that.binding.doEdit) {
+                    var newLanguageId = getLanguage();
+                    if (newLanguageId !== AppData._persistentStates.languageId) {
+                        AppData._persistentStates.languageId = newLanguageId;
+                        Application.pageframe.savePersistentStates();
+                    }
                     ret = WinJS.Promise.as();
                     complete({});
                 } else {
@@ -235,7 +312,8 @@
                         if (!err) {
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
-                                Password: that.binding.dataLogin.Password
+                                Password: that.binding.dataLogin.Password,
+                                LanguageID: getLanguage()
                             };
                             return Account.loginView.insert(function(json) {
                                 // this callback will be called asynchronously
@@ -325,6 +403,9 @@
 
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                return that.loadData();
+            }).then(function () {
+                Log.print(Log.l.trace, "Data loaded");
                 AppBar.notifyModified = true;
                 AppBar.triggerDisableHandlers();
                 Application.pageframe.hideSplashScreen();

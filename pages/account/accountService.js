@@ -7,6 +7,31 @@
     "use strict";
 
     WinJS.Namespace.define("Account", {
+        _initSpracheView: {
+            get: function () {
+                return AppData.getLgntInit("LGNTINITSprache");
+            }
+        },
+        initSpracheView: {
+            select: function (complete, error, recordId) {
+                Log.call(Log.l.trace, "AppData._initSpracheView.");
+                var ret = Account._initSpracheView.select(complete, error, recordId, { ordered: true });
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getResults: function () {
+                Log.call(Log.l.trace, "AppData._initSpracheView.");
+                var ret = Account._initSpracheView.results;
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            getMap: function () {
+                Log.call(Log.l.trace, "AppData._initSpracheView.");
+                var ret = Account._initSpracheView.map;
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
         _loginRequest: {
             get: function () {
                 return AppData.getFormatView("LoginRequest", 0, false, true);

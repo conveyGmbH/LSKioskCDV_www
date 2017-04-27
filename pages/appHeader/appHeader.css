@@ -26,10 +26,13 @@
     overflow-x: hidden;
     overflow-y: hidden;
     width: 100%;
-    height: 48px;
+    height: 0;
     color: gray;
     background-color: Window;
     z-index: 10010;
+    /*
+    height: 48px;
+    */
 }
 
 /*

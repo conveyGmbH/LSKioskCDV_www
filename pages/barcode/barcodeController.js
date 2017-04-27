@@ -17,10 +17,51 @@
                 dataContact: getEmptyDefaultValue(Barcode.contactView.defaultValue)
             }]);
 
+            // idle wait Promise and wait time:
+            this.restartPromise = null;
+            this.idleWaitTimeMs = 60000;
+
             var that = this;
 
-            this.dispose = function () {
+            this.dispose = function() {
+            };
+
+            var deleteAndNavigate = function(targetPage) {
+                Log.call(Log.l.trace, "ProductList.Controller.", "targetPage=" + that.targetPage);
+                var contactId = AppData.getRecordId("Kontakt");
+                Log.print(Log.l.trace, "contactId=" + contactId);
+                if (contactId) {
+                    Log.print(Log.l.trace, "delete existing contactID=" + contactId);
+                    Barcode.contactView.deleteRecord(function(json) {
+                        // this callback will be called asynchronously
+                        Log.print(Log.l.trace, "contactView: deleteRecord success!");
+                        AppData.setRecordId("Kontakt", null);
+                        Application.navigateById(targetPage);
+                    }, function(errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        AppData.setErrorMsg(that.binding, errorResponse);
+                    }, contactId);
+                }
+                Log.ret(Log.l.trace);
             }
+            this.deleteAndNavigate = deleteAndNavigate;
+
+            var waitForIdleAction = function() {
+                Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous Promise");
+                    that.restartPromise.cancel();
+                }
+                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
+                    Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
+                    if (!that.binding.clickOkDisabled) {
+                        that.deleteAndNavigate("start");
+                    }
+                });
+                Log.ret(Log.l.trace);
+            };
+            this.waitForIdleAction = waitForIdleAction;
 
             // define handlers
             this.eventHandlers = {
@@ -29,6 +70,11 @@
                     if (WinJS.Navigation.canGoBack === true) {
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                     }
+                    Log.ret(Log.l.trace);
+                },
+                clickDelete: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.deleteAndNavigate("failed");
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
@@ -47,9 +93,12 @@
                     }
                 },
                 clickOk: function() {
-                    if (that.binding.dataContact &&
-                        (that.binding.dataContact.IMPORT_CARDSCANID ||
-                         that.binding.dataContact.Request_Barcode)) {
+                    if (that.binding.dataContact
+                        //for testing always enabled!
+                        //&&
+                        //(that.binding.dataContact.IMPORT_CARDSCANID ||
+                        // that.binding.dataContact.Request_Barcode)
+                        ) {
                         return false;
                     } else {
                         return true;
@@ -87,9 +136,6 @@
                                     Log.print(Log.l.trace, "contactView: Request_Barcode=" + that.binding.dataContact.Request_Barcode);
                                 } else {
                                     Log.print(Log.l.trace, "contactView: reload later again!");
-                                    WinJS.Promise.timeout(1000).then(function () {
-                                        that.loadData();
-                                    });
                                 }
                             }
                         }, function (errorResponse) {
@@ -164,6 +210,7 @@
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
                 AppBar.notifyModified = true;
+                that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);
         })

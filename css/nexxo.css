@@ -1,0 +1,122 @@
+﻿@font-face {
+    font-family: 'Roboto';
+    src: url("../Roboto-Regular.ttf") format("truetype"); }
+
+html, body {
+    font-family: "Roboto", "Arial";
+    color: #000000;
+    background: #ffffff !important; }
+
+/* Text styles */
+h2 {
+    font-family: "Roboto", "Arial";
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    color: #000000; }
+
+h1 {
+    font-family: "Roboto", "Arial";
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.25;
+    text-align: center;
+    color: #000000; }
+
+p {
+    font-family: "Roboto", "Arial";
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+    color: #00417f; }
+
+.p-small {
+    font-family: "Roboto", "Arial";
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 2.5;
+    text-align: right;
+    color: #00417f; }
+
+.display-none {
+    display: none; }
+
+.nx--clearfix {
+    zoom: 1; }
+.nx--clearfix:after, .nx--clearfix:before {
+    content: "";
+    display: table; }
+.nx--clearfix:after {
+    clear: both; }
+
+.nx--nullify-button, .nx-button {
+    background: none;
+    border-radius: 0;
+    border: none;
+    cursor: pointer; }
+
+.nx-button {
+    display: block;
+    padding: 20px 60px !important;
+    background-color: #00417f !important;
+    color: #ffffff !important;
+    font-family: "Roboto", "Arial" !important;
+    font-size: 30px !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    text-transform: uppercase; }
+.nx-button--centered {
+    margin: 0 auto; }
+
+.nx-header {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 264px;
+    overflow: hidden;
+    background: #ffffff;
+    z-index: 100; }
+.nx-header .nx-header__content {
+    padding-top: 110px;
+    position: relative;
+    width: 100%; }
+.nx-header .nx-header__content .nx-header__title_black {
+    height: 50px;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    color: #000000;
+    display: block; }
+.nx-header .nx-header__content .nx-header__title_gray {
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.25;
+    text-align: center;
+    color: #767676;
+    display: block; }
+.nx-header .nx-header__content .id-field {
+    display: none; }
+.nx-header .nx-header__content .date-field {
+    display: none; }
+.nx-header .nx-header__button {
+    margin-top: 24px; }
+.nx-header .nx-header__cancel {
+    position: absolute;
+    right: 40px;
+    top: 30px; }
+.nx-header .nx-header__cancel span {
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 65px;
+    padding-right: 20px;
+    text-align: right;
+    color: #00417f;
+    display: inline-block; }
+.nx-header .nx-header__cancel svg {
+    display: inline-block;
+    float: right; }

@@ -6,12 +6,12 @@
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
-/// <reference path="~/www/pages/barcode/barcodeController.js" />
+/// <reference path="~/www/pages/failed/failedController.js" />
 
 (function () {
     "use strict";
 
-    var pageName = Application.getPagePath("barcode");
+    var pageName = Application.getPagePath("failed");
 
     WinJS.UI.Pages.define(pageName, {
         // This function is called whenever a user navigates to this page. It
@@ -29,35 +29,11 @@
             options.showHalfCircle = true;
 
             AppBar.commandList = [
-                // now only for page navigation test purpose:
-               // { id: "clickDelete", label: getResourceText("command.delete"), tooltip: getResourceText("tooltip.delete"), section: "primary", svg: "delete" },
-                { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
+                //{ id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
-            this.controller = new Barcode.Controller(element);
+            this.controller = new Failed.Controller(element);
             Log.ret(Log.l.trace);
         },
-
-        // This function is called before a user navigates away from this page. It
-        // can save page data and delay or cancel page transition.
-        /*
-        canUnload: function (complete, error) {
-            Log.call(Log.l.trace, pageName + ".");
-            var ret;
-            if (this.controller) {
-                ret = this.controller.saveData(function (response) {
-                    // called asynchronously if ok
-                    complete(response);
-                }, function (errorResponse) {
-                    error(errorResponse);
-                });
-            } else {
-                ret = WinJS.Promise.as();
-            }
-            Log.ret(Log.l.trace);
-            return ret;
-        },
-         * 
-         */
 
         unload: function () {
             Log.call(Log.l.trace, pageName + ".");

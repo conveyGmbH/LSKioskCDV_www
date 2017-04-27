@@ -13,7 +13,8 @@
     "general.september"     : "Sep",
     "general.october"       : "Okt",
     "general.november"      : "Nov",
-    "general.december"      : "Dez",
+    "general.december"      : "Dez",  
+    "general.cancel"        : "Cancel",
 
     "command.backward"      : "Zurück",
     "command.edit"          : "Bearbeiten",
@@ -177,7 +178,8 @@
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 
-    "barcode.title"         : "Barcode",
+    "barcode.title"         : "Scan your QR Code",  
+    "barcode.description"   : "To scan the QR code, place your batch on the scanner underneath this screen",
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
@@ -407,15 +409,24 @@
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
-
-    "productlist.title"     : "Produktauswahl",
+	
+    "productlist.title"     : "Choose products to get more informations",
+    "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "productlist.count"     : "Anzahl",
+    "productlist.continue"  : "Weiter",
 
     "languagelist.title"    : "Sprachauswahl",
     "languagelist.comment"  : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 
-    "finished.title"        : "Vielen Dank!",
-    "finished.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!"
+    "finished.title"        : "QR Code successfully scanned",
+    "finished.complete"     : "Complete",
+    "finished.description"  : "You will receive an email with the requested information",
+    "finished.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+	
+    "failed.title"          : "An error occured",
+    "failed.scanagain"      : "Scan again",
+    "failed.description"    : "Scanning your batch wasn´t successful Please try again",
+    "failed.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!"
 
 }

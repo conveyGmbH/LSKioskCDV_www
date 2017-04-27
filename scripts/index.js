@@ -60,6 +60,7 @@
         { id: "productlist", group: -1, disabled: false },
         { id: "barcode", group: -1, disabled: false },
         { id: "finished", group: -1, disabled: false },
+        { id: "failure", group: -1, disabled: false },
         { id: "info", group: 3, disabled: false },
         { id: "settings", group: 3, disabled: false },
         { id: "account", group: 3, disabled: false }
@@ -80,6 +81,12 @@
     // some more default page navigation handling
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
+        if (id === "start") {
+            // clear contactId 
+            AppData.setRecordId("Kontakt", null);
+            // re-route directly to productlist page
+            id = "productlist";
+        }
         Log.ret(Log.l.trace);
         return id;
     };

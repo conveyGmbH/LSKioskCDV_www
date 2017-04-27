@@ -18,7 +18,9 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "ProductList.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                count: 0
+                count: 0,
+                clickOkDisabled: true,
+                clickOkDisabledInvert: false
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -26,12 +28,16 @@
             this.selection = [];
             this.prevSelectionIndices = [];
 
+            // idle wait Promise and wait time:
+            this.restartPromise = null;
+            this.idleWaitTimeMs = 30000;
+
             var that = this;
 
             // ListView control
             var listView = pageElement.querySelector("#productlist.listview");
 
-            this.dispose = function () {
+            this.dispose = function() {
                 if (listView && listView.winControl) {
                     // remove ListView dataSource
                     listView.winControl.itemDataSource = null;
@@ -48,7 +54,35 @@
                     // free prevSelectionIndices
                     that.prevSelectionIndices = null;
                 }
-            }
+            };
+
+            var waitForIdleAction = function() {
+                Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous Promise");
+                    that.restartPromise.cancel();
+                }
+                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
+                    Log.print(Log.l.trace, "timeout occurred, check for selectionCount!");
+                    var contactId = AppData.getRecordId("Kontakt");
+                    Log.print(Log.l.trace, "contactId=" + contactId);
+                    if (contactId && !that.binding.clickOkDisabled) {
+                        Log.print(Log.l.trace, "delete existing contactID=" + contactId);
+                        ProductList.contactView.deleteRecord(function (json) {
+                            // this callback will be called asynchronously
+                            Log.print(Log.l.trace, "contactView: deleteRecord success!");
+                            AppData.setRecordId("Kontakt", null);
+                            that.loadData();
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, contactId);
+                    }
+                });
+                Log.ret(Log.l.trace);
+            };
+            this.waitForIdleAction = waitForIdleAction;
 
             var progress = null;
             var counter = null;
@@ -111,6 +145,7 @@
                 },
                 onSelectionChanged: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.waitForIdleAction();
                     if (!AppBar.notifyModified) {
                         Log.print(Log.l.trace, "modify ignored");
                     } else {
@@ -185,6 +220,14 @@
                                 }
                                 that.prevSelectionIndices = curSelectionIndices;
                             }
+                        }
+                        if (that.prevSelectionIndices && that.prevSelectionIndices.length > 0) {
+                            that.binding.clickOkDisabled = false;
+                            that.binding.clickOkDisabledInvert = true;
+                        } else {
+                            that.binding.clickOkDisabled = true;
+                            that.binding.clickOkDisabledInvert = false;
+
                         }
                         AppBar.triggerDisableHandlers();
                     }
@@ -282,7 +325,6 @@
                                 if (json && json.d) {
                                     that.nextUrl = ProductList.productView.getNextUrl(json);
                                     var results = json.d.results;
-                                    var prevCount = that.binding.count;
                                     results.forEach(function(item, index) {
                                         that.resultConverter(item, index);
                                         that.binding.count = that.products.push(item);
@@ -326,16 +368,7 @@
                     }
                 },
                 clickOk: function (event) {
-                    if (listView && listView.winControl) {
-                        var listControl = listView.winControl;
-                        if (listControl.selection) {
-                            var selectionCount = listControl.selection.count();
-                            if (selectionCount > 0) {
-                                return false;
-                            }
-                        }
-                    }
-                    return true;
+                    return that.binding.clickOkDisabled;
                 }
             };
 
@@ -421,6 +454,7 @@
             }
             var loadData = function() {
                 Log.call(Log.l.trace, "ProductList.Controller.");
+                AppBar.notifyModified = false;
                 that.loading = true;
                 progress = listView.querySelector(".list-footer .progress");
                 counter = listView.querySelector(".list-footer .counter");
@@ -434,10 +468,7 @@
                 if (that.products) {
                     that.products.length = 0;
                 }
-                //always set new contactId!
-                //var contactId = null;
                 var contactId = AppData.getRecordId("Kontakt");
-                Log.print(Log.l.trace, "contactId=" + contactId);
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
                         var newContact = {
@@ -465,8 +496,6 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, newContact);
                     } else {
-                        Log.print(Log.l.trace, "use existing contactID=" + contactId);
-                        AppData.getContactData();
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
@@ -558,6 +587,8 @@
                             that.loading = false;
                         });
                     }
+                }).then(function () {
+                    AppBar.notifyModified = true;
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -568,7 +599,6 @@
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {
-                AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
             });
             Log.ret(Log.l.trace);

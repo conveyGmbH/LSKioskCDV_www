@@ -62,6 +62,17 @@
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'account.language'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'account.language'}"></span>
+                        <select id="InitSprache"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: dataLogin.INITSpracheID Binding.Mode.twoway">
+                            <option data-win-bind="value: INITSpracheID; textContent: TITLE"></option>
+                        </select>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.doEdit'}"></span>
                         <span class="label landscape_only"

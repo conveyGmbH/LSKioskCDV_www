@@ -58,8 +58,10 @@
 
             // add page specific commands to AppBar
             AppBar.commandList = [
-                /*{ id: 'clickBack', label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: 'primary', svg: 'navigate_left' },*/
+                /*
+                { id: 'clickBack', label: getResourceText("command.backward"), tooltip: getResourceText("tooltip.backward"), section: 'primary', svg: 'navigate_left' },
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
+                 */
             ];
 
             this.controller = new ProductList.Controller(element);

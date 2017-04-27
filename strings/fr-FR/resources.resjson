@@ -14,6 +14,7 @@
     "general.october"       : "Oct",
     "general.november"      : "Nov",
     "general.december"      : "Déc",
+    "general.cancel"        : "Cancel",
 
     "command.backward"      : "Présédent",
     "command.edit"          : "Modifier",
@@ -176,7 +177,8 @@
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
 
-    "barcode.title"         : "Code barre",
+    "barcode.title"         : "Scan your QR Code",    
+    "barcode.description"   : "To scan the QR code, place your batch on the scanner underneath this screen",
     "barcode.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
@@ -391,7 +393,7 @@
     "publish.published"     : "Le questionnaire est publié",
 
     "skills.title"          : "Capacités",
-    "skills.count"	    : "Nombre",
+    "skills.count"	        : "Nombre",
     "skills.answercnt"      : "Réponses",
 
     "skillentry.title"      : "entrer une capacité",
@@ -403,15 +405,24 @@
 
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
-
-    "productlist.title"     : "Sélection de produits",
+	
+    "productlist.title"     : "Choose products to get more informations",
+    "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
+    "productlist.continue"  : "Continuer",	
 
     "languagelist.title"    : "Sélection de Langues",
     "languagelist.comment"  : "Utilisez le bouton Retour sur cette page pour y retourner!",
-
-    "finished.title"        : "Merci beaucoup!",
-    "finished.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!"
+	
+    "finished.title"        : "QR Code successfully scanned",
+    "finished.complete"     : "Complete",
+    "finished.description"  : "You will receive an email with the requested information",
+    "finished.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
+	
+    "failed.title"          : "An error occured",
+    "failed.scanagain"      : "Scan again",
+    "failed.description"    : "Scanning your batch wasn´t successful Please try again",
+    "failed.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!"
 
 }
