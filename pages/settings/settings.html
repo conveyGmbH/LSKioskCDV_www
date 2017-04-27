@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="settings.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../lib/convey/scripts/colorPicker.js"></script>
+    <script type="text/javascript" src="settingsService.js"></script>
+    <script type="text/javascript" src="settingsController.js"></script>
+    <script type="text/javascript" src="settings.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="settings">
+        <div id="settingsController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'settings.title'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.theme'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.theme'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="isDarkTheme" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.isDarkTheme; winControl.labelOn: generalData.dark; winControl.labelOff: generalData.light"
+                                 onchange="AppBar.handleEvent('change', 'clickIsDarkTheme', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.individual'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.individual'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="individualColors" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.individualColors; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickIndividualColors', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.accentcolor'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.accentcolor'}"></span>
+                        <div id="accentColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.backgroundcol'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.backgroundcol'}"></span>
+                        <div id="backgroundColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.shopAppBkg'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.shopAppBkg'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="shopAppBkg" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.showAppBkg; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickShowAppBkg', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.navigationcol'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.navigationcol'}"></span>
+                        <div id="navigationColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.textcolor'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.textcolor'}"></span>
+                        <div id="textColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.labelcolor'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.labelcolor'}"></span>
+                        <div id="labelColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.tiletextcolor'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.tiletextcolor'}"></span>
+                        <div id="tileTextColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.tilebkgcolor'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.tilebkgcolor'}"></span>
+                        <div id="tileBackgroundColor_picker" class="input_field color-picker-parent">
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: generalData.individualColors Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'settings.inputBorder'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'settings.inputBorder'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.inputBorder Binding.Converter.toInputBorderName"></span>
+                        <input id="inputBorder" class="input_field win-range"
+                               type="range" min="0" max="2" step="1"
+                               data-win-bind="value: generalData.inputBorder"
+                               onchange="AppBar.handleEvent('change', 'changedInputBorder', event)" />
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

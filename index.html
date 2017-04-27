@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>LeadSuccess</title>
+
+    <!-- LSMobileCDV references -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, target-densitydpi=device-dpi" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; connect-src *">
+
+    <!-- platform overrides -->
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+
+    <!-- CSS references -->
+    <link rel="stylesheet" href="lib/jQuerySVG/css/jquery.svg.css" />
+    <link rel="stylesheet" href="lib/jqPlot/css/jquery.jqplot.min.css" />
+    <!-- WinJS ui styles now loaded in Colors namespace depending from accent color!
+         Other global CSS must be loaded dynamically too, after WinJS ui styles!
+        <link rel="stylesheet" href="lib/WinJS/css/ui-light.css"  />
+        <link rel="stylesheet" href="css/default.css" />
+        <link rel="stylesheet" href="css/index.css" />
+    -->
+    <!-- jQuery references -->
+    <script type="text/javascript" src="lib/jQuery/scripts/jquery-2.1.4.min.js"></script>
+
+    <!-- jQuerySVG references -->
+    <script type="text/javascript" src="lib/jQuerySVG/scripts/jquery.svg.min.js"></script>
+
+    <!-- jqPlot references -->
+    <script type="text/javascript" src="lib/jqPlot/scripts/jquery.jqplot.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.pieRenderer.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.barRenderer.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.pointLabels.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.highlighter.min.js"></script>
+
+    <!-- OpenXML references -->
+    <script type="text/javascript" src="lib/OpenXml/scripts/linq.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/ltxml.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/ltxml-extensions.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/jszip.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/jszip-load.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/jszip-inflate.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/jszip-deflate.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/FileSaver.js"></script>
+    <script type="text/javascript" src="lib/OpenXml/scripts/openxml.js"></script>
+
+    <!-- hammer references -->
+    <script type="text/javascript" src="lib/hammer/scripts/hammer.js"></script>
+
+    <!-- WinJS references -->
+    <script type="text/javascript" src="lib/WinJS/scripts/base.min.js"></script>
+    <script type="text/javascript" src="lib/WinJS/scripts/ui.js"></script>
+
+    <!-- Cordova references -->
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <!-- Convey references -->
+    <script type="text/javascript" src="lib/convey/scripts/logging.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/strings.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/sqlite.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/appSettings.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/replService.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/dbinit.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/dataService.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/colors.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/navigator.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/appbar.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/pageFrame.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/pageController.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/fragmentController.js"></script>
+
+    <!-- project scripts -->
+    <script type="text/javascript" src="scripts/generalData.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</head>
+<body class="win-type-body">
+    <!--<div class="app-bkg"></div>-->
+    <!-- Splash Screen -->
+    <div class="splash-screen-container">
+        <div class="splash-screen"></div>
+    </div>
+    <!-- Page-Navigationbar Templates -->
+    <div class="navigationbar-horizontal-template"
+         data-win-control="WinJS.Binding.Template" style="display: none">
+        <div class="navigationbar-item navigationbar-horizontal-item win-type-subtitle">
+            <div class="navigationbar-text navigationbar-horizontal-text"
+                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplayNone"></div>
+            <div class="navigationbar-text navigationbar-horizontal-text navigationbar-text-gray"
+                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplay"></div>
+        </div>
+    </div>
+    <div class="navigationbar-vertical-template"
+         data-win-control="WinJS.Binding.Template" style="display: none">
+        <div class="navigationbar-item navigationbar-vertical-item win-type-subtitle">
+            <div class="navigationbar-text navigationbar-vertical-text"
+                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplayNone"></div>
+            <div class="navigationbar-text navigationbar-vertical-text navigationbar-text-gray"
+                 data-win-bind="textContent: text; style.display: disabled Binding.Converter.toDisplay"></div>
+        </div>
+    </div>
+    <!-- App Header -->
+    <div id="headerhost" class="headerhost-container">
+    </div>
+    <!-- Hamburger Button -->
+    <button id="root-split-view-toggle" class="win-splitviewpanetoggle"
+            data-win-control="WinJS.UI.SplitViewPaneToggle"
+            data-win-options="{
+                splitView: select('#root-split-view')
+            }"></button>
+    <div class="header-hero"></div>
+    <!-- SplitView for Group Navigation + App Content -->
+    <div id="root-split-view" class="splitView"
+         data-win-control="WinJS.UI.SplitView"
+         data-win-options="{
+            openedDisplayMode: 'overlay',
+            closedDisplayMode: 'none'
+         }">
+        <!-- Pane area for Group Navigation Commands -->
+        <div id="root-split-view-pane">
+            <div class="nav-commands">
+                <div id="dummyMenu"
+                     data-win-control="WinJS.UI.SplitViewCommand"
+                     style="display: none"></div>
+            </div>
+        </div>
+        <!-- Content area for Master + Page Navigationbar + Content -->
+        <div id="masterhost" class="masterhost-container">
+        </div>
+        <!-- Page Navigationbar -->
+        <div class="navigationbar-container navigationbar-container-horizontal">
+            <div id="navigationbar_horizontal"
+                 class="win-selectionstylefilled navigationbar"
+                 data-win-control="WinJS.UI.ListView"
+                 data-win-options="{
+                    itemDataSource: NavigationBar.data.dataSource,
+                    itemTemplate: select('.navigationbar-horizontal-template'),
+                    selectionMode: WinJS.UI.SelectionMode.single,
+                    tapBehavior: WinJS.UI.TapBehavior.directSelect,
+                    layout: { type: WinJS.UI.GridLayout }
+                 }">
+            </div>
+        </div>
+        <div class="navigationbar-container navigationbar-container-vertical">
+            <div id="navigationbar_vertical"
+                 class="win-selectionstylefilled navigationbar"
+                 data-win-control="WinJS.UI.ListView"
+                 data-win-options="{
+                    itemDataSource: NavigationBar.data.dataSource,
+                    itemTemplate: select('.navigationbar-vertical-template'),
+                    selectionMode: WinJS.UI.SelectionMode.single,
+                    tapBehavior: WinJS.UI.TapBehavior.directSelect,
+                    layout: { type: WinJS.UI.ListLayout }
+                 }">
+            </div>
+        </div>
+        <!-- Page Content -->
+        <div id="contenthost"
+             data-win-control="Application.PageControlNavigator"
+             data-win-options="{ home: Application.startPage }">
+        </div>
+    </div>
+    <!-- AppBar for Page Commands -->
+    <div id="appbar"
+         data-win-control="WinJS.UI.AppBar"
+         data-win-options="{
+                placement: 'bottom',
+                closedDisplayMode: 'compact'
+             }">
+        <button id="dummyButton"
+                data-win-control="WinJS.UI.AppBarCommand"
+                style="display: none"></button>
+    </div>
+    <!-- Flyout for Alert / Confirm Boxes -->
+    <div id="alertFlyout"
+         data-win-control="WinJS.UI.Flyout"
+         style="display: none">
+        <div id="alertText"></div>
+        <button id="okButton"
+                class="win-button"
+                data-win-bind="textContent: flyoutOk"></button>
+        <button id="cancelButton"
+                class="win-button"
+                style="display: none"
+                data-win-bind="textContent: flyoutCancel"></button>
+    </div>
+</body>
+</html>

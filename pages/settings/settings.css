@@ -1,0 +1,39 @@
+﻿.color-picker-parent {
+    min-height: 40px;
+}
+
+.color_picker_trigger {
+    vertical-align: top;
+    height: 28px;
+    margin-top: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: Window;
+}
+
+.toggle-switch-parent {
+    height: 40px;
+}
+#isDarkTheme .win-toggleswitch-header,
+#individualColors .win-toggleswitch-header,
+#shopAppBkg .win-toggleswitch-header {
+    display: none;
+}
+
+@media (max-width:899px) {
+    .color-picker-parent {
+        margin-bottom: 8px;
+    }
+    .toggle-switch-parent {
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width:499px) {
+    .color-picker-parent {
+        margin-bottom: 0;
+    }
+    .toggle-switch-parent {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="productlist.css" rel="stylesheet" />
+    <script type="text/javascript" src="productlistService.js"></script>
+    <script type="text/javascript" src="productlistController.js"></script>
+    <script type="text/javascript" src="productlist.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="productlist">
+        <div id="listLocalController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-header">
+                            <div class="header-separator"></div>
+                            <div class="content-header">
+                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                                <div class="content-header-line win-type-caption">
+                                    <div class="idAndDate win-type-caption">
+                                        <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                                        <span class="caption-field" data-win-res="{textContent: 'productlist.title'}"></span>
+                                        <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="products-template"
+                         data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="overlaid-item-template">
+                            <div class="list-image-bkg" 
+                                 data-win-bind="style.backgroundColor: color"></div>
+                            <div class="list-image-container"
+                                 data-win-bind="docId: ProduktID">
+                                <div class="list-image-fgd"></div>
+                            </div>
+                            <div class="win-type-subtitle window-color overlay">
+                                <div class="item-title" data-win-bind="textContent: Name"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="headerFooterPlaceholder">
+                        <div class="list-footer">
+                            <div class="status">
+                                <progress class="win-progress-bar progress"></progress>
+                                <div class="counter">
+                                    <span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="productlist"
+                         class="listview"
+                         data-win-control="WinJS.UI.ListView"
+                         data-win-options="{
+                            itemTemplate: select('.products-template'),
+                            header: select('.list-header'),
+                            footer: select('.list-footer')
+                         }">
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

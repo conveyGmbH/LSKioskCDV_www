@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="login.css" rel="stylesheet" />
+    <script type="text/javascript" src="loginService.js"></script>
+    <script type="text/javascript" src="loginController.js"></script>
+    <script type="text/javascript" src="login.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="login">
+        <div id="loginController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="centerareea">
+                        <div class="header-separator"></div>
+                        <div class="content-header">
+                            <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                            <div class="content-header-line win-type-caption">
+                                <span class="id-field"></span>
+                                <span class="caption-field" data-win-res="{textContent: 'login.title'}"></span>
+                                <span class="date-field"></span>
+                            </div>
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line">
+                            <span class="large_field"
+                                  data-win-res="{textContent: 'login.comment'}"></span>
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line field_line_odd">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.login'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.login'}"></span>
+                            <input class="input_field win-textbox" type="text"
+                                   data-win-bind="value: dataLogin.Login Binding.Mode.twoway" />
+                        </div>
+                        <div class="field_line field_line_even">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.password'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.password'}"></span>
+                            <input class="input_field win-textbox" type="password"
+                                   data-win-bind="value: dataLogin.Password Binding.Mode.twoway" />
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="field_line"
+                             data-win-bind="style.display: messageText Binding.Converter.toDisplay">
+                            <span class="input_field win-type-subtitle"
+                                  data-win-bind="textContent: messageText"></span>
+                        </div>
+                        <div class="field_line"
+                             data-win-bind="style.display: progress.show Binding.Converter.toDisplay">
+                            <span class="label win-type-caption portrait_only"
+                                  data-win-res="{textContent: 'login.progress'}"></span>
+                            <span class="label landscape_only"
+                                  data-win-res="{textContent: 'login.progress'}"></span>
+                            <progress class="progress_field win-progress-bar"
+                                      data-win-bind="value: progress.percent"
+                                      min="0" max="100"></progress>
+                            <span class="large_field"
+                                  data-win-bind="textContent: progress.text"></span>
+                        </div>
+                        <div class="line-separator"></div>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

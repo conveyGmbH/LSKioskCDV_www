@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="info.css" rel="stylesheet" />
+    <script type="text/javascript" src="infoService.js"></script>
+    <script type="text/javascript" src="infoController.js"></script>
+    <script type="text/javascript" src="info.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="settings">
+        <div id="infoController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'info.title'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_full">
+                        <div class="large_field">
+                            <img src="../../images/leadsuccess.svg" width="240" />
+                            <span class="win-type-title logo-title"
+                                  data-win-res="{textContent: 'info.portal'}"></span>
+                        </div>
+                        <span class="large_field"
+                              data-win-bind="textContent: version"></span>
+                        <span class="large_field"
+                              data-win-res="{innerHTML: 'info.comment'}"></span>
+                        <span class="large_field"
+                              id="homepageLink"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_full">
+                        &nbsp;
+                    </div>
+                    <div class="header-separator float-left"></div>
+                    <div class="content-header float-left">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="idAndDate win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'info.logOptions'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.logenabled'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.logenabled'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logEnabled" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.logEnabled; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickLogEnabled', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.loglevel'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.loglevel'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.logLevel Binding.Converter.toLogLevelName"></span>
+                        <input id="logLevel" class="input_field win-range"
+                               type="range" min="1" max="6" step="1"
+                               data-win-bind="value: generalData.logLevel"
+                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)" />
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.loggroup'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.loggroup'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logGroup" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.logGroup; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickLogGroup', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.lognostack'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.lognostack'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="logNoStack" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: generalData.logNoStack; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickLogNoStack', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
