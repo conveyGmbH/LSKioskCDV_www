@@ -472,7 +472,10 @@
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
                         var newContact = {
-                            HostName: (window.device && window.device.uuid),
+                            //no UUID in this case!
+                            //HostName: (window.device && window.device.uuid),
+                            //Use ScanFlag to mark for delayed barcode scan!
+                            ScanFlag: -1,
                             MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
                             VeranstaltungID: AppData.getRecordId("Veranstaltung"),
                             Nachbearbeitet: 1
