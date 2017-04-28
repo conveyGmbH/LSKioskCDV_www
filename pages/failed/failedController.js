@@ -53,6 +53,7 @@
 
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);
         })

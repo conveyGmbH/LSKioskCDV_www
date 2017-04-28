@@ -75,7 +75,9 @@
                 clickDelete: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
                     // cancel navigates now directly back to start
-                    that.deleteAndNavigate("start");
+                    // now, don't delete contact in case of error
+                    //that.deleteAndNavigate("start");
+                    that.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
