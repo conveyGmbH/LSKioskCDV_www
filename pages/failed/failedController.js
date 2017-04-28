@@ -46,9 +46,22 @@
 
             // define handlers
             this.eventHandlers = {
+                clickDelete: function (event) {
+                    Log.call(Log.l.trace, "Failed.Controller.");
+                    if (that.restartPromise) {
+                        Log.print(Log.l.trace, "cancel previous Promise");
+                        that.restartPromise.cancel();
+                    }
+                    Application.navigateById("start", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Failed.Controller.");
-                    Application.navigateById("start", event);
+                    if (that.restartPromise) {
+                        Log.print(Log.l.trace, "cancel previous Promise");
+                        that.restartPromise.cancel();
+                    }
+                    Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 }
             };
