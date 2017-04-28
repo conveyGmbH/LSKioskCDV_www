@@ -48,6 +48,10 @@
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Finished.Controller.");
+                    if (that.restartPromise) {
+                        Log.print(Log.l.trace, "cancel previous Promise");
+                        that.restartPromise.cancel();
+                    }
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 }
