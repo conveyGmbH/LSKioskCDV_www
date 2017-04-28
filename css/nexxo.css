@@ -1,6 +1,6 @@
 ﻿@font-face {
     font-family: 'Roboto';
-    src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
+    src: url("../Roboto-Regular.ttf") format("truetype"); }
 
 html, body {
     font-family: "Roboto", "Arial";
@@ -98,11 +98,6 @@ p {
 .nx-header .nx-header__top-bar .nx-header__logo-right svg {
     height: 51px; }
 .nx-header .nx-header__content {
-<<<<<<< HEAD
-=======
-    font-family: "Roboto", "Arial" !important;
-    padding-top: 110px;
->>>>>>> origin/master
     position: relative;
     width: 100%; }
 .nx-header .nx-header__content .nx-header__title_black {
