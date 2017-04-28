@@ -81,6 +81,7 @@ p {
     background: #ffffff;
     z-index: 100; }
 .nx-header .nx-header__content {
+    font-family: "Roboto", "Arial" !important;
     padding-top: 110px;
     position: relative;
     width: 100%; }

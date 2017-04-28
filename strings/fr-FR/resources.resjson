@@ -406,7 +406,7 @@
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
 	
-    "productlist.title"     : "Choose products to get more informations",
+    "productlist.title"     : "Choose products to get<br>more informations",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
