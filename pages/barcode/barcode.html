@@ -12,8 +12,8 @@
     <div id="barcodeController" class="data-container">
         <section aria-label="Main content" role="main" class="animationElement">
             <div class="contentarea win-type-body" id="barcodeScreen">
-
                 <div class="nx-header">
+<<<<<<< HEAD
                     <div class="nx-header__top-bar">
                         <div class="nx-header__logo-left">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="50" viewBox="0 0 250 50">
@@ -46,10 +46,19 @@
                             </svg>
                         </div>
                     </div>
+=======
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.CreatorRecID"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.Request_Barcode"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.IMPORT_CARDSCANID"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.FlagNoEdit"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.EMail"></span>
+                    <span class="win-type-caption date-field" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toDateString"></span>
+>>>>>>> origin/master
                     <div class="nx-header__content">
                         <div class="nx-header__title_black" data-win-res="{textContent: 'barcode.title'}"></div>
                     </div>
                     <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
+<<<<<<< HEAD
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 260 260"><defs><style>.cls-1{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{clip-path:url(#clip-path-2);}.cls-4{isolation:isolate;}.cls-5{clip-path:url(#clip-path-3);}.cls-6{clip-path:url(#clip-path-4);}.cls-7{fill:#020303;}.cls-8{fill:#12437c;}</style><clipPath id="clip-path"><polygon class="cls-1" points="37.98 40 40.001 37.98 22.021 20 40.001 2.02 37.981 0 20.001 17.98 2.021 0 0.001 2.02 17.981 20 0 37.98 2.02 40 20.001 22.02 37.98 40"/></clipPath><clipPath id="clip-path-2"><rect class="cls-1" width="41" height="40"/></clipPath><clipPath id="clip-path-3"><rect class="cls-1" x="-5" y="-5" width="50" height="50"/></clipPath><clipPath id="clip-path-4"><rect class="cls-1" width="40" height="40"/></clipPath></defs><title>icon_abbrechen</title><g class="cls-2"><g class="cls-3"><g class="cls-4"><g class="cls-5"><g class="cls-6"><rect class="cls-7" x="-5" y="-5" width="50.00143" height="50"/></g><g class="cls-6"><g class="cls-6"><rect class="cls-8" x="-5" y="-5" width="50" height="50"/></g></g></g></g></g></g></svg>
                     </div>
                 </div>
@@ -127,44 +136,21 @@
                             </g>
                         </g>
                     </svg>
-                </div>
-
-                <!--
-                <div class="header-separator"></div>
-                <div class="content-header">
-                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                    <div class="content-header-line win-type-caption">
-                        <span class="id-field"
-                              data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplay">
-                            <span data-win-bind="textContent: dataContact.CreatorSiteID"></span>/<span data-win-bind="textContent: dataContact.CreatorRecID"></span>
-                        </span>
-                        <span class="id-field"
-                              data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplayNone">
-                            &nbsp;
-                        </span>
-                        <span class="caption-field" data-win-res="{textContent: 'barcode.title'}"></span>
-                        <span class="date-field" data-win-bind="textContent: dataContact.Erfassungsdatum Binding.Converter.toDateString"></span>
+=======
+                        <span data-win-res="{textContent: 'general.cancel'}"></span>
+                        <div id="cross_in_circle" class="navigate-image cancel-image"></div>
                     </div>
                 </div>
-                <div class="line-separator"></div>
-                <div class="field_line field_line_odd">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.firstName'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.firstName'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Vorname"></span>
+
+                <div id="person_qr_code" class="barcode-image"></div>
+                <div class="barcode-text">
+                    <span data-win-res="{innerHTML: 'barcode.description'}"></span>
+>>>>>>> origin/master
                 </div>
-                <div class="field_line field_line_even">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.name'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.name'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Name"></span>
-                </div>
-                <div class="line-separator"></div>
-                <div class="field_line field_line_odd">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.email'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.email'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.EMail"></span>
-                </div>
+                <div id="big_arrow_down" class="navigate-image barcode-arrow-image"></div>
+
                 <div class="error-message"
-                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>-->
+                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
             </div>
         </section>
     </div>

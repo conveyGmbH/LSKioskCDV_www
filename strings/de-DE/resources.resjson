@@ -179,7 +179,7 @@
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 
     "barcode.title"         : "Scan your QR Code",  
-    "barcode.description"   : "To scan the QR code, place your batch on the scanner underneath this screen",
+    "barcode.description"   : "To scan the QR code, place your batch<br>on the scanner underneath this screen",
     "barcode.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
@@ -410,7 +410,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
-    "productlist.title"     : "Choose products to get more informations",
+    "productlist.title"     : "Choose products to get<br>more informations",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "productlist.count"     : "Anzahl",

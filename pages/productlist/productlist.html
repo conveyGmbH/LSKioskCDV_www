@@ -14,6 +14,7 @@
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
                         <div class="list-header nx-header">
+<<<<<<< HEAD
                             <div class="nx-header__top-bar">
                                 <div class="nx-header__logo-left">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="50" viewBox="0 0 250 50">
@@ -46,9 +47,15 @@
                                     </svg>
                                 </div>
                             </div>
+=======
+                            <span class="win-type-caption id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                            <span class="win-type-caption date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+>>>>>>> origin/master
                             <div class="nx-header__content">
                                 <div class="nx-header__title_black"
-                                     data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">Choose products to get<br>more information</div>
+                                     data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
+                                    <span data-win-res="{innerHTML: 'productlist.title'}"></span>
+                                </div>
                                 <div class="nx-header__title_gray"
                                      data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                      data-win-res="{textContent: 'productlist.selected'}"></div>
@@ -56,7 +63,7 @@
                             <button class="nx-button nx-button--centered nx-header__button"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                     onclick="AppBar.handleEvent('click', 'clickOk', event)">
-                                <span class="win-type-subtitle" data-win-res="{textContent: 'productlist.continue'}"></span>
+                                <span data-win-res="{textContent: 'productlist.continue'}"></span>
                             </button>
                         </div>
                     </div>
@@ -67,6 +74,7 @@
                             </div>
                             <div class="nx-proitem__title" data-win-bind="textContent: Name"></div>
                             <div class="nx-proitem__overlay">
+<<<<<<< HEAD
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 260 260"><defs><style>
                                                                                                                                                    .cls-1 {
                                                                                                                                                        fill: #fff;
@@ -94,6 +102,9 @@
                                 <title>icon_selected-successfully-white</title>
                                 <path class="cls-1" d="M184.97121,66.8938l9.0997,5.5547L121.5561,192.14074,65.98265,136.5566l7.53773-7.5377,46.09,46.10062ZM130,9.28571A120.71429,120.71429,0,1,0,250.71429,130,120.85369,120.85369,0,0,0,130,9.28571ZM130,0A130,130,0,1,1,0,130,129.99989,129.99989,0,0,1,130,0Z" />
                                 <g class="cls-2"><rect class="cls-1" width="260" height="260" /><g class="cls-3"><g class="cls-4"><rect class="cls-1" x="-5" y="-5" width="270" height="270" /><g class="cls-5"><rect class="cls-1" width="260" height="260" /><g class="cls-3"><rect class="cls-1" x="-5" y="-5" width="270" height="270" /></g><rect class="cls-1" width="260" height="260" /><g class="cls-3"><rect class="cls-1" width="260" height="260" /><g class="cls-3"><rect class="cls-1" x="-5" y="-5" width="270" height="270" /></g></g></g></g></g></g></svg>
+=======
+                                <div id="blcneggngbniolne" class="checkmark-image"></div>
+>>>>>>> origin/master
                             </div>
                         </div>
                     </div>
@@ -102,7 +113,7 @@
                             <div class="status">
                                 <progress class="win-progress-bar progress"></progress>
                                 <div class="counter">
-                                    <span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>
+                                    <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
                                 </div>
                             </div>
                         </div>

@@ -23,6 +23,11 @@
             var that = this;
 
             this.dispose = function() {
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous Promise");
+                    that.restartPromise.cancel();
+                    that.restartPromise = null;
+                }
             };
 
             var waitForIdleAction = function() {
@@ -53,6 +58,7 @@
 
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);
         })

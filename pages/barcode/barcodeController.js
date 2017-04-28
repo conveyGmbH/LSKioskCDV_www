@@ -74,11 +74,22 @@
                 },
                 clickDelete: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
-                    that.deleteAndNavigate("failed");
+                    // cancel navigates now directly back to start
+                    // now, don't delete contact in case of error
+                    //that.deleteAndNavigate("start");
+                    if (that.restartPromise) {
+                        Log.print(Log.l.trace, "cancel previous Promise");
+                        that.restartPromise.cancel();
+                    }
+                    Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.restartPromise) {
+                        Log.print(Log.l.trace, "cancel previous Promise");
+                        that.restartPromise.cancel();
+                    }
                     Application.navigateById("finished", event);
                     Log.ret(Log.l.trace);
                 }
@@ -130,20 +141,34 @@
                             if (json && json.d) {
                                 that.setDataContact(json.d);
                                 AppBar.triggerDisableHandlers();
-                                if (that.binding.dataContact.IMPORT_CARDSCANID) {
-                                    Log.print(Log.l.trace, "contactView: IMPORT_CARDSCANID=" + that.binding.dataContact.IMPORT_CARDSCANID);
-                                } else if (that.binding.dataContact.Request_Barcode) {
-                                    Log.print(Log.l.trace, "contactView: Request_Barcode=" + that.binding.dataContact.Request_Barcode);
+                                if (that.binding.dataContact.EMail) {
+                                    Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
+                                    if (that.restartPromise) {
+                                        Log.print(Log.l.trace, "cancel previous Promise");
+                                        that.restartPromise.cancel();
+                                    }
+                                    Application.navigateById("finished", event);
+                                } else if (that.binding.dataContact.Flag_NoEdit) {
+                                    Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit + " => navigate to failed page!");
+                                    if (that.restartPromise) {
+                                        Log.print(Log.l.trace, "cancel previous Promise");
+                                        that.restartPromise.cancel();
+                                    }
+                                    Application.navigateById("failed", event);
                                 } else {
                                     Log.print(Log.l.trace, "contactView: reload later again!");
+                                    WinJS.Promise.timeout(500).then(function () {
+                                        that.loadData();
+                                    });
                                 }
                             }
                         }, function (errorResponse) {
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, recordId);
                     } else {
-                        var err = { status: 0, statusText: "no record selected" };
-                        AppData.setErrorMsg(that.binding, err);
+                        // ignore that here
+                        //var err = { status: 0, statusText: "no record selected" };
+                        //AppData.setErrorMsg(that.binding, err);
                         return WinJS.Promise.as();
                     }
                 });
@@ -206,6 +231,9 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
+                Colors.loadSVGImageElements(pageElement, "barcode-image");
+            }).then(function () {
                 return that.loadData();
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");

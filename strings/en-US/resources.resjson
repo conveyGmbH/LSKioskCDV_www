@@ -178,7 +178,7 @@
     "camera.comment"        : "On this page, use the Back button to go back!",
 
     "barcode.title"         : "Scan your QR Code",
-    "barcode.description"   : "To scan the QR code, place your batch on the scanner underneath this screen",
+    "barcode.description"   : "To scan the QR code, place your batch<br>on the scanner underneath this screen",
     "barcode.comment"       : "On this page, use the Back button to go back!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Place a barcode inside the scan area",
@@ -406,7 +406,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
-    "productlist.title"     : "Choose products to get more informations",
+    "productlist.title"     : "Choose products to get<br>more informations",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
