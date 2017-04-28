@@ -125,6 +125,14 @@
                         }
                     }
                 }
+                if (that.prevSelectionIndices && that.prevSelectionIndices.length > 0) {
+                    that.binding.clickOkDisabled = false;
+                    that.binding.clickOkDisabledInvert = true;
+                } else {
+                    that.binding.clickOkDisabled = true;
+                    that.binding.clickOkDisabledInvert = false;
+
+                }
                 Log.ret(Log.l.trace);
             }
             this.addSelection = addSelection;
@@ -469,6 +477,7 @@
                 if (that.products) {
                     that.products.length = 0;
                 }
+                that.prevSelectionIndices = [];
                 var contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
