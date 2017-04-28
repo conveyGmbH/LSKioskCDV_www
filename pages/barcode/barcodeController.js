@@ -30,6 +30,7 @@
             var that = this;
 
             this.dispose = function() {
+                that.cancelPromises();
             };
 
             var cancelPromises = function() {
@@ -151,43 +152,48 @@
                 Log.call(Log.l.trace, "Contact.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
-                    var recordId = AppData.getRecordId("Kontakt");
-                    if (recordId) {
-                        //load of format relation record data
-                        Log.print(Log.l.trace, "calling select contactView...");
-                        return Barcode.contactView.select(function (json) {
-                            AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "contactView: success!");
-                            if (json && json.d) {
-                                that.setDataContact(json.d);
-                                AppBar.triggerDisableHandlers();
-                                if (that.binding.dataContact.EMail) {
-                                    Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
-                                    that.cancelPromises();
-                                    Application.navigateById("finished", event);
-                                } else {
-                                    if (that.binding.dataContact.Flag_NoEdit &&
-                                        that.binding.dataContact.Flag_NoEdit !== " " &&
-                                        that.binding.dataContact.Flag_NoEdit !== "OK" &&
-                                        that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
-                                        Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
-                                        that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
-                                        that.waitForFailureAction();
-                                    } 
-                                    Log.print(Log.l.trace, "contactView: reload again!");
-                                    WinJS.Promise.timeout(100).then(function () {
-                                        that.loadData();
-                                    });
-                                }
-                            }
-                        }, function (errorResponse) {
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, recordId);
-                    } else {
-                        // ignore that here
-                        //var err = { status: 0, statusText: "no record selected" };
-                        //AppData.setErrorMsg(that.binding, err);
+                    if (that._disposed) {
+                        Log.print(Log.l.trace, "already disposed");
                         return WinJS.Promise.as();
+                    } else {
+                        var recordId = AppData.getRecordId("Kontakt");
+                        if (recordId) {
+                            //load of format relation record data
+                            Log.print(Log.l.trace, "calling select contactView...");
+                            return Barcode.contactView.select(function (json) {
+                                AppData.setErrorMsg(that.binding);
+                                Log.print(Log.l.trace, "contactView: success!");
+                                if (json && json.d) {
+                                    that.setDataContact(json.d);
+                                    AppBar.triggerDisableHandlers();
+                                    if (that.binding.dataContact.EMail) {
+                                        Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
+                                        that.cancelPromises();
+                                        Application.navigateById("finished", event);
+                                    } else {
+                                        if (that.binding.dataContact.Flag_NoEdit &&
+                                            that.binding.dataContact.Flag_NoEdit !== " " &&
+                                            that.binding.dataContact.Flag_NoEdit !== "OK" &&
+                                            that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
+                                            Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
+                                            that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
+                                            that.waitForFailureAction();
+                                        }
+                                        Log.print(Log.l.trace, "contactView: reload again!");
+                                        WinJS.Promise.timeout(100).then(function () {
+                                            that.loadData();
+                                        });
+                                    }
+                                }
+                            }, function (errorResponse) {
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }, recordId);
+                        } else {
+                            // ignore that here
+                            //var err = { status: 0, statusText: "no record selected" };
+                            //AppData.setErrorMsg(that.binding, err);
+                            return WinJS.Promise.as();
+                        }
                     }
                 });
                 Log.ret(Log.l.trace);
