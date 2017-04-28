@@ -267,6 +267,7 @@
                                 }
                             }
                         } else if (listView.winControl.loadingState === "complete") {
+                            Colors.loadSVGImageElements(listView, "checkmark-image", 136, "#ffffff");
                             if (that.loading) {
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");

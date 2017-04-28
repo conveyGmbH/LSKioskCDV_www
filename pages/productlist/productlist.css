@@ -102,7 +102,7 @@
     opacity: 0;
     background: #00417f;
     transition: opacity 200ms; }
-.nx-proitem .nx-proitem__overlay svg {
+.nx-proitem .nx-proitem__overlay .checkmark-image {
     position: absolute;
     width: 136px;
     height: 136px;
@@ -116,3 +116,4 @@
 
 .win-selected .nx-proitem .nx-proitem__overlay {
     opacity: 0.6; }
+
