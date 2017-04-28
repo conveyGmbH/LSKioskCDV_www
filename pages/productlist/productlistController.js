@@ -38,6 +38,11 @@
             var listView = pageElement.querySelector("#productlist.listview");
 
             this.dispose = function() {
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous Promise");
+                    that.restartPromise.cancel();
+                    that.restartPromise = null;
+                }
                 if (listView && listView.winControl) {
                     // remove ListView dataSource
                     listView.winControl.itemDataSource = null;
@@ -64,6 +69,10 @@
                 }
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
                     Log.print(Log.l.trace, "timeout occurred, check for selectionCount!");
+                    // Don't delete empty contacts now
+                    AppData.setRecordId("Kontakt", null);
+                    that.loadData();
+                    /*
                     var contactId = AppData.getRecordId("Kontakt");
                     Log.print(Log.l.trace, "contactId=" + contactId);
                     if (contactId && !that.binding.clickOkDisabled) {
@@ -79,6 +88,7 @@
                             AppData.setErrorMsg(that.binding, errorResponse);
                         }, contactId);
                     }
+                     */
                 });
                 Log.ret(Log.l.trace);
             };
@@ -325,11 +335,11 @@
                                 counter.style.display = "none";
                             }
                             AppData.setErrorMsg(that.binding);
-                            Log.print(Log.l.trace, "calling select ProductList.productView...");
+                            Log.print(Log.l.trace, "calling selectNext ProductList.productView...");
                             ProductList.productView.selectNext(function (json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
-                                Log.print(Log.l.trace, "ProductList.productView: success!");
+                                Log.print(Log.l.trace, "ProductList.productView: selectNext success!");
                                 // productView returns object already parsed from json data in response
                                 if (json && json.d) {
                                     that.nextUrl = ProductList.productView.getNextUrl(json);
@@ -557,24 +567,20 @@
                                     // Now, we call WinJS.Binding.List to get the bindable list
                                     that.products = new WinJS.Binding.List(results);
                                     that.binding.count = that.products.length;
+                                    if (listView.winControl) {
+                                        // add ListView dataSource
+                                        listView.winControl.itemDataSource = that.products.dataSource;
+                                    }
                                 } else {
                                     results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
                                         that.binding.count = that.products.push(item);
                                     });
                                 }
-                                if (listView.winControl) {
-                                    // add ListView dataSource
-                                    listView.winControl.itemDataSource = that.products.dataSource;
-                                }
                                 that.addSelection(results);
                             } else {
                                 that.binding.count = 0;
                                 that.nextUrl = null;
-                                if (listView.winControl) {
-                                    // remove ListView dataSource
-                                    listView.winControl.itemDataSource = null;
-                                }
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");
                                 if (progress && progress.style) {

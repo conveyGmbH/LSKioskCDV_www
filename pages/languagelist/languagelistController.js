@@ -261,15 +261,10 @@
                             if (!that.languages) {
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 that.languages = new WinJS.Binding.List(results);
-                            }
-                            if (listView.winControl) {
-                                // add ListView dataSource
-                                listView.winControl.itemDataSource = that.languages.dataSource;
-                            }
-                        } else {
-                            if (listView.winControl) {
-                                // remove ListView dataSource
-                                listView.winControl.itemDataSource = null;
+                                if (listView.winControl) {
+                                    // add ListView dataSource
+                                    listView.winControl.itemDataSource = that.languages.dataSource;
+                                }
                             }
                         }
                     }, function (errorResponse) {

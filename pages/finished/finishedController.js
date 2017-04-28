@@ -23,6 +23,11 @@
             var that = this;
 
             this.dispose = function() {
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous Promise");
+                    that.restartPromise.cancel();
+                    that.restartPromise = null;
+                }
             };
 
             var waitForIdleAction = function() {

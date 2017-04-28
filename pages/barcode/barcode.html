@@ -12,8 +12,13 @@
     <div id="barcodeController" class="data-container">
         <section aria-label="Main content" role="main" class="animationElement">
             <div class="contentarea win-type-body" id="barcodeScreen">
-
                 <div class="nx-header">
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.CreatorRecID"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.Request_Barcode"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.IMPORT_CARDSCANID"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.FlagNoEdit"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.EMail"></span>
+                    <span class="win-type-caption date-field" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toDateString"></span>
                     <div class="nx-header__content">
                         <div class="nx-header__title_black" data-win-res="{textContent: 'barcode.title'}"></div>
                     </div>

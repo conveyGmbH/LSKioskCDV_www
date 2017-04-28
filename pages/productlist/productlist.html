@@ -14,6 +14,8 @@
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
                         <div class="list-header nx-header">
+                            <span class="win-type-caption id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                            <span class="win-type-caption date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
                             <div class="nx-header__content">
                                 <div class="nx-header__title_black"
                                      data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
@@ -46,7 +48,7 @@
                             <div class="status">
                                 <progress class="win-progress-bar progress"></progress>
                                 <div class="counter">
-                                    <span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>
+                                    <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
                                 </div>
                             </div>
                         </div>
