@@ -77,7 +77,7 @@
                     // cancel navigates now directly back to start
                     // now, don't delete contact in case of error
                     //that.deleteAndNavigate("start");
-                    that.navigateById("start", event);
+                    Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
