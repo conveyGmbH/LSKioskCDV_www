@@ -21,10 +21,30 @@
             this.restartPromise = null;
             this.idleWaitTimeMs = 60000;
 
+            this.failurePromise = null;
+            this.failureWaitTimeMs = 5000;
+
+            // previous remote state message
+            this.prevFlag_NoEdit = null;
+
             var that = this;
 
             this.dispose = function() {
             };
+
+            var cancelPromises = function() {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous restart Promise");
+                    that.restartPromise.cancel();
+                }
+                if (that.failurePromise) {
+                    Log.print(Log.l.trace, "cancel previous failure Promise");
+                    that.failurePromise.cancel();
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.cancelPromises = cancelPromises;
 
             var deleteAndNavigate = function(targetPage) {
                 Log.call(Log.l.trace, "ProductList.Controller.", "targetPage=" + that.targetPage);
@@ -49,19 +69,25 @@
 
             var waitForIdleAction = function() {
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
-                if (that.restartPromise) {
-                    Log.print(Log.l.trace, "cancel previous Promise");
-                    that.restartPromise.cancel();
-                }
+                that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
-                    if (!that.binding.clickOkDisabled) {
-                        that.deleteAndNavigate("start");
-                    }
+                    Application.navigateById("start");
                 });
                 Log.ret(Log.l.trace);
             };
             this.waitForIdleAction = waitForIdleAction;
+
+            var waitForFailureAction = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.", "failureWaitTimeMs=" + that.failureWaitTimeMs);
+                that.cancelPromises();
+                that.failurePromise = WinJS.Promise.timeout(that.failureWaitTimeMs).then(function () {
+                    Log.print(Log.l.trace, "timeout occurred, navigate to failed page!");
+                    Application.navigateById("failed");
+                });
+                Log.ret(Log.l.trace);
+            };
+            this.waitForFailureAction = waitForFailureAction;
 
             // define handlers
             this.eventHandlers = {
@@ -77,19 +103,13 @@
                     // cancel navigates now directly back to start
                     // now, don't delete contact in case of error
                     //that.deleteAndNavigate("start");
-                    if (that.restartPromise) {
-                        Log.print(Log.l.trace, "cancel previous Promise");
-                        that.restartPromise.cancel();
-                    }
+                    that.cancelPromises();
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
-                    if (that.restartPromise) {
-                        Log.print(Log.l.trace, "cancel previous Promise");
-                        that.restartPromise.cancel();
-                    }
+                    that.cancelPromises();
                     Application.navigateById("finished", event);
                     Log.ret(Log.l.trace);
                 }
@@ -143,21 +163,19 @@
                                 AppBar.triggerDisableHandlers();
                                 if (that.binding.dataContact.EMail) {
                                     Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
-                                    if (that.restartPromise) {
-                                        Log.print(Log.l.trace, "cancel previous Promise");
-                                        that.restartPromise.cancel();
-                                    }
+                                    that.cancelPromises();
                                     Application.navigateById("finished", event);
-                                } else if (that.binding.dataContact.Flag_NoEdit) {
-                                    Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit + " => navigate to failed page!");
-                                    if (that.restartPromise) {
-                                        Log.print(Log.l.trace, "cancel previous Promise");
-                                        that.restartPromise.cancel();
-                                    }
-                                    Application.navigateById("failed", event);
                                 } else {
-                                    Log.print(Log.l.trace, "contactView: reload later again!");
-                                    WinJS.Promise.timeout(500).then(function () {
+                                    if (that.binding.dataContact.Flag_NoEdit &&
+                                        that.binding.dataContact.Flag_NoEdit !== " " &&
+                                        that.binding.dataContact.Flag_NoEdit !== "OK" &&
+                                        that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
+                                        Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
+                                        that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
+                                        that.waitForFailureAction();
+                                    } 
+                                    Log.print(Log.l.trace, "contactView: reload again!");
+                                    WinJS.Promise.timeout(100).then(function () {
                                         that.loadData();
                                     });
                                 }
