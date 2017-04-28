@@ -178,7 +178,7 @@
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
     "barcode.title"         : "Scan your QR Code",
-    "barcode.description"   : "To scan the QR code, place your batch on the scanner underneath this screen",
+    "barcode.description"   : "To scan the QR code, place your batch<br>on the scanner underneath this screen",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",

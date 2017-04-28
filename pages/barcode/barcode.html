@@ -25,45 +25,10 @@
 
                 <div id="person_qr_code" class="barcode-image"></div>
                 <div class="barcode-text">
-                    To scan the QR code, place your batch<br>on the scanner underneath this screen
+                    <span data-win-res="{innerHTML: 'barcode.description'}"></span>
                 </div>
                 <div id="big_arrow_down" class="navigate-image barcode-arrow-image"></div>
 
-                <!--
-                <div class="header-separator"></div>
-                <div class="content-header">
-                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                    <div class="content-header-line win-type-caption">
-                        <span class="id-field"
-                              data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplay">
-                            <span data-win-bind="textContent: dataContact.CreatorSiteID"></span>/<span data-win-bind="textContent: dataContact.CreatorRecID"></span>
-                        </span>
-                        <span class="id-field"
-                              data-win-bind="style.display: dataContact.CreatorRecID  Binding.Converter.toDisplayNone">
-                            &nbsp;
-                        </span>
-                        <span class="caption-field" data-win-res="{textContent: 'barcode.title'}"></span>
-                        <span class="date-field" data-win-bind="textContent: dataContact.Erfassungsdatum Binding.Converter.toDateString"></span>
-                    </div>
-                </div>
-                <div class="line-separator"></div>
-                <div class="field_line field_line_odd">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.firstName'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.firstName'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Vorname"></span>
-                </div>
-                <div class="field_line field_line_even">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.name'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.name'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.Name"></span>
-                </div>
-                <div class="line-separator"></div>
-                <div class="field_line field_line_odd">
-                    <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'contact.email'}"></span>
-                    <span class="label landscape_only" data-win-res="{textContent: 'contact.email'}"></span>
-                    <span class="input_field win-type-subtitle" data-win-bind="textContent: dataContact.EMail"></span>
-                </div>
-                -->
                 <div class="error-message"
                      data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
             </div>
