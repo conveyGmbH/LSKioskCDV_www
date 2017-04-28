@@ -1,5 +1,5 @@
 ﻿#failedScreen .failed-image {
-    margin-top: 364px; }
+    margin-top: 420px; }
 #failedScreen .failed-image svg {
     width: 260px;
     height: 260px;
@@ -13,7 +13,7 @@
     font-weight: 300;
     line-height: 1.25;
     text-align: center;
-    color: #00417f; }
+    color: #000000; }
 
 #failedScreen .failed-button {
     margin-top: 100px; }
