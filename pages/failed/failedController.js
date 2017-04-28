@@ -70,7 +70,10 @@
             };
 
             that.processAll().then(function() {
+                var noSize;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
+                Colors.loadSVGImageElements(pageElement, "failed-image", noSize, "#DC453A");
                 that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);

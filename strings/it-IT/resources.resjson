@@ -418,12 +418,12 @@
 	
     "finished.title"        : "QR Code successfully scanned",
     "finished.complete"     : "Complete",
-    "finished.description"  : "You will receive an email with the requested information",
+    "finished.description"  : "You will receive an email with the<br>requested information",
     "finished.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
     "failed.title"          : "An error occured",
     "failed.scanagain"      : "Scan again",
-    "failed.description"    : "Scanning your batch wasn´t successful Please try again",
+    "failed.description"    : "Scanning your batch wasn't successful<br>Please try again",
     "failed.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!"
 
 }

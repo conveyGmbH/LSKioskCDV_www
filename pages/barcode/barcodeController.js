@@ -95,6 +95,7 @@
                 clickBack: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
                     if (WinJS.Navigation.canGoBack === true) {
+                        that.cancelPromises();
                         WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                     }
                     Log.ret(Log.l.trace);
@@ -112,6 +113,13 @@
                     Log.call(Log.l.trace, "Barcode.Controller.");
                     that.cancelPromises();
                     Application.navigateById("finished", event);
+                    Log.ret(Log.l.trace);
+                },
+                // only for navigation tests:
+                clickFailed: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("failed", event);
                     Log.ret(Log.l.trace);
                 }
             };

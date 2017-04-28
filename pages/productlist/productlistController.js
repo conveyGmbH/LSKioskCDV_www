@@ -614,7 +614,7 @@
             };
             this.loadData = loadData;
 
-            that.processAll().then(function() {
+            that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
             }).then(function () {

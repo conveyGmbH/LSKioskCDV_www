@@ -1,10 +1,11 @@
 ﻿#barcodeScreen .barcode-image {
     margin: 0 auto;
-    margin-top: 380px; }
+     }
 #barcodeScreen .barcode-image svg {
-    width: 350px;
-    height: 556px;
+    width: 326px;
+    height: 519px;
     margin: 0 auto;
+    margin-top: 30px;
     display: block; }
 
 #barcodeScreen .barcode-text {
@@ -17,10 +18,8 @@
     color: #000000; }
 
 #barcodeScreen .barcode-arrow-image {
-    margin: 0 auto;
-    margin-top: 30px; }
+    margin: 0 auto; }
 #barcodeScreen .barcode-arrow-image svg {
-    width: 41px;
-    height: 62px;
     margin: 0 auto;
+    margin-top: 30px;
     display: block; }

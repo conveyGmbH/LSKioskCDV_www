@@ -37,7 +37,9 @@
             WinJS.Resources.processAll(that.element).then(function () {
                 return WinJS.Binding.processAll(that.element, that.binding);
             }).then(function() {
+                var noSize;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "logo-image", noSize, "#FFFFFF");
             });
             Log.ret(Log.l.trace);
         }, {

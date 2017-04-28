@@ -3,7 +3,7 @@
 */
 #productlist .win-itemscontainer {
     padding-left: 30px;
-    margin-top: 320px; }
+    margin-top: 209px; }
 
 #productlist * {
     border: none !important; }
@@ -41,6 +41,12 @@
 
 #productlist .win-itemcontainer .win-itembox {
     background-color: transparent; }
+
+#productlist .nx-header {
+    position: fixed;
+    top: 111px;
+    height: 209px;
+}
 
 #productlist .nx-header .nx-header__content .nx-header__title_black {
     font-size: 50px;

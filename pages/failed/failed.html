@@ -8,150 +8,35 @@
     <script type="text/javascript" src="failed.js"></script>
 </head>
 <body class="win-type-body">
-<div class="failed">
-    <div id="startController" class="data-container">
-        <section aria-label="Main content" role="main" class="animationElement">
-            <div class="contentarea win-type-body" id="failedScreen">
+    <div class="failed">
+        <div id="startController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body" id="failedScreen">
+                    <div class="nx-header">
+                        <div class="nx-header__content">
+                            <div class="nx-header__title_black" data-win-res="{textContent: 'failed.title'}"></div>
+                        </div>
 
-            <div class="nx-header">
-                <div class="nx-header__top-bar">
-                    <div class="nx-header__logo-left">
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="250" height="50" viewBox="0 0 250 50">
-                            <defs>
-                                <path id="a" d="M0 45.584V2.267h18.652v43.317H0z" />
-                                <path id="c" d="M9.676 49.28V.949H.992v48.33h8.684z" />
-                            </defs>
-                            <g fill="none" fill-rule="evenodd">
-                                <g transform="translate(0 3.705)">
-                                    <mask id="b" fill="#fff">
-                                        <use xlink:href="#a" />
-                                    </mask>
-                                    <path fill="#FFF" d="M4.41 36.693V16.841H-.002v-5.347h4.41v-5.89l8.69-3.337v9.227h5.349v5.347h-5.35v18.982c0 2.944.34 4.279 3.413 4.279.465 0 1.07-.064 2.14-.197v5.273c-1.341.337-3.01.406-5.08.406-6.886 0-9.162-2.072-9.162-8.89" mask="url(#b)" />
-                                </g>
-                                <path fill="#FFF" d="M31.148 28.296h9.227c.135-3.878-.064-8.684-4.347-8.684-4.074 0-4.814 3.536-4.88 8.684m-8.622 4.283c0-10.768 2.408-18.118 13.77-18.118 11.431 0 12.9 7.69 12.768 18.654H31.148c0 8.219.605 11.423 4.747 11.423 3.342 0 4.544-2.735 4.615-6.681l8.286.73c-.472 7.624-4.477 11.035-12.832 11.035-11.365 0-13.438-6.418-13.438-17.043M54.278 32.98c0-10.83 1.806-18.519 13.635-18.519 8.227 0 12.365 2.873 12.566 11.233l-8.288.798c0-3.27-.47-6.681-4.278-6.681-5.015 0-4.944 6.013-4.944 12.5 0 6.952.202 12.03 4.745 12.03 3.408 0 4.543-3.073 4.612-7.152l8.222.87c-.27 7.487-3.875 11.563-12.834 11.563-11.097 0-13.436-6.013-13.436-16.643M86.368.558h8.692V18.74c2.14-2.944 5.081-4.279 8.757-4.279 6.217 0 8.957 3.342 8.957 10.228v24.193h-8.689V26.76c0-4.008-.135-7.02-4.081-7.02-3.676 0-4.944 3.813-4.944 7.755v21.387h-8.692V.558zM121.529 40.398V20.546h-4.411V15.2h4.41V9.31l8.694-3.337V15.2h5.347v5.347h-5.347v18.982c0 2.944.332 4.278 3.411 4.278.46 0 1.066-.063 2.138-.196v5.273c-1.337.337-3.008.406-5.084.406-6.883 0-9.158-2.072-9.158-8.89M148.27 28.296h9.225c.13-3.878-.069-8.684-4.347-8.684-4.079 0-4.814 3.536-4.877 8.684m-8.628 4.283c0-10.768 2.408-18.118 13.773-18.118 11.429 0 12.9 7.69 12.765 18.654h-17.91c0 8.219.597 11.423 4.742 11.423 3.344 0 4.548-2.735 4.612-6.681l8.291.73c-.467 7.624-4.477 11.035-12.837 11.035-11.362 0-13.436-6.418-13.436-17.043M177.946 31.173L169.722 15.2h9.63l4.54 11.563 4.615-11.563h8.426l-8.224 16.04 9.426 17.643h-9.694l-5.482-13.097-5.748 13.097h-8.89zM204.684 40.398V20.546h-4.413V15.2h4.413V9.31l8.69-3.337V15.2h5.349v5.347h-5.35v18.982c0 2.944.334 4.278 3.41 4.278.47 0 1.07-.063 2.139-.196v5.273c-1.337.337-3.008.406-5.08.406-6.885 0-9.158-2.072-9.158-8.89M224.273 15.2c0-.003 4.362-.01 4.362-.01s4.33.007 4.332.01v33.683h-8.694V15.2zm-.064-14.174h8.822v7.148l-4.358-.005-4.464.005V1.026z" />
-                                <g transform="translate(239.796 -.397)">
-                                    <mask id="d" fill="#fff">
-                                        <use xlink:href="#c" />
-                                    </mask>
-                                    <path fill="#FFF" d="M.992.956C.992.95 5.617.948 5.617.948s4.058.003 4.06.008V49.28H.993V.956z" mask="url(#d)" />
-                                </g>
-                            </g>
-                        </svg>
+                        <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
+                            <div id="cross_new" class="navigate-image cancel-image"></div>
+                            <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
+                        </div>
                     </div>
-                    <div class="nx-header__logo-right">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="270" height="51" viewBox="0 0 270 51">
-                            <g fill="#FFF" fill-rule="evenodd">
-                                <path d="M16.06 50h23.085V27H16.059zM13.007 30L0 23.959 6.065 11l13.006 6.044zM22.786 19l-5.723-7.299L24.39 6l5.723 7.299zM18.168 6l-5.12-.9.902-5.1 5.12.9zM56.302 38.784c0-1.616-.031-3.108-.094-4.443h3.127l.064 2.36c1.01-1.738 2.527-2.701 4.58-2.701 2.275 0 3.76 1.025 4.422 2.92 1.108-1.895 2.75-2.92 4.961-2.92 3.633 0 4.928 2.36 4.928 6.087V50H75.1v-9.725c0-2.237-.474-4.04-2.907-4.04-2.305 0-3.317 1.865-3.317 4.474V50h-3.16v-9.664c0-2.298-.441-4.1-2.843-4.1-2.464 0-3.411 2.329-3.411 4.567V50h-3.16V38.784zM81.301 42.856c0-5.011 1.762-8.856 6.832-8.856 4.73 0 6.276 3.49 6.215 9.05H84.36c.063 3.909 1.083 5.85 3.648 5.85 1.98 0 3.061-1.198 3.278-3.523l2.937.453C93.667 49.319 91.44 51 87.948 51c-4.853 0-6.647-3.264-6.647-8.144m3.092-1.843h6.924c.063-2.553-.834-4.848-3.276-4.848-2.319 0-3.401 1.842-3.648 4.848M97.36 46.087l3.13-.484c.064 2.131 1.012 3.327 2.876 3.327 1.55 0 2.878-.87 2.878-2.552 0-1.713-1.485-2.295-3.635-3.104-2.972-1.098-4.932-1.873-4.932-4.75 0-3.232 2.908-4.524 5.88-4.524 3.51 0 5.28 1.422 5.5 4.492l-3.099.453c.065-2.038-.915-2.91-2.592-2.91-1.328 0-2.591.68-2.591 2.165 0 1.326 1.169 2.07 3.224 2.845 3.097 1.163 5.406 1.745 5.406 4.912 0 3.522-2.75 5.043-6.165 5.043-3.762 0-5.753-1.715-5.88-4.913M112.416 46.087l3.13-.484c.063 2.131 1.012 3.327 2.876 3.327 1.55 0 2.877-.87 2.877-2.552 0-1.713-1.486-2.295-3.635-3.104-2.972-1.098-4.931-1.873-4.931-4.75 0-3.232 2.908-4.524 5.88-4.524 3.51 0 5.279 1.422 5.5 4.492l-3.099.453c.064-2.038-.915-2.91-2.592-2.91-1.327 0-2.592.68-2.592 2.165 0 1.326 1.17 2.07 3.225 2.845 3.097 1.163 5.406 1.745 5.406 4.912 0 3.522-2.75 5.043-6.165 5.043-3.762 0-5.753-1.715-5.88-4.913M127.472 42.856c0-5.011 1.762-8.856 6.832-8.856 4.73 0 6.275 3.49 6.215 9.05h-9.987c.063 3.909 1.082 5.85 3.648 5.85 1.98 0 3.061-1.198 3.278-3.523l2.937.453c-.557 3.489-2.783 5.17-6.277 5.17-4.854 0-6.646-3.264-6.646-8.144m3.09-1.843h6.926c.062-2.553-.835-4.848-3.277-4.848-2.318 0-3.4 1.842-3.648 4.848M171.636 46.152c0-4.75 4.424-5.56 8.845-5.56h.828v-.84c0-2.295-.637-3.718-2.83-3.718-1.752 0-2.706.874-2.802 2.717l-3.12-.422C172.781 35.226 175.2 34 178.48 34c4.135 0 5.95 1.55 5.95 5.849v5.171c0 2.101.094 4.04.255 5.626h-3.024c-.032-.356-.097-1.715-.16-2.295-1.05 1.745-2.673 2.649-4.869 2.649-2.99 0-4.995-1.777-4.995-4.848zm9.673-3.653h-1.114c-3.436 0-5.377 1.068-5.377 3.458 0 1.844 1.21 2.942 2.864 2.942 2.832 0 3.659-2.295 3.659-5.526l-.032-.874zM188.792 37.728c0-.994-.032-2.113-.093-3.386h3.166l.032 2.33c1.108-1.74 2.693-2.672 4.782-2.672 3.39 0 5.068 1.926 5.068 5.623V50h-3.166v-9.259c0-2.454-.254-4.504-2.978-4.504-2.502 0-3.642 2.112-3.642 5.188V50h-3.17V37.728zM206.766 50h3.316V27h-3.316v23zm3.348-9.065l6.173-6.968h3.907l-6.402 6.87L220.818 50h-4.005l-6.699-9.065zM223.483 36.276h-2.665V34.1h2.665v-2.083c0-3.25 1.04-5.017 4.101-5.017.522 0 1.227.031 2.267.127v2.24c-.305-.032-.613-.032-1.04-.032-1.808 0-2.267.853-2.267 2.714V34.1h3.122v2.176h-3.122V50h-3.061V36.276zM232.862 44.563V34h3.192v9.352c0 2.453.253 4.473 3.001 4.473 2.402 0 3.57-1.803 3.57-4.97V34h3.16v11.152c0 1.337.032 2.828.126 4.507h-3.159l-.064-2.3c-1.137 1.678-2.684 2.641-4.675 2.641-3.445 0-5.15-1.832-5.15-5.437M251.022 38.18c0-.469-.061-3.432-.093-3.897h2.963l.09 2.431c.946-1.746 2.411-2.714 4.305-2.714.214 0 .489.032.672.096l-.378 2.766a3.453 3.453 0 0 0-.63-.055c-2.594 0-3.876 1.653-3.876 4.554V50h-3.053c.03-2.59.03-10.667 0-11.82M153.221 36.276h-2.663V34.1h2.663v-2.083c0-3.25 1.042-5.017 4.104-5.017.52 0 1.224.031 2.266.127v2.24c-.307-.032-.612-.032-1.042-.032-1.805 0-2.265.853-2.265 2.714V34.1h3.125v2.176h-3.125V50h-3.063V36.276zM162.693 38.18c0-.469-.06-3.432-.09-3.897h2.96l.092 2.431c.947-1.746 2.413-2.714 4.304-2.714.213 0 .49.032.673.096l-.377 2.766a3.468 3.468 0 0 0-.63-.055c-2.596 0-3.878 1.653-3.878 4.554V50h-3.054c.032-2.59.032-10.667 0-11.82M263.063 46.175v-9.798h-2.096V34.2h2.096v-2.893L266.446 30v4.2h3.451v2.177h-3.45v8.927c0 1.711.202 2.425 2.11 2.425.269 0 .973-.062 1.443-.123v2.24c-.805.123-1.677.154-2.58.154-3.083 0-4.357-.933-4.357-3.825" />
-                            </g>
-                        </svg>
+
+                    <div id="icon-error" class="failed-image"></div>
+                    <div class="failed-text">
+                        <span data-win-res="{innerHTML: 'failed.description'}"></span>
                     </div>
-                </div>
-                <div class="nx-header__content">
-                    <div class="nx-header__title_black" data-win-res="{textContent: 'failed.title'}"></div>
-                </div>
-
-                <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickOk', event)">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 260 260"><defs><style>
-                                                                                                                                       .cls-1 {
-                                                                                                                                           fill: none;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-2 {
-                                                                                                                                           clip-path: url(#clip-path);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-3 {
-                                                                                                                                           clip-path: url(#clip-path-2);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-4 {
-                                                                                                                                           isolation: isolate;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-5 {
-                                                                                                                                           clip-path: url(#clip-path-3);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-6 {
-                                                                                                                                           clip-path: url(#clip-path-4);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-7 {
-                                                                                                                                           fill: #020303;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-8 {
-                                                                                                                                           fill: #12437c;
-                                                                                                                                       }
-                                                                                                                                   </style>
-                            <clipPath id="clip-path"><polygon class="cls-1" points="37.98 40 40.001 37.98 22.021 20 40.001 2.02 37.981 0 20.001 17.98 2.021 0 0.001 2.02 17.981 20 0 37.98 2.02 40 20.001 22.02 37.98 40" /></clipPath>
-                            <clipPath id="clip-path-2"><rect class="cls-1" width="41" height="40" /></clipPath>
-                            <clipPath id="clip-path-3"><rect class="cls-1" x="-5" y="-5" width="50" height="50" /></clipPath>
-                            <clipPath id="clip-path-4"><rect class="cls-1" width="40" height="40" /></clipPath></defs>
-                        <title>icon_abbrechen</title>
-                        <g class="cls-2"><g class="cls-3"><g class="cls-4"><g class="cls-5"><g class="cls-6"><rect class="cls-7" x="-5" y="-5" width="50.00143" height="50" /></g><g class="cls-6"><g class="cls-6"><rect class="cls-8" x="-5" y="-5" width="50" height="50" /></g></g></g></g></g></g></svg>
-                </div>
-
-                <div class="failed-image">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 260 260"><defs><style>
-                                                                                                                                       .cls-1 {
-                                                                                                                                           fill: none;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-2 {
-                                                                                                                                           clip-path: url(#clip-path);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-3 {
-                                                                                                                                           clip-path: url(#clip-path-2);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-4 {
-                                                                                                                                           isolation: isolate;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-5 {
-                                                                                                                                           clip-path: url(#clip-path-3);
-                                                                                                                                       }
-
-                                                                                                                                       .cls-6 {
-                                                                                                                                           fill: #020303;
-                                                                                                                                       }
-
-                                                                                                                                       .cls-7 {
-                                                                                                                                           fill: #dd463a;
-                                                                                                                                       }
-                                                                                                                                   </style>
-                            <clipPath id="clip-path"><path class="cls-1" d="M120.7143,157.8571,117.9286,65h24.1428l-2.78569,92.8571ZM130,9.28571A120.71429,120.71429,0,1,0,250.71429,130,120.85369,120.85369,0,0,0,130,9.28571ZM130,0A130,130,0,1,1,0,130,129.99989,129.99989,0,0,1,130,0Zm-.03709,192.67857a14.09664,14.09664,0,0,1-5.10721-.88214,11.21266,11.21266,0,0,1-3.7978-2.43286,10.69387,10.69387,0,0,1-2.4422-3.64,11.88419,11.88419,0,0,1-.8821-4.615,12.04925,12.04925,0,0,1,.8821-4.66142,10.66823,10.66823,0,0,1,2.4422-3.67715,11.59579,11.59579,0,0,1,3.8071-2.43285,14.24727,14.24727,0,0,1,5.09791-.87286,14.43179,14.43179,0,0,1,5.135.88214,11.47343,11.47343,0,0,1,3.8535,2.43286,10.96093,10.96093,0,0,1,2.43289,3.67714,12.53862,12.53862,0,0,1,.88211,4.66143,11.98177,11.98177,0,0,1-.88211,4.615,10.58467,10.58467,0,0,1-2.43289,3.63071,10.92415,10.92415,0,0,1-3.8535,2.43286A14.35891,14.35891,0,0,1,129.96291,192.67857Z" /></clipPath>
-                            <clipPath id="clip-path-2"><rect class="cls-1" width="260" height="260" /></clipPath>
-                            <clipPath id="clip-path-3"><rect class="cls-1" x="-5" y="-5" width="270" height="270" /></clipPath></defs>
-                        <title>icon_selected-error</title>
-                        <g class="cls-2"><g class="cls-3"><g class="cls-4"><g class="cls-5"><g class="cls-3"><rect class="cls-6" x="-5" y="-5" width="270" height="270" /></g><g class="cls-3"><g class="cls-3"><rect class="cls-7" x="-5" y="-5" width="270" height="270" /></g></g></g></g></g></g></svg>
-                </div>
-                <div class="failed-text">
-                    Scanning your batch wasn´t successful<br>Please try again
-                </div>
-                <div class="failed-button">
-                    <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
-                        <span class="win-type-subtitle" data-win-res="{textContent: 'failed.scanagain'}"></span>
-                    </button>
-                </div>
-
-                <!--
-                <div class="header-separator"></div>
-                <div class="content-header">
-                    <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                    <div class="content-header-line win-type-caption">
-                        <span class="id-field"></span>
-                        <span class="caption-field" data-win-res="{textContent: 'failed.title'}"></span>
-                        <span class="date-field"></span>
+                    <div class="failed-button">
+                        <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <span class="win-type-subtitle" data-win-res="{textContent: 'failed.scanagain'}"></span>
+                        </button>
                     </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                 </div>
-                <div class="error-message"
-                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>-->
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
-</div>
 </body>
 </html>

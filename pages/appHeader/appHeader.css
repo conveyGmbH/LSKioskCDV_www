@@ -26,7 +26,7 @@
     overflow-x: hidden;
     overflow-y: hidden;
     width: 100%;
-    height: 0;
+    height: 111px;
     color: gray;
     background-color: Window;
     z-index: 10010;
