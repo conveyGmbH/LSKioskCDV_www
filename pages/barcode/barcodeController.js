@@ -74,7 +74,8 @@
                 },
                 clickDelete: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
-                    that.deleteAndNavigate("failed");
+                    // cancel navigates now directly back to start
+                    that.deleteAndNavigate("start");
                     Log.ret(Log.l.trace);
                 },
                 clickOk: function (event) {
@@ -130,12 +131,17 @@
                             if (json && json.d) {
                                 that.setDataContact(json.d);
                                 AppBar.triggerDisableHandlers();
-                                if (that.binding.dataContact.IMPORT_CARDSCANID) {
-                                    Log.print(Log.l.trace, "contactView: IMPORT_CARDSCANID=" + that.binding.dataContact.IMPORT_CARDSCANID);
-                                } else if (that.binding.dataContact.Request_Barcode) {
-                                    Log.print(Log.l.trace, "contactView: Request_Barcode=" + that.binding.dataContact.Request_Barcode);
+                                if (that.binding.dataContact.EMail) {
+                                    Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
+                                    Application.navigateById("finished", event);
+                                } else if (that.binding.dataContact.Flag_NoEdit) {
+                                    Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit + " => navigate to failed page!");
+                                    Application.navigateById("failed", event);
                                 } else {
                                     Log.print(Log.l.trace, "contactView: reload later again!");
+                                    WinJS.Promise.timeout(500).then(function () {
+                                        that.loadData();
+                                    });
                                 }
                             }
                         }, function (errorResponse) {
@@ -206,6 +212,9 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
+                Colors.loadSVGImageElements(pageElement, "barcode-image");
+            }).then(function () {
                 return that.loadData();
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
