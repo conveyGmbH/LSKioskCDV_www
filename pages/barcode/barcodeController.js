@@ -14,7 +14,8 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "Barcode.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                dataContact: getEmptyDefaultValue(Barcode.contactView.defaultValue)
+                dataContact: getEmptyDefaultValue(Barcode.contactView.defaultValue),
+                showProgress: false
             }]);
 
             // idle wait Promise and wait time:
@@ -174,6 +175,9 @@
                                 if (json && json.d) {
                                     that.setDataContact(json.d);
                                     AppBar.triggerDisableHandlers();
+                                    if (that.binding.dataContact.Request_Barcode) {
+                                        that.binding.showProgress = true;
+                                    }
                                     if (that.binding.dataContact.EMail) {
                                         Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
                                         that.cancelPromises();
@@ -261,10 +265,38 @@
             }
             this.saveData = saveData;
 
+            var translateAnimantion = function (element, bIn) {
+                Log.call(Log.l.trace, "Contact.Controller.");
+                if (element) {
+                    var fnAnimation = bIn ? WinJS.UI.Animation.enterContent : WinJS.UI.Animation.exitContent;
+                    var animationOptions = { top: bIn ? "-50px" : "70px", left: "0px" };
+                    fnAnimation(element, animationOptions, {
+                        mechanism: "transition"
+                    }).done(function () {
+                        if (that.binding.showProgress) {
+                            Log.print(Log.l.trace, "finished");
+                        } else {
+                            Log.print(Log.l.trace, "go on with animation");
+                            WinJS.Promise.timeout(1000).then(function () {
+                                that.translateAnimantion(element, !bIn);
+                            });
+                        }
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.translateAnimantion = translateAnimantion;
+
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
+                Colors.loadSVGImageElements(pageElement, "scanning-image", 65, "#00417F", "id", function (svgInfo) {
+                    if (svgInfo && svgInfo.element) {
+                        that.translateAnimantion(svgInfo.element.firstElementChild ||
+                                                 svgInfo.element.firstChild, true);
+                    }
+                });
             }).then(function () {
                 return that.loadData();
             }).then(function () {

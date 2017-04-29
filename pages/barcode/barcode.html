@@ -26,12 +26,18 @@
                     <div class="barcode-text">
                         <span data-win-res="{innerHTML: 'barcode.description'}"></span>
                     </div>
-                    <div id="big_navigate_down" class="navigate-image barcode-arrow-image"></div>
+
+                    <div data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
+                        <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
+                    </div>
+                    <div data-win-bind="style.display: showProgress Binding.Converter.toDisplay">
+                        <progress class="win-progress-bar progress"></progress>
+                    </div>
 
                     <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.CreatorRecID"></span>
                     <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.Request_Barcode"></span>
                     <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.IMPORT_CARDSCANID"></span>
-                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.FlagNoEdit"></span>
+                    <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.Flag_NoEdit"></span>
                     <span class="win-type-caption id-field" data-win-bind="textContent: dataContact.EMail"></span>
                     <span class="win-type-caption date-field" data-win-bind="textContent: dataContact.ModifiedTS Binding.Converter.toDateString"></span>
 

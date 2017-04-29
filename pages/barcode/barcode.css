@@ -23,3 +23,9 @@
     margin: 0 auto;
     margin-top: 30px;
     display: block; }
+#barcodeScreen .progress {
+    color: #00417F;
+    margin-left: 25%;
+    margin-top: 30px;
+    width: 50%;
+    display: block; }

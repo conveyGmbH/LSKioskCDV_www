@@ -52,12 +52,15 @@
                 Bemerkungen: "",
                 WebAdresse: "",
                 Freitext1: "",
-                HostName: (window.device && window.device.uuid),
+                HostName: "",
                 INITAnredeID: 0,
                 INITLandID: 0,
                 CreatorSiteID: "",
                 CreatorRecID: "",
-                Nachbearbeitet: 1
+                Nachbearbeitet: 1,
+                Request_Barcode: "",
+                IMPORT_CARDSCANID: "",
+                Flag_NoEdit: ""
             }
         }
     });
