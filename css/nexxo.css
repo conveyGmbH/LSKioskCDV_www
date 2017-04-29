@@ -1,15 +1,15 @@
 ﻿@font-face {
     font-family: 'Roboto';
-    src: url("../Roboto-Regular.ttf") format("truetype"); }
+    src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
 
-html, body {
-    font-family: "Roboto", "Arial";
+.nx-body {
+    font-family: "Roboto", "Segoe UI", "Arial";
     color: #000000;
     background: #f6f7f7 !important; }
 
 /* Text styles */
 h2 {
-    font-family: "Roboto", "Arial";
+    font-family: "Roboto", "Segoe UI", "Arial";
     font-size: 50px;
     font-weight: bold;
     line-height: 1;
@@ -17,7 +17,7 @@ h2 {
     color: #000000; }
 
 h1 {
-    font-family: "Roboto", "Arial";
+    font-family: "Roboto", "Segoe UI", "Arial";
     font-size: 40px;
     font-weight: 300;
     line-height: 1.25;
@@ -25,7 +25,7 @@ h1 {
     color: #000000; }
 
 p {
-    font-family: "Roboto", "Arial";
+    font-family: "Roboto", "Segoe UI", "Arial";
     font-size: 25px;
     font-weight: 300;
     line-height: 1;
@@ -33,7 +33,7 @@ p {
     color: #00417f; }
 
 .p-small {
-    font-family: "Roboto", "Arial";
+    font-family: "Roboto", "Segoe UI", "Arial";
     font-size: 20px;
     font-weight: 300;
     line-height: 2.5;
@@ -62,7 +62,7 @@ p {
     padding: 20px 60px !important;
     background-color: #00417f !important;
     color: #ffffff !important;
-    font-family: "Roboto", "Arial" !important;
+    font-family: "Roboto", "Segoe UI", "Arial" !important;
     font-size: 30px !important;
     line-height: 1.5 !important;
     text-align: center !important;
