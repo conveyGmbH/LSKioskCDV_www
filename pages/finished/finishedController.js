@@ -46,6 +46,16 @@
 
             // define handlers
             this.eventHandlers = {
+                clickBack: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("start", event);
+                    //if (WinJS.Navigation.canGoBack === true) {
+                    //    that.cancelPromises();
+                    //    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    //}
+                    Log.ret(Log.l.trace);
+                },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Finished.Controller.");
                     if (that.restartPromise) {

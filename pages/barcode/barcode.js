@@ -34,6 +34,10 @@
                // { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
             this.controller = new Barcode.Controller(element);
+            if (this.controller.eventHandlers) {
+                // general event listener for hardware back button, too!
+                this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickBack.bind(this.controller));
+            }
             Log.ret(Log.l.trace);
         },
 

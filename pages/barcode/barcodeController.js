@@ -95,10 +95,12 @@
             this.eventHandlers = {
                 clickBack: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
-                    if (WinJS.Navigation.canGoBack === true) {
-                        that.cancelPromises();
-                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
-                    }
+                    that.cancelPromises();
+                    Application.navigateById("start", event);
+                    //if (WinJS.Navigation.canGoBack === true) {
+                    //    that.cancelPromises();
+                    //    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    //}
                     Log.ret(Log.l.trace);
                 },
                 clickDelete: function (event) {
@@ -224,6 +226,7 @@
             this.loadData = loadData;
 
             // save data
+            /*
             var saveData = function (complete, error) {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 AppData.setErrorMsg(that.binding);
@@ -274,12 +277,13 @@
                 return ret;
             }
             this.saveData = saveData;
+             */
 
             var translateAnimantion = function (element, bIn) {
                 Log.call(Log.l.trace, "Contact.Controller.");
                 if (element) {
                     var fnAnimation = bIn ? WinJS.UI.Animation.enterContent : WinJS.UI.Animation.exitContent;
-                    var animationOptions = { top: bIn ? "-50px" : "70px", left: "0px" };
+                    var animationOptions = { top: bIn ? "-50px" : "50px", left: "0px" };
                     fnAnimation(element, animationOptions, {
                         mechanism: "transition"
                     }).done(function () {
