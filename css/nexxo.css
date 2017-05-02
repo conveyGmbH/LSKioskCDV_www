@@ -112,9 +112,9 @@ p {
     margin-top: 24px; }
 
 .nx-cancel {
-    position: fixed;
+    position: absolute;
     right: 40px;
-    top: 141px; }
+    top: 30px; }
 .nx-cancel span {
     font-size: 20px;
     font-weight: 300;
