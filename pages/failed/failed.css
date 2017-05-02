@@ -1,6 +1,5 @@
 ﻿#failedScreen .failed-image {
-    margin-top: 420px;
-    display: block !important; }
+    margin-top: 420px; }
 #failedScreen .failed-image svg {
     width: 260px;
     height: 260px;

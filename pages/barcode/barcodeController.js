@@ -162,7 +162,6 @@
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
                     if (that._disposed) {
-                        Log.print(Log.l.trace, "already disposed");
                         return WinJS.Promise.as();
                     } else {
                         var recordId = AppData.getRecordId("Kontakt");
@@ -172,14 +171,17 @@
                             return Barcode.contactView.select(function (json) {
                                 AppData.setErrorMsg(that.binding);
                                 Log.print(Log.l.trace, "contactView: success!");
-                                if (json && json.d) {
+                                if (json && json.d && json.d.KontaktVIEWID) {
                                     that.setDataContact(json.d);
                                     AppBar.triggerDisableHandlers();
                                     if (that.binding.dataContact.Request_Barcode) {
                                         that.binding.showProgress = true;
                                     }
                                     if (that.binding.dataContact.EMail) {
-                                        Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
+                                        Log.print(Log.l.trace,
+                                            "contactView: EMail=" +
+                                            that.binding.dataContact.EMail +
+                                            " => navigate to finished page!");
                                         that.cancelPromises();
                                         Application.navigateById("finished", event);
                                     } else {
@@ -187,15 +189,20 @@
                                             that.binding.dataContact.Flag_NoEdit !== " " &&
                                             that.binding.dataContact.Flag_NoEdit !== "OK" &&
                                             that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
-                                            Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
+                                            Log.print(Log.l.trace,
+                                                "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
                                             that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
                                             that.waitForFailureAction();
                                         }
                                         Log.print(Log.l.trace, "contactView: reload again!");
-                                        WinJS.Promise.timeout(100).then(function () {
+                                        WinJS.Promise.timeout(100).then(function() {
                                             that.loadData();
                                         });
                                     }
+                                } else {
+                                    Log.print(Log.l.trace, "contactView: no data found!");
+                                    that.cancelPromises();
+                                    Application.navigateById("start", event);
                                 }
                             }, function (errorResponse) {
                                 AppData.setErrorMsg(that.binding, errorResponse);
@@ -204,6 +211,9 @@
                             // ignore that here
                             //var err = { status: 0, statusText: "no record selected" };
                             //AppData.setErrorMsg(that.binding, err);
+                            Log.print(Log.l.trace, "contactView: no record selected!");
+                            that.cancelPromises();
+                            Application.navigateById("start", event);
                             return WinJS.Promise.as();
                         }
                     }
