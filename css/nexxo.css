@@ -118,6 +118,8 @@ p {
     /*
     position: fixed;
     */
+    display: block;
+    position: absolute;
     right: 40px;
     top: 141px; }
 .nx-cancel span {
