@@ -2,6 +2,11 @@
     font-family: 'Roboto';
     src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
 
+html, body {
+    font-family: "Roboto", "Segoe UI", "Arial";
+    color: #000000;
+    background: #f6f7f7 !important; }
+
 .nx-body {
     font-family: "Roboto", "Segoe UI", "Arial";
     color: #000000;
@@ -71,10 +76,7 @@ p {
     margin: 0 auto; }
 
 .nx-header {
-    /*
     position: fixed;
-    height: 320px;
-    */
     left: 0;
     right: 0;
     top: 0;
@@ -101,34 +103,20 @@ p {
     height: 51px; }
 .nx-header .nx-header__content {
     position: relative;
-    width: 100%; }
-.nx-header .nx-header__content .nx-header__title_black {
-    margin-top: 50px;
-    font-size: 50px;
-    font-weight: bold;
-    line-height: 1;
-    text-align: center;
-    color: #000000;
-    display: block; }
-.nx-header .nx-header__content .nx-header__title_gray {
-    margin-top: 35px;
-    font-size: 40px;
-    font-weight: 300;
-    line-height: 1.25;
-    text-align: center;
-    color: #767676;
-    display: block; }
+    width: 100%;
+    top: 111px; }
 .nx-header .nx-header__content .id-field {
     display: none; }
 .nx-header .nx-header__content .date-field {
     display: none; }
 .nx-header .nx-header__button {
     margin-top: 24px; }
-.nx-header .nx-header__cancel {
-    position: absolute;
+
+.nx-cancel {
+    position: fixed;
     right: 40px;
     top: 141px; }
-.nx-header .nx-header__cancel span {
+.nx-cancel span {
     font-size: 20px;
     font-weight: 300;
     line-height: 65px;
@@ -136,6 +124,26 @@ p {
     text-align: right;
     color: #00417f;
     display: inline-block; }
-.nx-header .nx-header__cancel svg {
+.nx-cancel svg {
     display: inline-block;
-    float: right; }
+    float: right;
+    width: 40px;
+    height: 40px; }
+
+.nx-title_black {
+    margin-top: 161px;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    color: #000000;
+    display: block; }
+
+.nx-title_gray {
+    margin-top: 146px;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.25;
+    text-align: center;
+    color: #767676;
+    display: block; }

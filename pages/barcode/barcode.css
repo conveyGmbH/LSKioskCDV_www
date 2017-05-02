@@ -1,11 +1,11 @@
 ﻿#barcodeScreen .barcode-image {
+    display: block !important;
     margin: 0 auto;
-     }
+    margin-top: 60px; }
 #barcodeScreen .barcode-image svg {
     width: 326px;
     height: 519px;
     margin: 0 auto;
-    margin-top: 30px;
     display: block; }
 
 #barcodeScreen .barcode-text {
@@ -18,14 +18,11 @@
     color: #000000; }
 
 #barcodeScreen .barcode-arrow-image {
-    margin: 0 auto; }
-#barcodeScreen .barcode-arrow-image svg {
+    display: block !important;
     margin: 0 auto;
-    margin-top: 30px;
-    display: block; }
-#barcodeScreen .progress {
-    color: #00417F;
-    margin-left: 25%;
-    margin-top: 30px;
-    width: 50%;
+    margin-top: 30px; }
+#barcodeScreen .barcode-arrow-image svg {
+    width: 41px;
+    height: 62px;
+    margin: 0 auto;
     display: block; }

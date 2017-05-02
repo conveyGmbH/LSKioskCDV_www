@@ -12,17 +12,16 @@
         <div id="barcodeController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea nx-body" id="barcodeScreen">
-                    <div class="nx-header">
-                        <div class="nx-header__content">
-                            <span class="nx-header__title_black" data-win-res="{textContent: 'barcode.title'}"></span>
-                        </div>
-                        <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
-                            <div id="cross_new" class="navigate-image cancel-image"></div>
-                            <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
-                        </div>
+
+                    <div class="nx-title_black" data-win-res="{textContent: 'barcode.title'}"></div>
+
+                    <div class="nx-cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
+                        <div id="cross_new" class="navigate-image cancel-image"></div>
+                        <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
                     </div>
 
                     <div id="guest-with-qr" class="barcode-image"></div>
+
                     <div class="barcode-text">
                         <span data-win-res="{innerHTML: 'barcode.description'}"></span>
                     </div>

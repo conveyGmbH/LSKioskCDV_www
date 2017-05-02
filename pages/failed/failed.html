@@ -8,35 +8,32 @@
     <script type="text/javascript" src="failed.js"></script>
 </head>
 <body class="win-type-body">
-    <div class="failed">
-        <div id="startController" class="data-container">
-            <section aria-label="Main content" role="main" class="animationElement">
-                <div class="contentarea nx-body" id="failedScreen">
-                    <div class="nx-header">
-                        <div class="nx-header__content">
-                            <div class="nx-header__title_black" data-win-res="{textContent: 'failed.title'}"></div>
-                        </div>
+<div class="failed">
+    <div id="startController" class="data-container">
+        <section aria-label="Main content" role="main" class="animationElement">
+            <div class="contentarea nx-body" id="failedScreen">
 
-                        <div class="nx-header__cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
-                            <div id="cross_new" class="navigate-image cancel-image"></div>
-                            <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
-                        </div>
-                    </div>
+                <div class="nx-title_black" data-win-res="{textContent: 'failed.title'}"></div>
 
-                    <div id="icon-error" class="failed-image"></div>
-                    <div class="failed-text">
-                        <span data-win-res="{innerHTML: 'failed.description'}"></span>
-                    </div>
-                    <div class="failed-button">
-                        <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
-                            <span class="win-type-subtitle" data-win-res="{textContent: 'failed.scanagain'}"></span>
-                        </button>
-                    </div>
-                    <div class="error-message"
-                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                <div class="nx-cancel" onclick="AppBar.handleEvent('click', 'clickDelete', event)">
+                    <div id="cross_new" class="navigate-image cancel-image"></div>
+                    <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
                 </div>
-            </section>
-        </div>
+
+                <div id="icon-error" class="failed-image"></div>
+                <div class="failed-text">
+                    <span data-win-res="{innerHTML: 'failed.description'}"></span>
+                </div>
+                <div class="failed-button">
+                    <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                        <span class="win-type-subtitle" data-win-res="{textContent: 'failed.scanagain'}"></span>
+                    </button>
+                </div>
+                <div class="error-message"
+                     data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+            </div>
+        </section>
     </div>
+</div>
 </body>
 </html>

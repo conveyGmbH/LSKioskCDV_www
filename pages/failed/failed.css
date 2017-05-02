@@ -1,10 +1,10 @@
 ﻿#failedScreen .failed-image {
-    margin-top: 420px; }
+    margin-top: 420px;
+    display: block !important; }
 #failedScreen .failed-image svg {
     width: 260px;
     height: 260px;
     margin: 0 auto;
-    margin-top: 30px;
     display: block; }
 
 #failedScreen .failed-text {
