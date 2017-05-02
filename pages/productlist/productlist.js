@@ -91,8 +91,13 @@
                     if (listView && listView.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
+                            var listHeader = element.querySelector(".list-header");
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
+
+                            if (listHeader) {
+                                height -= listHeader.clientHeight;
+                            }
 
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;

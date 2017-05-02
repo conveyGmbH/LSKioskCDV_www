@@ -76,7 +76,9 @@ p {
     margin: 0 auto; }
 
 .nx-header {
+    /*
     position: fixed;
+    */
     left: 0;
     right: 0;
     top: 0;
@@ -113,7 +115,9 @@ p {
     margin-top: 24px; }
 
 .nx-cancel {
+    /*
     position: fixed;
+    */
     right: 40px;
     top: 141px; }
 .nx-cancel span {
@@ -131,7 +135,8 @@ p {
     height: 40px; }
 
 .nx-title_black {
-    margin-top: 161px;
+    margin-top: 60px;
+    margin-bottom: 20px;
     font-size: 50px;
     font-weight: bold;
     line-height: 1;
@@ -140,7 +145,7 @@ p {
     display: block; }
 
 .nx-title_gray {
-    margin-top: 146px;
+    margin-top: 45px;
     font-size: 40px;
     font-weight: 300;
     line-height: 1.25;

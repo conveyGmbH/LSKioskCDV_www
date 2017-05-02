@@ -12,25 +12,21 @@
         <div id="listLocalController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea nx-body">
-                    <div class="headerFooterPlaceholder">
-                        <div class="list-header">
-                            <!--<span class="win-type-caption id-field" data-win-bind="textContent: generalData.globalContactID"></span>-->
-                            <!--<span class="win-type-caption date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>-->
-                            <div>
-                                <div class="nx-title_black"
-                                     data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
-                                    <span data-win-res="{innerHTML: 'productlist.title'}"></span>
-                                </div>
-                                <div class="nx-title_gray"
-                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                     data-win-res="{textContent: 'productlist.selected'}"></div>
+                    <div class="list-header">
+                        <div>
+                            <div class="nx-title_black"
+                                 data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
+                                <span data-win-res="{innerHTML: 'productlist.title'}"></span>
                             </div>
-                            <button class="nx-button nx-button--centered"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                    onclick="AppBar.handleEvent('click', 'clickOk', event)">
-                                <span data-win-res="{textContent: 'productlist.continue'}"></span>
-                            </button>
+                            <div class="nx-title_gray"
+                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                 data-win-res="{textContent: 'productlist.selected'}"></div>
                         </div>
+                        <button class="nx-button nx-button--centered"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <span data-win-res="{textContent: 'productlist.continue'}"></span>
+                        </button>
                     </div>
                     <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="nx-proitem">
@@ -58,7 +54,6 @@
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
                             itemTemplate: select('.products-template'),
-                            header: select('.list-header'),
                             footer: select('.list-footer')
                          }">
                     </div>
