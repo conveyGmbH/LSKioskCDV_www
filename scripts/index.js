@@ -33,8 +33,8 @@
         },
         odata: {
             https: false,
-            hostName: "domino.convey.de",
-            onlinePort: 8080,
+            hostName: "localhost",
+            onlinePort: 8090,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
