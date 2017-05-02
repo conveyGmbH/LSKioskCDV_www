@@ -1,4 +1,5 @@
 ﻿#finishedScreen .finished-image {
+    display: block !important;
     margin-top: 420px; }
 #finishedScreen .finished-image svg {
     width: 260px;

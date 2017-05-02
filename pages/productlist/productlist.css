@@ -2,9 +2,8 @@
     styles for productlist page
 */
 #listLocalController .list-header {
-    height: 189px;
-    overflow: hidden;
-}
+    height: 220px;
+    overflow: hidden; }
 
 #productlist .win-itemscontainer {
     padding-left: 30px; }
