@@ -1,5 +1,4 @@
 ﻿#barcodeScreen .barcode-image {
-    display: block !important;
     margin: 0 auto;
     margin-top: 60px; }
 #barcodeScreen .barcode-image svg {
@@ -18,7 +17,6 @@
     color: #000000; }
 
 #barcodeScreen .barcode-arrow-image {
-    display: block !important;
     margin: 0 auto;
     margin-top: 30px; }
 #barcodeScreen .barcode-arrow-image svg {
@@ -26,3 +24,24 @@
     height: 62px;
     margin: 0 auto;
     display: block; }
+
+#barcodeScreen .progress {
+    margin-top: 30px; 
+    margin-left: calc(50% - 200px);
+    width: 400px;
+}
+#barcodeScreen .progress-status {
+    font-size: 10px;
+    font-weight: 200;
+    line-height: 1.167;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    float: left;
+    opacity: 0.4;
+}
+
+#barcodeScreen .progress-status .status-field {
+    width: 200px;
+    float: left;
+}
