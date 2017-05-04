@@ -35,21 +35,24 @@
             };
 
             var cancelPromises = function() {
-                Log.call(Log.l.trace, "ProductList.Controller.");
+                Log.call(Log.l.trace, "Barcode.Controller.");
                 if (that.restartPromise) {
                     Log.print(Log.l.trace, "cancel previous restart Promise");
                     that.restartPromise.cancel();
+                    that.restartPromise = null;
                 }
                 if (that.failurePromise) {
                     Log.print(Log.l.trace, "cancel previous failure Promise");
                     that.failurePromise.cancel();
+                    that.failurePromise = null;
                 }
                 Log.ret(Log.l.trace);
             }
             this.cancelPromises = cancelPromises;
 
             var deleteAndNavigate = function(targetPage) {
-                Log.call(Log.l.trace, "ProductList.Controller.", "targetPage=" + that.targetPage);
+                Log.call(Log.l.trace, "Barcode.Controller.", "targetPage=" + that.targetPage);
+                that.cancelPromises();
                 var contactId = AppData.getRecordId("Kontakt");
                 Log.print(Log.l.trace, "contactId=" + contactId);
                 if (contactId) {
@@ -70,7 +73,7 @@
             this.deleteAndNavigate = deleteAndNavigate;
 
             var waitForIdleAction = function() {
-                Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
+                Log.call(Log.l.trace, "Barcode.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
@@ -81,7 +84,7 @@
             this.waitForIdleAction = waitForIdleAction;
 
             var waitForFailureAction = function () {
-                Log.call(Log.l.trace, "ProductList.Controller.", "failureWaitTimeMs=" + that.failureWaitTimeMs);
+                Log.call(Log.l.trace, "Barcode.Controller.", "failureWaitTimeMs=" + that.failureWaitTimeMs);
                 that.cancelPromises();
                 that.failurePromise = WinJS.Promise.timeout(that.failureWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, navigate to failed page!");
@@ -103,7 +106,22 @@
                     //}
                     Log.ret(Log.l.trace);
                 },
-                clickDelete: function (event) {
+                /*
+                // only for navigation tests:
+                clickFinished: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("finished", event);
+                    Log.ret(Log.l.trace);
+                },
+                clickFailed: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("failed", event);
+                    Log.ret(Log.l.trace);
+                },
+                 */
+                clickStart: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
                     // cancel navigates now directly back to start
                     // now, don't delete contact in case of error
@@ -111,37 +129,12 @@
                     that.cancelPromises();
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
-                },
-                clickOk: function (event) {
-                    Log.call(Log.l.trace, "Barcode.Controller.");
-                    that.cancelPromises();
-                    Application.navigateById("finished", event);
-                    Log.ret(Log.l.trace);
-                },
-                // only for navigation tests:
-                clickFailed: function (event) {
-                    Log.call(Log.l.trace, "Barcode.Controller.");
-                    that.cancelPromises();
-                    Application.navigateById("failed", event);
-                    Log.ret(Log.l.trace);
                 }
             };
 
             this.disableHandlers = {
                 clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                },
-                clickOk: function() {
-                    if (that.binding.dataContact
-                        //for testing always enabled!
-                        //&&
-                        //(that.binding.dataContact.IMPORT_CARDSCANID ||
-                        // that.binding.dataContact.Request_Barcode)
-                        ) {
                         return false;
                     } else {
                         return true;
@@ -163,61 +156,58 @@
                 Log.call(Log.l.trace, "Contact.Controller.");
                 AppData.setErrorMsg(that.binding);
                 var ret = new WinJS.Promise.as().then(function () {
-                    if (that._disposed) {
-                        return WinJS.Promise.as();
-                    } else {
-                        var recordId = AppData.getRecordId("Kontakt");
-                        if (recordId) {
-                            //load of format relation record data
-                            Log.print(Log.l.trace, "calling select contactView...");
-                            return Barcode.contactView.select(function (json) {
-                                AppData.setErrorMsg(that.binding);
-                                Log.print(Log.l.trace, "contactView: success!");
-                                if (json && json.d && json.d.KontaktVIEWID) {
-                                    that.setDataContact(json.d);
-                                    AppBar.triggerDisableHandlers();
-                                    if (that.binding.dataContact.Request_Barcode) {
-                                        that.binding.showProgress = true;
-                                    }
-                                    if (that.binding.dataContact.EMail) {
-                                        Log.print(Log.l.trace,
-                                            "contactView: EMail=" +
-                                            that.binding.dataContact.EMail +
-                                            " => navigate to finished page!");
-                                        that.cancelPromises();
-                                        Application.navigateById("finished", event);
-                                    } else {
-                                        if (that.binding.dataContact.Flag_NoEdit &&
-                                            that.binding.dataContact.Flag_NoEdit !== " " &&
-                                            that.binding.dataContact.Flag_NoEdit !== "OK" &&
-                                            that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
-                                            Log.print(Log.l.trace,
-                                                "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
-                                            that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
-                                            that.waitForFailureAction();
-                                        }
-                                        Log.print(Log.l.trace, "contactView: reload again!");
-                                        WinJS.Promise.timeout(100).then(function() {
-                                            that.loadData();
-                                        });
-                                    }
-                                } else {
-                                    Log.print(Log.l.trace, "contactView: no data found!");
-                                    that.cancelPromises();
-                                    Application.navigateById("start", event);
+                    var recordId = AppData.getRecordId("Kontakt");
+                    if (recordId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        return Barcode.contactView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d && json.d.KontaktVIEWID) {
+                                that.setDataContact(json.d);
+                                AppBar.triggerDisableHandlers();
+                                if (that.binding.dataContact.Request_Barcode) {
+                                    that.binding.showProgress = true;
                                 }
-                            }, function (errorResponse) {
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                            }, recordId);
-                        } else {
-                            // ignore that here
-                            //var err = { status: 0, statusText: "no record selected" };
-                            //AppData.setErrorMsg(that.binding, err);
-                            Log.print(Log.l.trace, "contactView: no record selected!");
-                            that.cancelPromises();
-                            Application.navigateById("start", event);
-                            return WinJS.Promise.as();
-                        }
+                                if (that.binding.dataContact.EMail &&
+                                    that.binding.dataContact.EMail.length > 0) {
+                                    Log.print(Log.l.trace,
+                                        "contactView: EMail=" +
+                                        that.binding.dataContact.EMail +
+                                        " => navigate to finished page!");
+                                    that.cancelPromises();
+                                    Application.navigateById("finished", event);
+                                } else {
+                                    if (that.binding.dataContact.Flag_NoEdit &&
+                                        that.binding.dataContact.Flag_NoEdit !== " " &&
+                                        that.binding.dataContact.Flag_NoEdit !== "OK" &&
+                                        that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
+                                        Log.print(Log.l.trace,
+                                            "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
+                                        that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
+                                        that.waitForFailureAction();
+                                    }
+                                    Log.print(Log.l.trace, "contactView: reload again!");
+                                    WinJS.Promise.timeout(100).then(function () {
+                                        that.loadData();
+                                    });
+                                }
+                            } else {
+                                Log.print(Log.l.trace, "contactView: no data found!");
+                                that.cancelPromises();
+                                Application.navigateById("start", event);
+                            }
+                        }, function (errorResponse) {
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, recordId);
+                    } else {
+                        // ignore that here
+                        //var err = { status: 0, statusText: "no record selected" };
+                        //AppData.setErrorMsg(that.binding, err);
+                        Log.print(Log.l.trace, "contactView: no record selected!");
+                        that.cancelPromises();
+                        Application.navigateById("start", event);
+                        return WinJS.Promise.as();
                     }
                 });
                 Log.ret(Log.l.trace);

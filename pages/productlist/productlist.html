@@ -24,7 +24,7 @@
                         </div>
                         <button class="nx-button nx-button--centered"
                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                onclick="AppBar.handleEvent('click', 'clickScan', event)">
                             <span data-win-res="{textContent: 'productlist.continue'}"></span>
                         </button>
                     </div>
@@ -45,6 +45,7 @@
                                 <progress class="win-progress-bar progress"></progress>
                                 <div class="counter">
                                     <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
+                                    <span class="win-type-caption date-field" data-win-bind="textContent: version"></span>
                                 </div>
                             </div>
                         </div>

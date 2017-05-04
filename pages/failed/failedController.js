@@ -23,19 +23,23 @@
             var that = this;
 
             this.dispose = function() {
+                that.cancelPromises();
+            };
+
+            var cancelPromises = function () {
+                Log.call(Log.l.trace, "Failed.Controller.");
                 if (that.restartPromise) {
-                    Log.print(Log.l.trace, "cancel previous Promise");
+                    Log.print(Log.l.trace, "cancel previous restart Promise");
                     that.restartPromise.cancel();
                     that.restartPromise = null;
                 }
-            };
+                Log.ret(Log.l.trace);
+            }
+            this.cancelPromises = cancelPromises;
 
-            var waitForIdleAction = function() {
+            var waitForIdleAction = function () {
                 Log.call(Log.l.trace, "Failed.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
-                if (that.restartPromise) {
-                    Log.print(Log.l.trace, "cancel previous Promise");
-                    that.restartPromise.cancel();
-                }
+                that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
                     Application.navigateById("start");
@@ -56,27 +60,28 @@
                     //}
                     Log.ret(Log.l.trace);
                 },
-                clickDelete: function (event) {
+                clickStart: function (event) {
                     Log.call(Log.l.trace, "Failed.Controller.");
-                    if (that.restartPromise) {
-                        Log.print(Log.l.trace, "cancel previous Promise");
-                        that.restartPromise.cancel();
-                    }
+                    that.cancelPromises();
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
-                clickOk: function (event) {
+                clickScan: function (event) {
                     Log.call(Log.l.trace, "Failed.Controller.");
-                    if (that.restartPromise) {
-                        Log.print(Log.l.trace, "cancel previous Promise");
-                        that.restartPromise.cancel();
-                    }
+                    that.cancelPromises();
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 }
             };
 
             this.disableHandlers = {
+                clickBack: function () {
+                    if (WinJS.Navigation.canGoBack === true) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             };
 
             that.processAll().then(function() {

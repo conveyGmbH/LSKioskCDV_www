@@ -20,7 +20,8 @@
             Application.Controller.apply(this, [pageElement, {
                 count: 0,
                 clickOkDisabled: true,
-                clickOkDisabledInvert: false
+                clickOkDisabledInvert: false,
+                version: Application.version
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -37,12 +38,8 @@
             // ListView control
             var listView = pageElement.querySelector("#productlist.listview");
 
-            this.dispose = function() {
-                if (that.restartPromise) {
-                    Log.print(Log.l.trace, "cancel previous Promise");
-                    that.restartPromise.cancel();
-                    that.restartPromise = null;
-                }
+            this.dispose = function () {
+                that.cancelPromises();
                 if (listView && listView.winControl) {
                     // remove ListView dataSource
                     listView.winControl.itemDataSource = null;
@@ -61,17 +58,29 @@
                 }
             };
 
+            var cancelPromises = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous restart Promise");
+                    that.restartPromise.cancel();
+                    that.restartPromise = null;
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.cancelPromises = cancelPromises;
+
             var waitForIdleAction = function() {
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
-                if (that.restartPromise) {
-                    Log.print(Log.l.trace, "cancel previous Promise");
-                    that.restartPromise.cancel();
-                }
-                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
+                that.cancelPromises();
+                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, check for selectionCount!");
                     // Don't delete empty contacts now
-                    AppData.setRecordId("Kontakt", null);
-                    that.loadData();
+                    var contactId = AppData.getRecordId("Kontakt");
+                    Log.print(Log.l.trace, "contactId=" + contactId);
+                    if (contactId && !that.binding.clickOkDisabled) {
+                        AppData.setRecordId("Kontakt", null);
+                        that.loadData();
+                    }
                     /*
                     var contactId = AppData.getRecordId("Kontakt");
                     Log.print(Log.l.trace, "contactId=" + contactId);
@@ -141,7 +150,6 @@
                 } else {
                     that.binding.clickOkDisabled = true;
                     that.binding.clickOkDisabledInvert = false;
-
                 }
                 Log.ret(Log.l.trace);
             }
@@ -151,14 +159,16 @@
             this.eventHandlers = {
                 clickBack: function(event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.cancelPromises();
                     Application.navigateById("start", event);
                     //if (WinJS.Navigation.canGoBack === true) {
                     //    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                     //}
                     Log.ret(Log.l.trace);
                 },
-                clickOk: function (event) {
+                clickScan: function (event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.cancelPromises();
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 },
@@ -387,7 +397,7 @@
                         return true;
                     }
                 },
-                clickOk: function (event) {
+                clickScan: function (event) {
                     return that.binding.clickOkDisabled;
                 }
             };
