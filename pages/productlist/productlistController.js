@@ -512,7 +512,6 @@
                             Nachbearbeitet: 1
                         };
                         Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
-                        AppData.setErrorMsg(that.binding);
                         return ProductList.contactView.insert(function (json) {
                             // this callback will be called asynchronously
                             // when the response is available
