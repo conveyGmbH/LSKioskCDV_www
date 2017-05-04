@@ -39,6 +39,7 @@
             }).then(function() {
                 var noSize;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "event-logo-image", { width: 250, height: 51 }, "#FFFFFF");
                 Colors.loadSVGImageElements(pageElement, "logo-image", noSize, "#FFFFFF");
             });
             Log.ret(Log.l.trace);
