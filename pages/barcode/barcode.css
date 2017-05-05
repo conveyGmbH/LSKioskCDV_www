@@ -31,17 +31,21 @@
     width: 400px;
 }
 #barcodeScreen .progress-status {
+    width: 200px;
     font-size: 10px;
     font-weight: 200;
     line-height: 1.167;
     position: absolute;
     left: 0;
     bottom: 0;
-    float: left;
     opacity: 0.4;
+    padding: 0;
 }
 
 #barcodeScreen .progress-status .status-field {
-    width: 200px;
     float: left;
+    min-width: 50px;
+    max-width: 200px;
+    margin: 0;
+    padding: 0;
 }
