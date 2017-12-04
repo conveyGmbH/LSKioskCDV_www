@@ -9,7 +9,7 @@
     WinJS.Namespace.define("Account", {
         _initSpracheView: {
             get: function () {
-                return AppData.getLgntInit("LGNTINITSprache");
+                return AppData.getLgntInit("LGNTINITSprache", false, true);
             }
         },
         initSpracheView: {
