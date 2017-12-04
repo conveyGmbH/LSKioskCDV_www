@@ -63,6 +63,29 @@
             this.createColorPicker("tileBackgroundColor");
             this.createColorPicker("navigationColor");
 
+            var applyColorSetting = function (colorProperty, color) {
+                Log.call(Log.l.trace, "Settings.Controller.", "colorProperty=" + colorProperty + " color=" + color);
+
+                Colors[colorProperty] = color;
+                //that.binding.generalData[colorProperty] = color;
+                switch (colorProperty) {
+                    case "accentColor":
+                        that.createColorPicker("backgroundColor");
+                        that.createColorPicker("textColor");
+                        that.createColorPicker("labelColor");
+                        that.createColorPicker("tileTextColor");
+                        that.createColorPicker("tileBackgroundColor");
+                        that.createColorPicker("navigationColor");
+                        // fall through...
+                    case "navigationColor":
+                        AppBar.loadIcons();
+                        NavigationBar.groups = Application.navigationBarGroups;
+                        break;
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.applyColorSetting = applyColorSetting;
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function (event) {
@@ -183,12 +206,124 @@
                 }
             }
 
+            var resultConverter = function (item, index) {
+                var plusRemote = false;
+                // item.INITOptionTypeID 25, 26, 27, 28, 29 
+                if (item.INITOptionTypeID > 10) {
+                    switch (item.INITOptionTypeID) {
+                        case 25:
+                            item.colorPickerId = "kioskHeaderBackgroundColor";
+                            break;
+                        case 26:
+                            item.colorPickerId = "kioskButtonBackgroundColor";
+                            break;
+                        case 27:
+                            item.colorPickerId = "kioskProductBackgroundColor";
+                            break;
+                        case 28:
+                            item.colorPickerId = "kioskProductPreloadColor";
+                            break;
+                        case 29:
+                            item.colorPickerId = "kioskProductTitleColor";
+                            break;
+                        default:
+                            // defaultvalues
+                    }
+                    if (item.colorPickerId && item.LocalValue) {
+                        item.colorValue = "#" + item.LocalValue;
+                        that.applyColorSetting(item.colorPickerId, item.colorValue);
+                    }
+                }
+                /*if (item.INITOptionTypeID === 10) {
+                    if (item.LocalValue === "0") {
+                        WinJS.Promise.timeout(0).then(function () {
+                            AppData._persistentStates.individualColors = false;
+                            AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
+                            var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                            /*   that.createColorPicker("accentColor", true);
+                               that.createColorPicker("backgroundColor");
+                               that.createColorPicker("textColor");
+                               that.createColorPicker("labelColor");
+                               that.createColorPicker("tileTextColor");
+                               that.createColorPicker("tileBackgroundColor");
+                               that.createColorPicker("navigationColor");
+                            AppBar.loadIcons();
+                            NavigationBar.groups = Application.navigationBarGroups;
+                        });
+                    }
+                }
+                if (item.INITOptionTypeID === 18) {
+                    if (item.LocalValue === "0") {
+                        that.binding.generalData.isDarkTheme = false;
+                    } else {
+                        that.binding.generalData.isDarkTheme = true;
+                    }
+                    WinJS.Promise.timeout(0).then(function () {
+                        Colors.isDarkTheme = that.binding.generalData.isDarkTheme;
+                        Log.print(Log.l.trace, "isDarkTheme=" + Colors.isDarkTheme);
+                        /*that.createColorPicker("backgroundColor");
+                        that.createColorPicker("textColor");
+                        that.createColorPicker("labelColor");
+                        that.createColorPicker("tileTextColor");
+                        that.createColorPicker("tileBackgroundColor");
+                        that.createColorPicker("navigationColor");
+                    });
+                }
+                 if (item.pageProperty) {
+                     if (item.LocalValue === "1") {
+                         NavigationBar.enablePage(item.pageProperty);
+                         if (plusRemote) {
+                             NavigationBar.enablePage(item.pageProperty + "Remote");
+                         }
+                     } else if (item.LocalValue === "0") {
+                         NavigationBar.disablePage(item.pageProperty);
+                         if (plusRemote) {
+                             NavigationBar.disablePage(item.pageProperty + "Remote");
+                         }
+                     }
+                 }*/
+            }
+            this.resultConverter = resultConverter;
+
+            var loadData = function (complete, error) {
+                //AppData._persistentStates.hideQuestionnaire = false;
+                //AppData._persistentStates.hideSketch = false;
+                return Settings.CR_VERANSTOPTION_ODataView.select(function (json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "Reporting: success!");
+                    // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+
+                    if (json && json.d) {
+                        var results = json.d.results;
+                        results.forEach(function (item, index) {
+                            that.resultConverter(item, index);
+                        });
+                        //set showSettingsFlag
+
+
+                    } else {
+
+                    }
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                }).then(function () {
+                    Colors.updateColors();
+                    return WinJS.Promise.as();
+                });
+
+            };
+            this.loadData = loadData;
             AppData.setErrorMsg(this.binding);
 
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
-            });
+            }).then(function () {
+                return that.loadData();
+            });;
             Log.ret(Log.l.trace);
         }),
         getInputBorderName: function (level) {
