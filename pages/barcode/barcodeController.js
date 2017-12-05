@@ -25,6 +25,8 @@
             this.failurePromise = null;
             this.failureWaitTimeMs = 5000;
 
+            this.animationPromise = null;
+
             // previous remote state message
             this.prevFlag_NoEdit = null;
 
@@ -36,6 +38,11 @@
 
             var cancelPromises = function() {
                 Log.call(Log.l.trace, "Barcode.Controller.");
+                if (that.animationPromise) {
+                    Log.print(Log.l.trace, "cancel previous animation Promise");
+                    that.animationPromise.cancel();
+                    that.animationPromise = null;
+                }
                 if (that.restartPromise) {
                     Log.print(Log.l.trace, "cancel previous restart Promise");
                     that.restartPromise.cancel();
@@ -271,17 +278,17 @@
 
             var translateAnimantion = function (element, bIn) {
                 Log.call(Log.l.trace, "Contact.Controller.");
-                if (element) {
+                if (element && that.binding) {
                     var fnAnimation = bIn ? WinJS.UI.Animation.enterContent : WinJS.UI.Animation.exitContent;
                     var animationOptions = { top: bIn ? "-50px" : "50px", left: "0px" };
                     fnAnimation(element, animationOptions, {
                         mechanism: "transition"
                     }).done(function () {
-                        if (that.binding.showProgress) {
+                        if (!that.binding || that.binding.showProgress) {
                             Log.print(Log.l.trace, "finished");
                         } else {
                             Log.print(Log.l.trace, "go on with animation");
-                            WinJS.Promise.timeout(1000).then(function () {
+                            that.animationPromise = WinJS.Promise.timeout(1000).then(function () {
                                 that.translateAnimantion(element, !bIn);
                             });
                         }
