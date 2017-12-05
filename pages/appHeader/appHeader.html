@@ -14,10 +14,16 @@
                 <div class="nx-header">
                     <div class="nx-header__top-bar">
                         <div class="nx-header__logo-left">
-                            <div id="event_logo" class="event-logo-image"></div>
+                            <div class="event-image-container" data-win-bind="style.display: eventLogoSrc Binding.Converter.toDisplay">
+                                <img class="event-image" data-win-bind="src: eventLogoSrc">
+                            </div>
+                            <div id="event_logo" class="event-logo-image" data-win-bind="style.display: eventLogoSrc Binding.Converter.toDisplayNone"></div>
                         </div>
                         <div class="nx-header__logo-right">
-                            <div id="organizer_logo" class="logo-image"></div>
+                            <div class="organizer-image-container" data-win-bind="style.display: organizerLogoSrc Binding.Converter.toDisplay">
+                                <img class="organizer-image" data-win-bind="src: organizerLogoSrc">
+                            </div>
+                            <div id="organizer_logo" class="logo-image" data-win-bind="style.display: organizerLogoSrc Binding.Converter.toDisplayNone"></div>
                         </div>
                     </div>
                 </div>

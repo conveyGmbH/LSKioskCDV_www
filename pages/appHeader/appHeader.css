@@ -38,6 +38,15 @@
 /*
     event name
 */
+.event-image {
+    height: 50px;
+    width: auto
+}
+.organizer-image {
+    height: 50px;
+    width: auto
+}
+
 .event-line {
     width: calc(100% - 244px);
     margin-left: 40px;
