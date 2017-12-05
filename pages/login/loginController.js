@@ -51,7 +51,7 @@
 
                 // new for KioskApp
                 if (Colors.kioskHeaderBackgroundColor) {
-                    Colors.changeCSS(".nx-header .nx-header_top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
+                    Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
                 }
                 if (Colors.kioskButtonBackgroundColor) {
                     Colors.changeCSS(".nx-button", "background-color", Colors.kioskButtonBackgroundColor + " !important");
