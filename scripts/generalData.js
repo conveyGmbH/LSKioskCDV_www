@@ -154,33 +154,10 @@
                         Log.print(Log.l.trace, "generalUserView: success!");
                         // startContact returns object already parsed from json file in response
                         if (json && json.d) {
-                            var prevUserData = AppData._userData;
                             AppData._userData = json.d;
-                            if (typeof AppHeader === "object" &&
-                                AppHeader.controller && AppHeader.controller.binding) {
-                                var generalData = AppHeader.controller.binding.generalData;
-                                if (generalData) {
-                                    generalData.eventName = AppData._userData.VeranstaltungName;
-                                    Log.print(Log.l.trace, "eventName=" + generalData.eventName);
-                                    generalData.userName = AppData._userData.Login;
-                                    Log.print(Log.l.trace, "userName=" + generalData.userName);
-                                    generalData.userPresent = AppData._userData.Present;
-                                    Log.print(Log.l.trace, "userPresent=" + generalData.userPresent);
-                                    AppData.appSettings.odata.timeZoneAdjustment = AppData._userData.TimeZoneAdjustment;
-                                    Log.print(Log.l.info, "timeZoneAdjustment=" + AppData.appSettings.odata.timeZoneAdjustment);
-                                }
-                                if (typeof AppBar === "object" && AppBar.scope) {
-                                    if (typeof AppBar.scope.updateActions === "function" &&
-                                        (!prevUserData ||
-                                         prevUserData.VeranstaltungName !== AppData._userData.VeranstaltungName ||
-                                         prevUserData.userName !== AppData._userData.userName ||
-                                         prevUserData.AnzLokaleKontakte !== AppData._userData.AnzLokaleKontakte)) {
-                                        AppBar.scope.updateActions();
-                                    }
-                                    if (AppBar.scope.binding && AppBar.scope.binding.generalData) {
-                                        AppBar.scope.binding.generalData.publishFlag = generalData.publishFlag;
-                                    }
-                                }
+                            if (typeof AppHeader === "object" && AppHeader.controller && 
+                                typeof AppHeader.controller.loadData === "function") {
+                                AppHeader.controller.loadData();
                             }
                         }
                         AppData._curGetUserDataId = 0;
