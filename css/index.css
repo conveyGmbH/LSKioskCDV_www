@@ -1,5 +1,6 @@
 ﻿.status-on-off {
-    background-color: transparent; }
+    background-color: transparent;
+}
 
 .navigationbar-container {
     background-color: Window;
@@ -7,78 +8,84 @@
     position: absolute;
     display: block;
     margin: 0;
-    padding: 0; }
-
+    padding: 0;
+}
 .masterhost-container .pagecontrol {
     background-color: transparent;
     /*
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: transparent;
-  */ }
-
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: transparent;
+    */
+}
+/*
 .win-selectionstylefilled.win-listview .win-selected {
     background-color: #e0e0e0;
-    color: HighlightText; }
+    color: HighlightText;
+}
+*/
+
 
 .navigationbar-container-horizontal {
     height: 48px;
-    z-index: -10000; }
-
+    z-index: -10000;
+}
 .navigationbar-container-vertical {
     width: 244px;
-    z-index: -10001; }
-
+    z-index: -10001;
+}
 .headerhost-container {
-    z-index: 10002; }
+    z-index: 10002;
+}
 
 #root-split-view-toggle {
-    /*
     display: block;
-    */
-    display: none;
     position: absolute;
     left: 0;
     top: 0;
     width: 48px;
     height: 48px;
-    z-index: 10011; }
+    z-index: 10011;
+}
 
-#root-split-view-pane {
+#root-split-view {
     margin-top: 0;
-    height: calc(100% - 48px); }
-
-.nav-commands {
-    height: 100%; }
-
+    height: calc(100% - 48px);
+}
+#root-split-view-pane {
+    overflow-y: auto;
+}
 #root-split-view.win-splitview-pane-opened.rootsplitview-mobile .win-splitview-panewrapper,
 #root-split-view.win-splitview-pane-opened.rootsplitview-mobile .win-splitview-pane {
-    width: 100%; }
-
+    width:100%;
+}
 #root-split-view.win-splitview-pane-opened.rootsplitview-tablet .win-splitview-pane,
 #root-split-view.win-splitview-pane-opened.rootsplitview-full .win-splitview-pane {
-    width: 280px; }
+    width:280px
+}
 
 .win-splitviewcommand-button-content {
     padding-left: 12px;
-    padding-right: 12px; }
-
+    padding-right: 12px;
+}
 .win-splitviewcommand-label {
     color: WindowText;
     font-size: 20px;
     margin-top: 12px;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+}
 
 .win-splitviewcommand.win-disabled {
     background-color: transparent;
     border-color: transparent;
-    opacity: 0.2; }
-
+    opacity: 0.2;
+}
 html.win-hoverable .win-disabled .win-splitviewcommand-button:hover {
-    background-color: transparent; }
-
+    background-color: transparent;
+}
 html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed {
-    background-color: transparent; }
+    background-color: transparent;
+}
 
 #navigationbar_horizontal {
     margin: 0;
@@ -87,34 +94,53 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     height: 48px;
     border-bottom-style: solid;
     border-bottom-width: 2px;
-    border-bottom-color: transparent; }
+    border-bottom-color: transparent;
+}
 
 #navigationbar_vertical {
     margin: 0;
     padding: 0;
-    width: 242px;
+    width: calc(100% - 2px);
     height: 100%;
     border-right-style: solid;
     border-right-width: 2px;
-    border-right-color: transparent; }
+    border-right-color: transparent;
+}
+
+#navigationbar_horizontal .win-selectionbackground {
+    height: 4px;
+    top: 44px;
+    left: 16px;
+    right: 16px;
+}
+#navigationbar_vertical .win-selectionbackground {
+    width: 4px;
+    top: 4px;
+    bottom: 4px;
+    left: 0;
+}
 
 .navigationbar-horizontal-template,
 .navigationbar-vertical-template {
     margin: 0;
-    padding: 0; }
+    padding: 0;
+}
 
 .navigationbar-item {
-    height: 48px; }
+    height: 48px;
+}
 
 .navigationbar-horizontal-item {
     margin: 0;
     padding: 0;
-    width: 100%; }
+    width: 100%;
+}
 
 .navigationbar-vertical-item {
     margin: 0;
     padding: 0;
-    width: calc(100% - 2px); }
+    width: calc(100% - 2px);
+}
 
 .navigationbar-text {
     margin: 0;
@@ -123,59 +149,75 @@ html.win-hoverable .win-disabled .win-splitviewcommand-button:hover.win-pressed 
     padding-right: 0;
     height: 36px;
     text-transform: uppercase;
-    display: inherit; }
-
+    display: inherit;
+}
 .navigationbar-text-gray {
-    color: #a0a0a0; }
+    color: #a0a0a0;
+}
+
 
 .navigationbar-horizontal-text {
     padding-left: 0;
     text-align: center;
     width: 100%;
-    margin-bottom: -2px; }
+    margin-bottom: -2px;
+}
 
 .navigationbar-vertical-text {
     padding-left: 24px;
     text-align: left;
-    width: 100%; }
+    width: 100%;
+}
 
 #navigationbar_horizontal .win-itemscontainer {
-    width: 100%; }
+    width: 100%;
+}
 
 #navigationbar_vertical .win-itemscontainer {
-    width: 100%; }
+    width: 100%;
+}
 
 #navigationbar_horizontal .win-container {
     margin: 0;
     padding: 0;
-    width: 1px; }
-
+    width: 1px;
+}
 #navigationbar_vertical .win-container {
     margin: 0;
     padding: 0;
-    width: 100%; }
+    width: 100%;
+}
+
 
 /* Flyout buttons */
 #alertFlyout {
-    visibility: hidden; }
+    visibility: hidden;
+}
 
 #alertText {
-    white-space: pre; }
+    white-space: pre;
+}
 
 .win-flyout:not(.win-menu) button,
-.win-flyout:not(.win-menu) input[type="button"] {
+.win-flyout:not(.win-menu) input[type="button"]
+{
     margin-top: 16px;
     margin-left: 20px;
-    float: right; }
+    float: right;
+}
 
 /*
     margins/paddings for small screens and orientation vertical
+@media (max-width:499px) {
+}
 */
-@media (max-width: 499px) {
-    .navigationbar-text {
-        padding-top: 14px; }
-    .navigationbar-horizontal-text {
-        font-size: 15px; }
-    .win-splitviewcommand-label {
-        font-size: 15px;
-        margin-top: 16px; } }
+.view-size-small .navigationbar-text {
+    padding-top: 14px;
+}
+.view-size-small .navigationbar-horizontal-text {
+    font-size: 15px;
+}
+.view-size-small .win-splitviewcommand-label {
+    font-size: 15px;
+    margin-top: 16px;
+}
