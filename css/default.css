@@ -369,6 +369,30 @@ section[role=main] {
 }
 
 
+.shape {
+    width: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    overflow: hidden;
+    margin: 4px;
+    padding: 0;
+    background-color: transparent;
+    /*
+    border-width: 0;
+    */
+}
+.shape:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.shape:active {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.box-bkg {
+    background-color: #f2f2f2;
+}
 
 .error-message {
     display: none;
@@ -750,11 +774,17 @@ input.win-textbox, input.win-checkbox, input.win-radio, textarea.win-textarea, s
     height:100%;
     color: gray
 }
+.list-compressed-red {
+    float: left;
+    width:calc(100% - 65px); 
+    height:100%;
+    color: red
+}
 .list-compressed-green {
     float: left;
     width: calc(100% - 65px);
     height: 100%;
-    color: green
+    color: forestgreen
 }
 .list-compressed-title {
     min-height: 20px;

@@ -17,6 +17,11 @@
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
 
     <!-- CSS references -->
+    <style>
+        #root-split-view-toggle {
+            display: none;
+        }
+    </style>
     <link rel="stylesheet" href="lib/jQuerySVG/css/jquery.svg.css" />
     <link rel="stylesheet" href="lib/jqPlot/css/jquery.jqplot.min.css" />
     <!-- WinJS ui styles now loaded in Colors namespace depending from accent color!
@@ -37,6 +42,7 @@
     <script type="text/javascript" src="lib/jqPlot/scripts/jquery.jqplot.min.js"></script>
     <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.pieRenderer.min.js"></script>
     <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.barRenderer.min.js"></script>
+    <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.donutRenderer.min.js"></script>
     <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.categoryAxisRenderer.min.js"></script>
     <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.pointLabels.min.js"></script>
     <script type="text/javascript" src="lib/jqPlot/scripts/plugins/jqplot.highlighter.min.js"></script>
@@ -51,6 +57,9 @@
     <script type="text/javascript" src="lib/OpenXml/scripts/jszip-deflate.js"></script>
     <script type="text/javascript" src="lib/OpenXml/scripts/FileSaver.js"></script>
     <script type="text/javascript" src="lib/OpenXml/scripts/openxml.js"></script>
+
+    <!-- jstz references -->
+    <script type="text/javascript" src="lib/jstz/scripts/jstz.js"></script>
 
     <!-- hammer references -->
     <script type="text/javascript" src="lib/hammer/scripts/hammer.js"></script>
@@ -185,11 +194,11 @@
         <div id="alertText"></div>
         <button id="okButton"
                 class="win-button"
-                data-win-bind="textContent: flyoutOk"></button>
+                data-win-res="{textContent: 'flyout.ok'}"></button>
         <button id="cancelButton"
                 class="win-button"
                 style="display: none"
-                data-win-bind="textContent: flyoutCancel"></button>
+                data-win-res="{textContent: 'flyout.cancel'}"></button>
     </div>
 </body>
 </html>
