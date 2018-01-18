@@ -182,6 +182,9 @@
                         Log.print(Log.l.trace, "contactId=" + contactId);
                         if (!contactId) {
                             AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                            WinJS.Promise.timeout(0).then(function() {
+                                that.loadData();
+                            });
                         } else if (listView && listView.winControl) {
                             var listControl = listView.winControl;
                             if (listControl.selection && that.selection && that.products) {
