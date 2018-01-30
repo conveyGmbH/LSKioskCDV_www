@@ -90,19 +90,19 @@ p {
     position: relative; }
 .nx-header .nx-header__top-bar .nx-header__logo-left {
     float: left;
-    margin-left: 40px;
-    margin-top: 30px; }
+    margin-left: 0px;
+    margin-top: 20px; }
 .nx-header .nx-header__top-bar .nx-header__logo-left svg {
-    height: 51px; }
+    height: 70px; }
 .nx-header .nx-header__top-bar .nx-header__logo-right {
     float: right;
     margin-right: 40px;
-    margin-top: 30px; }
+    margin-top: 20px; }
 .nx-header .nx-header__top-bar .nx-header__logo-right svg {
-    height: 51px; }
+    height: 80px; }
 .nx-header .nx-header__content {
     position: relative;
-    width: 100%;
+    width: 50%;
     top: 111px; }
 .nx-header .nx-header__content .id-field {
     display: none; }
