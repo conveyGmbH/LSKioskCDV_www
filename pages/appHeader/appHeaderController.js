@@ -101,7 +101,7 @@
             }).then(function () {
                 var noSize;
                 if (!that.binding.eventLogoSrc) {
-                    Colors.loadSVGImageElements(pageElement, "event-logo-image", { width: 250, height: 51 }, "#FFFFFF");
+                    Colors.loadSVGImageElements(pageElement, "event-logo-image"); //, noSize; //{ width: 250, height: 51 }, "#FFFFFF");
                 }
                 if (!that.binding.organizerLogoSrc) {
                     Colors.loadSVGImageElements(pageElement, "logo-image", noSize, "#FFFFFF");
