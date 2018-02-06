@@ -18,6 +18,8 @@
                 showProgress: false
             }]);
 
+            this.refreshWaitTimeMs = 250;
+
             // idle wait Promise and wait time:
             this.restartPromise = null;
             this.idleWaitTimeMs = 60000;
@@ -178,24 +180,25 @@
                                 }
                                 if (that.binding.dataContact.EMail &&
                                     that.binding.dataContact.EMail.length > 0) {
-                                    Log.print(Log.l.trace,
-                                        "contactView: EMail=" +
-                                        that.binding.dataContact.EMail +
-                                        " => navigate to finished page!");
+                                    Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
                                     that.cancelPromises();
                                     Application.navigateById("finished", event);
                                 } else {
+                                    if (that.binding.dataContact.Name &&
+                                        that.binding.dataContact.Name.length &&
+                                        !that.binding.dataContact.EMail) {
+                                        that.binding.dataContact.Flag_NoEdit = "NO EMAIL";
+                                    }
                                     if (that.binding.dataContact.Flag_NoEdit &&
                                         that.binding.dataContact.Flag_NoEdit !== " " &&
                                         that.binding.dataContact.Flag_NoEdit !== "OK" &&
                                         that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
-                                        Log.print(Log.l.trace,
-                                            "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
+                                        Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
                                         that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
                                         that.waitForFailureAction();
                                     }
                                     Log.print(Log.l.trace, "contactView: reload again!");
-                                    WinJS.Promise.timeout(100).then(function () {
+                                    WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                         that.loadData();
                                     });
                                 }
@@ -261,7 +264,7 @@
                             return WinJS.Promise.as();
                         }
                     } else if (AppBar.busy) {
-                        ret = WinJS.Promise.timeout(100).then(function () {
+                        ret = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                             return that.saveData(complete, error);
                         });
                     } else {
