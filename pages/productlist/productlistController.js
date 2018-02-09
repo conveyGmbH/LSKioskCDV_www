@@ -172,7 +172,7 @@
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 },
-                onSelectionChanged: function(eventInfo) {
+                onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.waitForIdleAction();
                     if (!AppBar.notifyModified) {

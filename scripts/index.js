@@ -86,6 +86,7 @@
             AppData.setRecordId("Kontakt", null);
             // re-route directly to productlist page
             id = "productlist";
+            //id = "languagelist";
         }
         Log.ret(Log.l.trace);
         return id;
