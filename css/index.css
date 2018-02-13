@@ -33,10 +33,10 @@
     z-index: 10002; }
 
 #root-split-view-toggle {
-    /*
     display: block;
-    */
+    /*
     display: none;
+    */
     position: absolute;
     left: 0;
     top: 0;

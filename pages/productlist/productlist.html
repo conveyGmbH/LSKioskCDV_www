@@ -29,7 +29,7 @@
                         </button>
                     </div>
                     <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
-                        <div class="nx-proitem">
+                        <div class="nx-proitem" data-win-bind="disabled: disabled">
                             <div class="nx-proitem__img-container list-image-container" data-win-bind="docId: ProduktID">
                                 <div class="nx-proitem__preload-bg-color" data-win-bind="style.backgroundColor: color"></div>
                             </div>
@@ -37,6 +37,7 @@
                             <div class="nx-proitem__overlay">
                                 <div id="blcneggngbniolne" class="checkmark-image"></div>
                             </div>
+                            <div class="nx-proitem__overlay_disabled"></div>
                         </div>
                     </div>
                     <div class="headerFooterPlaceholder">

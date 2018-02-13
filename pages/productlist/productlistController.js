@@ -28,6 +28,7 @@
             this.products = null;
             this.selection = [];
             this.prevSelectionIndices = [];
+            this.productSelectionGroup = {};
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
@@ -108,17 +109,79 @@
             var layout = null;
 
             var resultConverter = function (item, index) {
+                Log.call(Log.l.trace, "ProductList.Controller.", "index=" + index);
                 // convert result: set background color
                 if (item.Farbe) {
                     var r = item.Farbe & 0xff;
                     var g = Math.floor(item.Farbe / 0x100) & 0xff;
                     var b = Math.floor(item.Farbe / 0x10000) & 0xff;
                     item.color = Colors.rgb2hex(r, g, b);
+                    Log.print(Log.l.trace, "color=" + item.color);
                 } else {
                     item.color = "transparent";
                 }
+                item.disabled = false;
+                if (item.ProduktSelektionsGruppeID) {
+                    if (!that.productSelectionGroup[item.ProduktSelektionsGruppeID]) {
+                        that.productSelectionGroup[item.ProduktSelektionsGruppeID] = {
+                            indexes: [],
+                            selIndex: -1
+                        };
+                    }
+                    that.productSelectionGroup[item.ProduktSelektionsGruppeID].indexes.push(index);
+                    if (that.productSelectionGroup[item.ProduktSelektionsGruppeID].selIndex >= 0 &&
+                        that.productSelectionGroup[item.ProduktSelektionsGruppeID].selIndex !== index) {
+                        Log.print(Log.l.trace, "other item in group selected!");
+                        item.disabled = true;
+                    }
+                }
+                if (item.SelLimit) {
+                    Log.print(Log.l.trace, "SelLimit=" + item.SelLimit + " SelCount=" + item.SelCount);
+                    if (item.SelCount >= item.SelLimit) {
+                        Log.print(Log.l.trace, "limit exceeded!");
+                        item.disabled = true;
+                    }
+                }
+                Log.ret(Log.l.trace);
             }
             this.resultConverter = resultConverter;
+            
+            var setSelectionGroupIndex = function(selGroup, index) {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                if (selGroup) {
+                    if (index >= 0) {
+                        selGroup.selIndex = index;
+                        WinJS.Promise.timeout(0).then(function () {
+                            if (selGroup && selGroup.indexes) {
+                                for (var di = 0; di < selGroup.indexes.length; di++) {
+                                    if (selGroup.indexes[di] !== index) {
+                                        var item = that.products.getAt(selGroup.indexes[di]);
+                                        if (item) {
+                                            item.disabled = true;
+                                            that.products.setAt(selGroup.indexes[di], item);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        selGroup.selIndex = -1;
+                        WinJS.Promise.timeout(0).then(function () {
+                            if (selGroup && selGroup.indexes) {
+                                for (var ei = 0; ei < selGroup.indexes.length; ei++) {
+                                    var item = that.products.getAt(selGroup.indexes[ei]);
+                                    if (item && (!item.SelLimit || item.SelCount < item.SelLimit)) {
+                                        item.disabled = false;
+                                        that.products.setAt(selGroup.indexes[ei], item);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.setSelectionGroupIndex = setSelectionGroupIndex;
 
             var addSelection = function (results) {
                 Log.call(Log.l.trace, "ProductList.Controller.");
@@ -132,6 +195,9 @@
                                     var item = results[index];
                                     if (row && row.ProduktID === item.ProduktID) {
                                         Log.print(Log.l.trace, "selection[" + i + "] ProductID=" + item.ProduktID + ", selected list index=" + index);
+                                        if (item.ProduktSelektionsGruppeID) {
+                                            that.setSelectionGroupIndex(that.productSelectionGroup[item.ProduktSelektionsGruppeID], index);
+                                        }
                                         var prevNotifyModified = AppBar.notifyModified;
                                         selection.add(index);
                                         that.prevSelectionIndices.push(index);
@@ -197,6 +263,10 @@
                                         var selectionId = null;
                                         // get from Binding.List
                                         row = that.products.getAt(prevIndex);
+                                        if (row.ProduktSelektionsGruppeID) {
+                                            Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
+                                            that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], -1);
+                                        }
                                         for (var j = 0; j < that.selection.length; j++) {
                                             var item = that.selection[j];
                                             if (row.ProduktID === item.ProduktID) {
@@ -227,6 +297,10 @@
                                     if (prevIndex < 0) {
                                         // get from Binding.List
                                         row = that.products.getAt(selIndex);
+                                        if (row.ProduktSelektionsGruppeID) {
+                                            Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
+                                            that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex);
+                                        }
                                         var newSelection = {
                                             KontaktID: contactId,
                                             ProduktID: row.ProduktID
@@ -296,6 +370,17 @@
                                     if (listImageConainer) {
                                         that.loadPicture(listImageConainer.docId, listImageConainer);
                                     }
+                                    if (element.firstElementChild) {
+                                        if (element.firstElementChild.disabled) {
+                                            if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
+                                                WinJS.Utilities.addClass(element, "win-nonselectable");
+                                            }
+                                        } else {
+                                            if (WinJS.Utilities.hasClass(element, "win-nonselectable")) {
+                                                WinJS.Utilities.removeClass(element, "win-nonselectable");
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         } else if (listView.winControl.loadingState === "complete") {
@@ -359,7 +444,7 @@
                                     that.nextUrl = ProductList.productView.getNextUrl(json);
                                     var results = json.d.results;
                                     results.forEach(function(item, index) {
-                                        that.resultConverter(item, index);
+                                        that.resultConverter(item, that.binding.count);
                                         that.binding.count = that.products.push(item);
                                     });
                                     that.addSelection(results);
@@ -502,6 +587,7 @@
                     that.products.length = 0;
                 }
                 that.prevSelectionIndices = [];
+                that.productSelectionGroup = {};
                 var contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
@@ -570,7 +656,6 @@
                             Log.print(Log.l.trace, "ProductList.productView: select success!");
                             // productView returns object already parsed from json data in response
                             if (json && json.d) {
-                                that.binding.count = json.d.results.length;
                                 that.nextUrl = ProductList.productView.getNextUrl(json);
                                 var results = json.d.results;
                                 if (!that.products) {
@@ -579,7 +664,6 @@
                                     });
                                     // Now, we call WinJS.Binding.List to get the bindable list
                                     that.products = new WinJS.Binding.List(results);
-                                    that.binding.count = that.products.length;
                                     if (listView.winControl) {
                                         // add ListView dataSource
                                         listView.winControl.itemDataSource = that.products.dataSource;
@@ -587,9 +671,10 @@
                                 } else {
                                     results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
-                                        that.binding.count = that.products.push(item);
+                                        that.products.push(item);
                                     });
                                 }
+                                that.binding.count = that.products.length;
                                 that.addSelection(results);
                             } else {
                                 that.binding.count = 0;

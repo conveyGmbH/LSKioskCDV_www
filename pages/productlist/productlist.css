@@ -121,6 +121,19 @@
     z-index: 10;
     fill: #ffffff;
     color: #ffffff; }
+.nx-proitem__overlay_disabled {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: #ffffff;
+    transition: opacity 200ms; }
+.win-nonselectable .nx-proitem__overlay_disabled {
+    opacity: 0.8; }
 
 .win-selected .nx-proitem .nx-proitem__overlay {
     opacity: 0.6; }
