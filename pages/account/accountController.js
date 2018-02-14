@@ -431,7 +431,8 @@
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
                                 Password: that.binding.dataLogin.Password,
-                                LanguageID: getLanguage()
+                                LanguageID: getLanguage(),
+                                Aktion: "Kiosk"
                             };
                             return Account.loginView.insert(function(json) {
                                 // this callback will be called asynchronously
