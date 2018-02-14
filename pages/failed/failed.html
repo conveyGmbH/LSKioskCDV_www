@@ -21,8 +21,12 @@
                 </div>
 
                 <div id="icon-error" class="failed-image"></div>
-                <div class="failed-text">
+                <div class="failed-text" data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplayNone">
                     <span data-win-res="{innerHTML: 'failed.description'}"></span>
+                </div>
+                <div class="failed-text" data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplay">
+                    <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{textContent: 'failed.alreadyRegistred'}"></span><br/>
+                    <span data-win-bind="textContent: dataContact.ContactProductMailTS Binding.Converter.toRemoteDateString"></span>
                 </div>
                 <div class="failed-button">
                     <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickScan', event)">

@@ -14,7 +14,7 @@
         },
         _contactView: {
             get: function () {
-                return AppData.getFormatView("Kontakt", 20434);
+                return AppData.getFormatView("Kontakt", 20533);
             }
         },
         contactView: {

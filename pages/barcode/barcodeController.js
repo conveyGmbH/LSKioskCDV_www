@@ -182,7 +182,11 @@
                                     that.binding.dataContact.EMail.length > 0) {
                                     Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
                                     that.cancelPromises();
-                                    Application.navigateById("finished", event);
+                                    if (that.binding.dataContact.ExistsProductMail) {
+                                        Application.navigateById("failed", event);
+                                    } else {
+                                        Application.navigateById("finished", event);
+                                    }
                                 } else {
                                     if (that.binding.dataContact.Name &&
                                         that.binding.dataContact.Name.length &&
@@ -311,7 +315,6 @@
                                                  svgInfo.element.firstChild, true);
                     }
                 });
-            }).then(function () {
                 return that.loadData();
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");

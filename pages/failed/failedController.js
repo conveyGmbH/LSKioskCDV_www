@@ -14,6 +14,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "Failed.Controller.");
             Application.Controller.apply(this, [pageElement, {
+                dataContact: {}
             }]);
 
             // idle wait Promise and wait time:
@@ -84,11 +85,45 @@
                 }
             };
 
-            that.processAll().then(function() {
+            var loadData = function () {
+                Log.call(Log.l.trace, "Failed.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    var recordId = AppData.getRecordId("Kontakt");
+                    if (recordId) {
+                        //load of format relation record data
+                        Log.print(Log.l.trace, "calling select contactView...");
+                        return Failed.contactView.select(function (json) {
+                            AppData.setErrorMsg(that.binding);
+                            Log.print(Log.l.trace, "contactView: success!");
+                            if (json && json.d && json.d.KontaktVIEWID) {
+                                that.binding.dataContact = json.d;
+                            }
+                        }, function (errorResponse) {
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, recordId);
+                    } else {
+                        // ignore that here
+                        //var err = { status: 0, statusText: "no record selected" };
+                        //AppData.setErrorMsg(that.binding, err);
+                        Log.print(Log.l.trace, "contactView: no record selected!");
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadData = loadData;
+
+
+            that.processAll().then(function () {
                 var noSize;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
                 Colors.loadSVGImageElements(pageElement, "failed-image", noSize, "#DC453A");
+                return that.loadData();
+            }).then(function () {
+                Log.print(Log.l.trace, "data loaded");
                 that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);
