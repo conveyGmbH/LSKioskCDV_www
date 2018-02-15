@@ -32,7 +32,7 @@
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
-            this.idleWaitTimeMs = 30000;
+            this.idleWaitTimeMs = 300000;
 
             var that = this;
 
@@ -109,14 +109,14 @@
             var layout = null;
 
             var resultConverter = function (item, index) {
-                Log.call(Log.l.trace, "ProductList.Controller.", "index=" + index);
+                Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
                 // convert result: set background color
                 if (item.Farbe) {
                     var r = item.Farbe & 0xff;
                     var g = Math.floor(item.Farbe / 0x100) & 0xff;
                     var b = Math.floor(item.Farbe / 0x10000) & 0xff;
                     item.color = Colors.rgb2hex(r, g, b);
-                    Log.print(Log.l.trace, "color=" + item.color);
+                    Log.print(Log.l.u1, "color=" + item.color);
                 } else {
                     item.color = "transparent";
                 }
@@ -131,18 +131,18 @@
                     that.productSelectionGroup[item.ProduktSelektionsGruppeID].indexes.push(index);
                     if (that.productSelectionGroup[item.ProduktSelektionsGruppeID].selIndex >= 0 &&
                         that.productSelectionGroup[item.ProduktSelektionsGruppeID].selIndex !== index) {
-                        Log.print(Log.l.trace, "other item in group selected!");
+                        Log.print(Log.l.u1, "other item in group selected!");
                         item.disabled = true;
                     }
                 }
                 if (item.SelLimit) {
-                    Log.print(Log.l.trace, "SelLimit=" + item.SelLimit + " SelCount=" + item.SelCount);
+                    Log.print(Log.l.u1, "SelLimit=" + item.SelLimit + " SelCount=" + item.SelCount);
                     if (item.SelCount >= item.SelLimit) {
-                        Log.print(Log.l.trace, "limit exceeded!");
+                        Log.print(Log.l.u1, "limit exceeded!");
                         item.disabled = true;
                     }
                 }
-                Log.ret(Log.l.trace);
+                Log.ret(Log.l.u1);
             }
             this.resultConverter = resultConverter;
             
@@ -260,35 +260,13 @@
                                     prevIndex = that.prevSelectionIndices[i];
                                     selIndex = curSelectionIndices.indexOf(prevIndex);
                                     if (selIndex < 0) {
-                                        var selectionId = null;
                                         // get from Binding.List
                                         row = that.products.getAt(prevIndex);
                                         if (row.ProduktSelektionsGruppeID) {
                                             Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
                                             that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], -1);
                                         }
-                                        for (var j = 0; j < that.selection.length; j++) {
-                                            var item = that.selection[j];
-                                            if (row.ProduktID === item.ProduktID) {
-                                                selectionId = item.ProduktAuswahlVIEWID;
-                                                // delete from cached selection array
-                                                that.selection.splice(j, 1);
-                                                break;
-                                            }
-                                        }
-                                        if (selectionId) {
-                                            // delete from selection in DB
-                                            ProductList.productSelectionView.deleteRecord(function (json) {
-                                                // this callback will be called asynchronously
-                                                // when the response is available
-                                                Log.print(Log.l.trace, "productSelectionView: delete success!");
-                                                // contactData returns object already parsed from json data in response
-                                            }, function (errorResponse) {
-                                                // called asynchronously if an error occurs
-                                                // or server returns response with an error status.
-                                                AppData.setErrorMsg(that.binding, errorResponse);
-                                            }, selectionId);
-                                        }
+                                        that.deleteData(row.ProduktID);
                                     }
                                 }
                                 for (i = 0; i < curSelectionIndices.length; i++) {
@@ -301,27 +279,7 @@
                                             Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
                                             that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex);
                                         }
-                                        var newSelection = {
-                                            KontaktID: contactId,
-                                            ProduktID: row.ProduktID
-                                        };
-                                        // insert into selection in DB
-                                        ProductList.productSelectionView.insert(function (json) {
-                                            // this callback will be called asynchronously
-                                            // when the response is available
-                                            Log.print(Log.l.trace, "productSelectionView: insert success!");
-                                            // contactData returns object already parsed from json data in response
-                                            if (json && json.d && json.d.ProduktAuswahlVIEWID) {
-                                                // add to cached selection array
-                                                that.selection.push(json.d);
-                                            } else {
-                                                AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                                            }
-                                        }, function (errorResponse) {
-                                            // called asynchronously if an error occurs
-                                            // or server returns response with an error status.
-                                            AppData.setErrorMsg(that.binding, errorResponse);
-                                        }, newSelection);
+                                        that.insertData(row.ProduktID);
                                     }
                                 }
                                 that.prevSelectionIndices = curSelectionIndices;
@@ -491,12 +449,12 @@
             };
 
             var showPicture = function (imageContainer, imageData, bDoAnimation) {
-                Log.call(Log.l.trace, "ProductList.Controller.");
+                Log.call(Log.l.u1, "ProductList.Controller.");
                 var ret = WinJS.Promise.as().then(function () {
                     var element = imageContainer.firstElementChild || imageContainer.firstChild;
                     if (element) {
                         if (element.className === "list-image") {
-                            Log.print(Log.l.trace, "extra ignored");
+                            Log.print(Log.l.u1, "extra ignored");
                         } else {
                             Log.print(Log.l.trace, "insert image");
                             var img = new Image();
@@ -510,13 +468,13 @@
                     }
                     return WinJS.Promise.as();
                 });
-                Log.ret(Log.l.trace);
+                Log.ret(Log.l.u1);
                 return ret;
             }
             this.showPicture = showPicture;
 
             var loadPicture = function (pictureId, element) {
-                Log.call(Log.l.trace, "ProductList.Controller.", "pictureId=" + pictureId);
+                Log.call(Log.l.u1, "ProductList.Controller.", "pictureId=" + pictureId);
                 var ret = null;
                 if (ProductList.images.length > 0) {
                     for (var i = 0; i < ProductList.images.length; i++) {
@@ -557,7 +515,7 @@
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, pictureId);
                 }
-                Log.ret(Log.l.trace);
+                Log.ret(Log.l.u1);
                 return ret;
             }
             this.loadPicture = loadPicture;
@@ -712,6 +670,96 @@
             };
             this.loadData = loadData;
 
+            var deleteData = function (productId) {
+                var ret;
+                Log.call(Log.l.trace, "ProductList.Controller.", "ProduktID=" + productId);
+                var selectionId = null;
+                for (var j = 0; j < that.selection.length; j++) {
+                    var item = that.selection[j];
+                    if (productId === item.ProduktID) {
+                        selectionId = item.ProduktAuswahlVIEWID;
+                        Log.print(Log.l.trace, "selectionId=" + selectionId);
+                        break;
+                    }
+                }
+                if (selectionId) {
+                    // delete from selection in DB
+                    ret = ProductList.productSelectionView.deleteRecord(function(json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                        Log.print(Log.l.trace, "productSelectionView: delete success!");
+                        for (var k = 0; k < that.selection.length; k++) {
+                            if (selectionId === that.selection[k].ProduktAuswahlVIEWID) {
+                                Log.print(Log.l.trace, "remove selection[" + k + "]=" + that.selection[k].ProduktAuswahlVIEWID);
+                                that.selection.splice(k, 1);
+                                break;
+                            }
+                        }
+                    },
+                    function(errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        //AppData.setErrorMsg(that.binding, errorResponse);
+                        WinJS.Promise.timeout(1000).then(function() {
+                            that.loadData();
+                        });
+                    },
+                    selectionId);
+                } else {
+                    //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                    ret = WinJS.Promise.as();
+                    WinJS.Promise.timeout(1000).then(function () {
+                        that.loadData();
+                    });
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.deleteData = deleteData;
+            
+            var insertData = function (productId) {
+                var ret;
+                Log.call(Log.l.trace, "ProductList.Controller.", "ProduktID=" + productId);
+                var contactId = AppData.getRecordId("Kontakt");
+                Log.print(Log.l.trace, "contactId=" + contactId);
+                if (productId && contactId) {
+                    var newSelection = {
+                        KontaktID: contactId,
+                        ProduktID: productId
+                    };
+                    // insert into selection in DB
+                    ret = ProductList.productSelectionView.insert(function (json) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        Log.print(Log.l.trace, "productSelectionView: insert success!");
+                        // contactData returns object already parsed from json data in response
+                        if (json && json.d && json.d.ProduktID === productId) {
+                            // add to cached selection array
+                            Log.print(Log.l.trace, "add selection[" + that.selection.length + "]=" + json.d.ProduktAuswahlVIEWID);
+                            that.selection.push(json.d);
+                        } else {
+                            //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                        }
+                    }, function (errorResponse) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        //AppData.setErrorMsg(that.binding, errorResponse);
+                        WinJS.Promise.timeout(1000).then(function () {
+                            that.loadData();
+                        });
+                    }, newSelection);
+                } else {
+                    //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                    ret = WinJS.Promise.as();
+                    WinJS.Promise.timeout(1000).then(function () {
+                        that.loadData();
+                    });
+                }
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.insertData = insertData;
+            
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
