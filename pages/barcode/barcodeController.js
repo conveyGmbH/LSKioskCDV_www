@@ -212,7 +212,11 @@
                                 Application.navigateById("start", event);
                             }
                         }, function (errorResponse) {
-                            AppData.setErrorMsg(that.binding, errorResponse);
+                            //AppData.setErrorMsg(that.binding, errorResponse);
+                            Log.print(Log.l.trace, "contactView: reload again!");
+                            WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                                that.loadData();
+                            });
                         }, recordId);
                     } else {
                         // ignore that here
