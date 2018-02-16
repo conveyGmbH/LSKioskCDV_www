@@ -99,8 +99,8 @@
                     Log.print(Log.l.trace, "contactId=" + contactId);
                     if (contactId && !that.binding.clickOkDisabled) {
                         AppData.setRecordId("Kontakt", null);
-                        that.loadData();
                     }
+                    that.loadData();
                     /*
                     var contactId = AppData.getRecordId("Kontakt");
                     Log.print(Log.l.trace, "contactId=" + contactId);
