@@ -307,15 +307,6 @@
                                 that.prevSelectionIndices = curSelectionIndices;
                             }
                         }
-                        if (that.prevSelectionIndices && that.prevSelectionIndices.length > 0) {
-                            that.binding.clickOkDisabled = false;
-                            that.binding.clickOkDisabledInvert = true;
-                        } else {
-                            that.binding.clickOkDisabled = true;
-                            that.binding.clickOkDisabledInvert = false;
-
-                        }
-                        AppBar.triggerDisableHandlers();
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -718,6 +709,14 @@
                                 break;
                             }
                         }
+                        if (that.prevSelectionIndices && that.prevSelectionIndices.length > 0) {
+                            that.binding.clickOkDisabled = false;
+                            that.binding.clickOkDisabledInvert = true;
+                        } else {
+                            that.binding.clickOkDisabled = true;
+                            that.binding.clickOkDisabledInvert = false;
+                        }
+                        AppBar.triggerDisableHandlers();
                     },
                     function(errorResponse) {
                         // called asynchronously if an error occurs
@@ -756,6 +755,14 @@
                             // add to cached selection array
                             Log.print(Log.l.trace, "add selection[" + that.selection.length + "]=" + json.d.ProduktAuswahlVIEWID);
                             that.selection.push(json.d);
+                            if (that.prevSelectionIndices && that.prevSelectionIndices.length > 0) {
+                                that.binding.clickOkDisabled = false;
+                                that.binding.clickOkDisabledInvert = true;
+                            } else {
+                                that.binding.clickOkDisabled = true;
+                                that.binding.clickOkDisabledInvert = false;
+                            }
+                            AppBar.triggerDisableHandlers();
                         } else {
                             //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                         }
