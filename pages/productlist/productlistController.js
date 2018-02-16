@@ -236,6 +236,7 @@
                     that.binding.clickOkDisabled = true;
                     that.binding.clickOkDisabledInvert = false;
                 }
+                that.waitForIdleAction();
                 Log.ret(Log.l.trace);
             }
             this.addSelection = addSelection;
