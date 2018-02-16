@@ -7,5 +7,18 @@
     "use strict";
 
     WinJS.Namespace.define("Finished", {
+        _contactView: {
+            get: function () {
+                return AppData.getFormatView("Kontakt", 20533);
+            }
+        },
+        contactView: {
+            select: function (complete, error, recordId) {
+                Log.call(Log.l.trace, "Barcode.contactView.");
+                var ret = Finished._contactView.selectById(complete, error, recordId);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        }
     });
 })();

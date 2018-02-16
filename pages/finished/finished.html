@@ -17,7 +17,7 @@
 
                     <div id="icon-selected" class="finished-image"></div>
                     <div class="finished-text">
-                        <span data-win-res="{innerHTML: 'finished.description'}"></span>
+                        <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{innerHTML: 'finished.description'}"></span>
                     </div>
                     <div class="finished-button">
                         <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickStart', event)">
