@@ -34,6 +34,9 @@
             this.restartPromise = null;
             this.idleWaitTimeMs = 300000;
 
+            this.reloadPromise = null;
+            this.reloadWaitTimeMs = 500;
+
             var that = this;
 
             // ListView control
@@ -61,6 +64,11 @@
 
             var cancelPromises = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.reloadPromise) {
+                    Log.print(Log.l.trace, "cancel previous reload Promise");
+                    that.reloadPromise.cancel();
+                    that.reloadPromise = null;
+                }
                 if (that.restartPromise) {
                     Log.print(Log.l.trace, "cancel previous restart Promise");
                     that.restartPromise.cancel();
@@ -70,7 +78,18 @@
             }
             this.cancelPromises = cancelPromises;
 
-            var waitForIdleAction = function() {
+            var waitForReloadAction = function () {
+                Log.call(Log.l.trace, "Barcode.Controller.", "reloadWaitTimeMs=" + that.reloadWaitTimeMs);
+                that.cancelPromises();
+                that.reloadPromise = WinJS.Promise.timeout(that.reloadWaitTimeMs).then(function () {
+                    Log.print(Log.l.trace, "now reload data!");
+                    that.loadData();
+                });
+                Log.ret(Log.l.trace);
+            };
+            this.waitForReloadAction = waitForReloadAction;
+
+            var waitForIdleAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
@@ -248,9 +267,7 @@
                         Log.print(Log.l.trace, "contactId=" + contactId);
                         if (!contactId) {
                             AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                            WinJS.Promise.timeout(0).then(function() {
-                                that.loadData();
-                            });
+                            that.waitForReloadAction();
                         } else if (listView && listView.winControl) {
                             var listControl = listView.winControl;
                             if (listControl.selection && that.selection && that.products) {
@@ -262,11 +279,13 @@
                                     if (selIndex < 0) {
                                         // get from Binding.List
                                         row = that.products.getAt(prevIndex);
-                                        if (row.ProduktSelektionsGruppeID) {
-                                            Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
-                                            that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], -1);
+                                        if (row) {
+                                            if (row.ProduktSelektionsGruppeID) {
+                                                Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
+                                                that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], -1);
+                                            }
+                                            that.deleteData(row.ProduktID);
                                         }
-                                        that.deleteData(row.ProduktID);
                                     }
                                 }
                                 for (i = 0; i < curSelectionIndices.length; i++) {
@@ -275,11 +294,13 @@
                                     if (prevIndex < 0) {
                                         // get from Binding.List
                                         row = that.products.getAt(selIndex);
-                                        if (row.ProduktSelektionsGruppeID) {
-                                            Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
-                                            that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex);
+                                        if (row) {
+                                            if (row.ProduktSelektionsGruppeID) {
+                                                Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
+                                                that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex);
+                                            }
+                                            that.insertData(row.ProduktID);
                                         }
-                                        that.insertData(row.ProduktID);
                                     }
                                 }
                                 that.prevSelectionIndices = curSelectionIndices;
@@ -383,7 +404,7 @@
                         progress = listView.querySelector(".list-footer .progress");
                         counter = listView.querySelector(".list-footer .counter");
                         var visible = eventInfo.detail.visible;
-                        if (visible && that.products && that.nextUrl) {
+                        if (visible && that.nextUrl) {
                             that.loading = true;
                             if (progress && progress.style) {
                                 progress.style.display = "inline";
@@ -399,13 +420,15 @@
                                 Log.print(Log.l.trace, "ProductList.productView: selectNext success!");
                                 // productView returns object already parsed from json data in response
                                 if (json && json.d) {
-                                    that.nextUrl = ProductList.productView.getNextUrl(json);
-                                    var results = json.d.results;
-                                    results.forEach(function(item, index) {
-                                        that.resultConverter(item, that.binding.count);
-                                        that.binding.count = that.products.push(item);
-                                    });
-                                    that.addSelection(results);
+                                    if (that.products) {
+                                        that.nextUrl = ProductList.productView.getNextUrl(json);
+                                        var results = json.d.results;
+                                        results.forEach(function (item, index) {
+                                            that.resultConverter(item, that.binding.count);
+                                            that.binding.count = that.products.push(item);
+                                        });
+                                        that.addSelection(results);
+                                    }
                                 } else {
                                     that.nextUrl = null;
                                 }
@@ -541,11 +564,6 @@
                     counter.style.display = "none";
                 }
                 AppData.setErrorMsg(that.binding);
-                if (that.products) {
-                    that.products.length = 0;
-                }
-                that.prevSelectionIndices = [];
-                that.productSelectionGroup = {};
                 var contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
@@ -579,6 +597,7 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    that.selection = [];
                     if (!contactId) {
                         // error message already returned
                         return WinJS.Promise.as();
@@ -604,6 +623,8 @@
                         });
                     }
                 }).then(function () {
+                    that.prevSelectionIndices = [];
+                    that.productSelectionGroup = {};
                     if (!contactId) {
                         // error message already returned
                         return WinJS.Promise.as();
@@ -627,6 +648,7 @@
                                         listView.winControl.itemDataSource = that.products.dataSource;
                                     }
                                 } else {
+                                    that.products.length = 0;
                                     results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
                                         that.products.push(item);
@@ -700,17 +722,13 @@
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         //AppData.setErrorMsg(that.binding, errorResponse);
-                        WinJS.Promise.timeout(1000).then(function() {
-                            that.loadData();
-                        });
+                        that.waitForReloadAction();
                     },
                     selectionId);
                 } else {
                     //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                     ret = WinJS.Promise.as();
-                    WinJS.Promise.timeout(1000).then(function () {
-                        that.loadData();
-                    });
+                    that.waitForReloadAction();
                 }
                 Log.ret(Log.l.trace);
                 return ret;
@@ -744,16 +762,12 @@
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         //AppData.setErrorMsg(that.binding, errorResponse);
-                        WinJS.Promise.timeout(1000).then(function () {
-                            that.loadData();
-                        });
+                        that.waitForReloadAction();
                     }, newSelection);
                 } else {
                     //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                     ret = WinJS.Promise.as();
-                    WinJS.Promise.timeout(1000).then(function () {
-                        that.loadData();
-                    });
+                    that.waitForReloadAction();
                 }
                 Log.ret(Log.l.trace);
                 return ret;
