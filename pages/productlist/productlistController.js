@@ -32,7 +32,7 @@
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
-            this.idleWaitTimeMs = 300000;
+            this.idleWaitTimeMs = 30000;
 
             this.reloadPromise = null;
             this.reloadWaitTimeMs = 500;

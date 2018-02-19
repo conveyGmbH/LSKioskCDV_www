@@ -182,7 +182,8 @@
                                     that.binding.dataContact.EMail.length > 0) {
                                     Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
                                     that.cancelPromises();
-                                    if (that.binding.dataContact.ExistsProductMail) {
+                                    if (that.binding.dataContact.ExistsProductMail ||
+                                        that.binding.dataContact.ProductLimitExceeded) {
                                         Application.navigateById("failed", event);
                                     } else {
                                         Application.navigateById("finished", event);
