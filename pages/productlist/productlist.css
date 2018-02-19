@@ -2,7 +2,10 @@
     styles for productlist page
 */
 #listLocalController .list-header {
-    height: 220px;
+    /*
+        height: 220px;
+    */
+    height: 165px;
     overflow: hidden; }
 
 #productlist .win-itemscontainer {
@@ -64,7 +67,7 @@
     margin-top: 30px; }
 
 #productlist .nx-title_black {
-    margin-top: 50px; }
+    margin-top: 30px; }
 
 #productlist .nx-title_gray {
     margin-top: 35px; }
