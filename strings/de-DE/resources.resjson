@@ -410,7 +410,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
-    "productlist.title"     : "Choose products to get<br>more informations",
+    "productlist.title"     : "Choose products to get<br>more information",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "productlist.count"     : "Anzahl",
@@ -421,7 +421,7 @@
 
     "finished.title"        : "QR Code successfully scanned",
     "finished.complete"     : "Complete",
-    "finished.description"  : " will receive the product link<br>and promotion code for free purchase valid till March 5th",
+    "finished.description"  : "&nbspwill receive the product link<br>and promotion code for free purchase valid till March 5th",
     "finished.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 	
     "failed.title"          : "An error occured",
