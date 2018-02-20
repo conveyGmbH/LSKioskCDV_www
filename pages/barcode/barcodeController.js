@@ -25,7 +25,7 @@
             this.idleWaitTimeMs = 60000;
 
             this.failurePromise = null;
-            this.failureWaitTimeMs = 5000;
+            this.failureWaitTimeMs = 6000;
 
             this.animationPromise = null;
 
@@ -184,8 +184,10 @@
                                     that.cancelPromises();
                                     if (that.binding.dataContact.ExistsProductMail ||
                                         that.binding.dataContact.ProductLimitExceeded) {
+                                        that.cancelPromises();
                                         Application.navigateById("failed", event);
                                     } else {
+                                        that.cancelPromises();
                                         Application.navigateById("finished", event);
                                     }
                                 } else {
@@ -201,6 +203,11 @@
                                         Log.print(Log.l.trace, "contactView: Flag_NoEdit=" + that.binding.dataContact.Flag_NoEdit);
                                         that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
                                         that.waitForFailureAction();
+                                    } else if (that.binding.dataContact.Flag_NoEdit !== that.prevFlag_NoEdit) {
+                                        that.prevFlag_NoEdit = that.binding.dataContact.Flag_NoEdit;
+                                        if (!that.restartPromise) {
+                                            that.waitForIdleAction();
+                                        }
                                     }
                                     Log.print(Log.l.trace, "contactView: reload again!");
                                     WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
