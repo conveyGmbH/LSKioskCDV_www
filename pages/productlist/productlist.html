@@ -60,6 +60,12 @@
                             footer: select('.list-footer')
                          }">
                     </div>
+                    <div class="nx-cancel" 
+                         data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                         onclick="AppBar.handleEvent('click', 'clickNew', event)">
+                        <div id="cross_new" class="navigate-image cancel-image"></div>
+                        <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
+                    </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                 </div>

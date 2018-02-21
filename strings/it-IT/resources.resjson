@@ -177,8 +177,8 @@
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
-    "barcode.title"         : "Scan your QR Code",
-    "barcode.description"   : "To scan the QR code, place your batch<br>on the scanner underneath this screen",
+    "barcode.title"         : "Scan your badge",  
+    "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
@@ -417,14 +417,14 @@
     "languagelist.title"    : "Selezione del Lingue",
     "languagelist.comment"  : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
-    "finished.title"        : "QR Code successfully scanned",
+    "finished.title"        : "Badge successfully scanned",
     "finished.complete"     : "Complete",
     "finished.description"  : " will receive the product link<br>and promotion code for free purchase valid till March 5th",
     "finished.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
     "failed.title"          : "An error occured",
     "failed.scanagain"      : "Scan again",
-    "failed.description"    : "Scanning your batch wasn't successful<br>Please try again",
+    "failed.description"    : "Scanning your badge wasn't successful<br>Please try again",
     "failed.alreadyRegistred"    : " already registered ",
     "failed.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!"
 

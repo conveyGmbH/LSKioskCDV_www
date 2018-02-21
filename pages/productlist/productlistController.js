@@ -252,6 +252,13 @@
                     //}
                     Log.ret(Log.l.trace);
                 },
+                clickNew: function (event) {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.cancelPromises();
+                    AppData.setRecordId("Kontakt", null);
+                    that.loadData();
+                    Log.ret(Log.l.trace);
+                },
                 clickScan: function (event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.cancelPromises();
@@ -784,6 +791,7 @@
             
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
                 return that.loadData();
             }).then(function () {
                 Log.print(Log.l.trace, "Data loaded");
