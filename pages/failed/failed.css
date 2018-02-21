@@ -1,19 +1,13 @@
-﻿#failedScreen .failed-image {
-    margin-top: 20px; }
-#failedScreen .failed-image svg {
+﻿.failed-image {
+    
+}
+.failed-image svg {
     width: 260px;
     height: 260px;
-    margin: 0 auto;
+    margin: 100px auto;
     display: block; }
 
-#failedScreen .failed-text {
-    margin: 0 auto;
-    margin-top: 100px;
-    font-size: 40px;
-    font-weight: 300;
-    line-height: 1.25;
-    text-align: center;
-    color: #000000; }
+.failed-text {
+    margin: 100px auto;
+ }
 
-#failedScreen .failed-button {
-    margin-top: 100px; }

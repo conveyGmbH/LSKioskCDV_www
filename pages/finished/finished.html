@@ -12,16 +12,15 @@
         <div id="startController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea nx-body" id="finishedScreen">
-
-                    <div class="nx-title_black" data-win-res="{textContent: 'finished.title'}"></div>
-
-                    <div id="icon-selected" class="finished-image"></div>
-                    <div class="finished-text">
-                        <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{innerHTML: 'finished.description'}"></span>
-                    </div>
-                    <div class="finished-button">
-                        <button class="nx-button nx-button--centered nx-header__button" onclick="AppBar.handleEvent('click', 'clickStart', event)">
-                            <span class="win-type-subtitle" data-win-res="{textContent: 'finished.complete'}"></span>
+                    <div class="nx-title">
+                        <span class="nx-title_black" data-win-res="{textContent: 'finished.title'}"></span>
+                        <div id="icon-selected" class="finished-image"></div>
+                        <div class="nx-subtitle finished-text">
+                            <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{innerHTML: 'finished.description'}"></span>
+                        </div>
+                        <button class="nx-button nx-button--centered"
+                                onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                            <span data-win-res="{textContent: 'finished.complete'}"></span>
                         </button>
                     </div>
                     <div class="error-message"

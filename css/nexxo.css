@@ -15,7 +15,7 @@ html, body {
 /* Text styles */
 h2 {
     font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 50px;
+    font-size: 48px;
     font-weight: bold;
     line-height: 1;
     text-align: center;
@@ -23,7 +23,7 @@ h2 {
 
 h1 {
     font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 300;
     line-height: 1.25;
     text-align: center;
@@ -31,7 +31,7 @@ h1 {
 
 p {
     font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 25px;
+    font-size: 24px;
     font-weight: 300;
     line-height: 1;
     text-align: center;
@@ -39,7 +39,7 @@ p {
 
 .p-small {
     font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 300;
     line-height: 2.5;
     text-align: right;
@@ -68,12 +68,12 @@ p {
     background-color: #00417f !important;
     color: #ffffff !important;
     font-family: "Roboto", "Segoe UI", "Arial" !important;
-    font-size: 30px !important;
+    font-size: 36px !important;
     line-height: 1.5 !important;
     text-align: center !important;
     text-transform: uppercase; }
 .nx-button--centered {
-    margin: 0 auto; }
+    margin: 8px auto; }
 
 .nx-header {
     left: 0;
@@ -116,7 +116,7 @@ p {
     right: 40px;
     top: 30px; }
 .nx-cancel span {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 300;
     line-height: 65px;
     padding-right: 20px;
@@ -129,18 +129,25 @@ p {
     width: 40px;
     height: 40px; }
 
+.nx-title {
+    margin:auto;
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center; }
+
+.nx-subtitle {
+    font-size: 36px;
+}
+
 .nx-title_black {
     /*
     margin-top: 60px;
     margin-bottom: 20px;
-    */
-    margin:auto;
     padding-top:25px;
-    font-size: 50px;
-    font-weight: bold;
-    line-height: 1;
-    text-align: center;
-    color: #000000;
+    */
+    color: #000000; 
+    margin-top: 25px;
     display: block; }
 
 .nx-title_gray {
@@ -148,11 +155,5 @@ p {
     margin-top: 35px;
     margin-bottom: 20px;
     */
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-size: 40px;
-    font-weight: 300;
-    line-height: 1.25;
-    text-align: center;
     color: #767676;
-    display: block; }
+    margin-top: 5px; }

@@ -19,7 +19,7 @@
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
-            this.idleWaitTimeMs = 10000;
+            this.idleWaitTimeMs = 100000;
 
             var that = this;
 

@@ -406,7 +406,8 @@
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
 	
-    "productlist.title"     : "Choose products to get<br>more informations",
+    "productlist.title"     : "STM32 & ST25 boards registration",
+    "productlist.subtitle"  : "Select any available board (1 out of 10 STM32 Nucleos) + (1 out of 2 ST25 shields)",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
