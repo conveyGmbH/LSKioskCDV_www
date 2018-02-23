@@ -442,6 +442,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
+                                that.waitForIdleAction();
                             }, null, that.nextUrl);
                         } else {
                             if (progress && progress.style) {
@@ -667,6 +668,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
+                                that.waitForIdleAction();
                             }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
@@ -681,6 +683,7 @@
                                 counter.style.display = "inline";
                             }
                             that.loading = false;
+                            that.waitForIdleAction();
                         });
                     }
                 }).then(function () {
