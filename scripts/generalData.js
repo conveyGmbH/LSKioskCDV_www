@@ -318,43 +318,195 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getPropertyFromInitoptionTypeID: function (item) {
+            Log.call(Log.l.u1, "AppData.");
+            var plusRemote = false;
+            var property = "";
+            var color;
+            switch (item.INITOptionTypeID) {
+                case 9:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.showAppBkg = true;
+                    } else {
+                        AppData._persistentStates.showAppBkg = false;
+                    }
+                    break;
+                case 10:
+                    property = "individualColors";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.individualColors = true;
+                    } else {
+                        AppData._persistentStates.individualColors = false;
+                    }
+                    break;
+                case 11:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "accentColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 12:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "backgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 13:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "navigationColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 14:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "textColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 15:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "labelColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 16:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "tileTextColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 17:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "tileBackgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 18:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.isDarkTheme = true;
+                    } else {
+                        AppData._persistentStates.isDarkTheme = false;
+                    }
+                    Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
+                    break;
+                case 25:
+                    property = "kioskHeaderBackgroundColor";
+                    break;
+                case 26:
+                    property = "kioskButtonBackgroundColor";
+                    break;
+                case 27:
+                    property = "kioskProductBackgroundColor";
+                    break;
+                case 28:
+                    property = "kioskProductPreloadColor";
+                    break;
+                case 29:
+                    property = "kioskProductTitleColor";
+                    break;
+                case 32:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.kioskUsesCamera = true;
+                    } else {
+                        AppData._persistentStates.kioskUsesCamera = false;
+                    }
+                    break;
+                default:
+                    // defaultvalues
+            }
+            if (item.pageProperty) {
+                if (item.LocalValue === "1") {
+                    NavigationBar.disablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.disablePage(item.pageProperty + "Remote");
+                    }
+                } else {
+                    NavigationBar.enablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.enablePage(item.pageProperty + "Remote");
+                    }
+                }
+            }
+            Log.ret(Log.l.u1, property);
+            return property;
+        },
+        applyColorSetting: function (colorProperty, color) {
+            Log.call(Log.l.u1, "AppData.", "colorProperty=" + colorProperty + " color=" + color);
+            Colors[colorProperty] = color;
+            switch (colorProperty) {
+                case "kioskHeaderBackgroundColor":
+                    Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
+                    break;
+                case "kioskButtonBackgroundColor":
+                    Colors.changeCSS(".nx-button", "background-color", Colors.kioskButtonBackgroundColor + " !important");
+                    break;
+                case "kioskProductBackgroundColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__overlay", "background-color", Colors.kioskProductBackgroundColor);
+                    break;
+                case "kioskProductPreloadColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__img-container .nx-proitem__preload-bg-color", "background-color", Colors.kioskProductPreloadColor + " !important");
+                    break;
+                case "kioskProductTitleColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__title", "color", Colors.kioskProductTitleColor);
+                    Colors.changeCSS(".nx-title_color", "color", Colors.kioskProductTitleColor);
+                    break;
+                case "accentColor":
+                    // fall through...
+                case "navigationColor":
+                    AppBar.loadIcons();
+                    NavigationBar.groups = Application.navigationBarGroups;
+                    break;
+            }
+            Log.ret(Log.l.u1);
+        },
         generalData: {
             get: function () {
-                return {
-                    newContactPageId: AppData._persistentStates.newContactPageId,
-                    setRecordId: AppData.setRecordId,
-                    getRecordId: AppData.getRecordId,
-                    setRestriction: AppData.setRestriction,
-                    getRestriction: AppData.getRestriction,
-                    contactDateTime: (function () {
-                        return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
-                    })(),
-                    individualColors: AppData._persistentStates.individualColors,
-                    isDarkTheme: AppData._persistentStates.isDarkTheme,
-                    inputBorder: AppData._persistentStates.inputBorder,
-                    showAppBkg: AppData._persistentStates.showAppBkg,
-                    logEnabled: AppData._persistentStates.logEnabled,
-                    logLevel: AppData._persistentStates.logLevel,
-                    logGroup: AppData._persistentStates.logGroup,
-                    logNoStack: AppData._persistentStates.logNoStack,
-                    logTarget: Log.targets.console,
-                    cameraQuality: AppData._persistentStates.cameraQuality,
-                    cameraUseGrayscale: AppData._persistentStates.cameraUseGrayscale,
-                    eventName: AppData.getEventName(),
-                    userName: AppData.getUserName(),
-                    userPresent: AppData.getUserPresent(),
-                    contactDate: (AppData._contactData && AppData._contactData.Erfassungsdatum),
-                    contactId: (AppData._contactData && AppData._contactData.KontaktVIEWID),
-                    globalContactID: ((AppData._contactData && AppData._contactData.CreatorRecID) ?
-                        (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID) : ""),
-                    publishFlag: 1,
-                    on: getResourceText("settings.on"),
-                    off: getResourceText("settings.off"),
-                    dark: getResourceText("settings.dark"),
-                    light: getResourceText("settings.light"),
-                    present: getResourceText("userinfo.present"),
-                    absend: getResourceText("userinfo.absend")
-                };
+                var data = AppData._persistentStates;
+                data.logTarget = Log.targets.console;
+                data.setRecordId = AppData.setRecordId;
+                data.getRecordId = AppData.getRecordId;
+                data.setRestriction = AppData.setRestriction;
+                data.getRestriction = AppData.getRestriction;
+                data.contactDateTime = (function () {
+                    return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
+                })();
+                data.eventName = AppData._userData.VeranstaltungName;
+                data.userName = AppData._userData.Login;
+                data.userPresent = AppData._userData.Present;
+                data.publishFlag = AppData._userData.PublishFlag;
+                data.contactDate = (AppData._contactData && AppData._contactData.Erfassungsdatum);
+                data.contactId = (AppData._contactData && AppData._contactData.KontaktVIEWID);
+                data.globalContactID = ((AppData._contactData && AppData._contactData.CreatorRecID)
+                    ? (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID)
+                    : "");
+                data.on = getResourceText("settings.on");
+                data.off = getResourceText("settings.off");
+                data.dark = getResourceText("settings.dark");
+                data.light = getResourceText("settings.light");
+                data.present = getResourceText("userinfo.present");
+                data.absend = getResourceText("userinfo.absend");
+                return data;
             }
         },
         _initAnredeView: {

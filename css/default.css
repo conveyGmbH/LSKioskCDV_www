@@ -68,8 +68,10 @@ img .field_line {
     top: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.2;
-    background: url(../images/app-bkg.png) no-repeat center center fixed;
+    /*
+
+    */
+    background: url(../images/app-bkg.jpg) no-repeat center center fixed;
     background-size: cover;
     visibility: hidden; }
 

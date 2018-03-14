@@ -15,14 +15,12 @@
                     <div class="list-header nx-title">
                         <div class="nx-title_black"
                                 data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
-                            <span data-win-res="{innerHTML: 'productlist.title'}"></span><br/>
-                            <span class="nx-subtitle" 
-                                  data-win-res="{innerHTML: 'productlist.subtitle'}"></span>
+                            <span data-win-bind="innerHTML: listTitle"></span><br/>
                         </div>
                         <div class="nx-title_gray"
                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone" >
                             <span data-win-res="{innerHTML: 'productlist.selected'}"></span><br />
-                            <button class="nx-button nx-button--centered"
+                            <button class="win-button nx-button nx-button--centered nx-title--bold"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                     onclick="AppBar.handleEvent('click', 'clickScan', event)">
                                 <span data-win-res="{textContent: 'productlist.continue'}"></span>
@@ -31,10 +29,11 @@
                     </div>
                     <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="nx-proitem" data-win-bind="disabled: disabled">
-                            <div class="nx-proitem__img-container list-image-container" data-win-bind="docId: ProduktID">
+                            <div class="nx-proitem__img-container list-image-container" 
+                                 data-win-bind="docId: DocID; style.width: StyleWidth; style.height: StyleHeight">
                                 <div class="nx-proitem__preload-bg-color" data-win-bind="style.backgroundColor: color"></div>
                             </div>
-                            <div class="nx-proitem__title" data-win-bind="textContent: Name"></div>
+                            <div class="nx-proitem__title" data-win-bind="innerHTML: Name"></div>
                             <div class="nx-proitem__overlay">
                                 <div id="blcneggngbniolne" class="checkmark-image"></div>
                             </div>
@@ -60,12 +59,12 @@
                             footer: select('.list-footer')
                          }">
                     </div>
-                    <div class="nx-cancel" 
+                    <button class="win-button nx-cancel" 
                          data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                         onclick="AppBar.handleEvent('click', 'clickNew', event)">
-                        <div id="cross_new" class="navigate-image cancel-image"></div>
-                        <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
-                    </div>
+                         onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                        <div id="cross_new" class="navigate-image"></div>
+                        <span data-win-res="{textContent: 'general.cancel'}"></span>
+                    </button>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                 </div>

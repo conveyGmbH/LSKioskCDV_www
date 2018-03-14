@@ -1,0 +1,21 @@
+﻿.contact-form {
+    width: 50%;
+    margin-left: 25%;
+}
+
+.contact-line {
+    margin: 20px;
+}
+
+.contact-label {
+    width: 100%;
+    float: left;
+    text-align: left;
+}
+
+.contact-input {
+    width: 100%;
+    float: left;
+    height: 60px;
+    font-size: 32px;
+}

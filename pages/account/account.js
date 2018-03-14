@@ -19,13 +19,13 @@
         ready: function(element, options) {
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
-
             // add page specific commands to AppBar
-            AppBar.commandList = [
+            var commandList = [
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
                 { id: 'clickLogoff', label: getResourceText('account.logoff'), tooltip: getResourceText('account.logoff'), section: 'secondary' }
             ];
-            this.controller = new Account.Controller(element);
+
+            this.controller = new Account.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickOk.bind(this.controller));

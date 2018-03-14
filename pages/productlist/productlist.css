@@ -75,7 +75,7 @@
 .nx-proitem {
     position: relative;
     margin: 10px 10px;
-    width: 445px; }
+    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important; }
 .nx-proitem .nx-proitem__img-container {
     width: 445px;
     height: 250px;
@@ -90,11 +90,11 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: #767676 !important; }
+    }
 .nx-proitem .nx-proitem__img-container img {
-    width: 100%; }
+    width: 100%;
+     }
 .nx-proitem .nx-proitem__title {
-    color: #00417f;
     text-align: center;
     padding: 20px 15px;
     white-space: nowrap;
@@ -111,7 +111,6 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    background: #00417f;
     transition: opacity 200ms; }
 .nx-proitem .nx-proitem__overlay svg {
     position: absolute;
@@ -133,10 +132,10 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    background: #ffffff;
+    background-color: #ffffff;
     transition: opacity 200ms; }
 .win-nonselectable .nx-proitem__overlay_disabled {
-    opacity: 0.8; }
+    opacity: 0.7; }
 
 .win-selected .nx-proitem .nx-proitem__overlay {
-    opacity: 0.6; }
+    opacity: 0.5; }

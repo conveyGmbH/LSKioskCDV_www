@@ -18,6 +18,7 @@
                 showProgress: false
             }]);
 
+            this.refreshPromise = null;
             this.refreshWaitTimeMs = 250;
 
             // idle wait Promise and wait time:
@@ -40,6 +41,11 @@
 
             var cancelPromises = function() {
                 Log.call(Log.l.trace, "Barcode.Controller.");
+                if (that.refreshPromise) {
+                    Log.print(Log.l.trace, "cancel previous refresh Promise");
+                    that.refreshPromise.cancel();
+                    that.refreshPromise = null;
+                }
                 if (that.animationPromise) {
                     Log.print(Log.l.trace, "cancel previous animation Promise");
                     that.animationPromise.cancel();
@@ -86,6 +92,7 @@
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
+                    that.cancelPromises();
                     Application.navigateById("start");
                 });
                 Log.ret(Log.l.trace);
@@ -97,6 +104,7 @@
                 that.cancelPromises();
                 that.failurePromise = WinJS.Promise.timeout(that.failureWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, navigate to failed page!");
+                    that.cancelPromises();
                     Application.navigateById("failed");
                 });
                 Log.ret(Log.l.trace);
@@ -115,7 +123,12 @@
                     //}
                     Log.ret(Log.l.trace);
                 },
-                /*
+                clickForward: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("contact", event);
+                    Log.ret(Log.l.trace);
+                },
                 // only for navigation tests:
                 clickFinished: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
@@ -129,7 +142,6 @@
                     Application.navigateById("failed", event);
                     Log.ret(Log.l.trace);
                 },
-                 */
                 clickStart: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
                     // cancel navigates now directly back to start
@@ -184,10 +196,8 @@
                                     that.cancelPromises();
                                     if (that.binding.dataContact.ExistsProductMail ||
                                         that.binding.dataContact.ProductLimitExceeded) {
-                                        that.cancelPromises();
                                         Application.navigateById("failed", event);
                                     } else {
-                                        that.cancelPromises();
                                         Application.navigateById("finished", event);
                                     }
                                 } else {
@@ -210,7 +220,10 @@
                                         }
                                     }
                                     Log.print(Log.l.trace, "contactView: reload again!");
-                                    WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                                    if (that.refreshPromise) {
+                                        that.refreshPromise.cancel();
+                                    }
+                                    that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                         that.loadData();
                                     });
                                 }
@@ -222,7 +235,10 @@
                         }, function (errorResponse) {
                             //AppData.setErrorMsg(that.binding, errorResponse);
                             Log.print(Log.l.trace, "contactView: reload again!");
-                            WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                            if (that.refreshPromise) {
+                                that.refreshPromise.cancel();
+                            }
+                            that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                 that.loadData();
                             });
                         }, recordId);
@@ -240,60 +256,6 @@
                 return ret;
             }
             this.loadData = loadData;
-
-            // save data
-            /*
-            var saveData = function (complete, error) {
-                Log.call(Log.l.trace, "Contact.Controller.");
-                AppData.setErrorMsg(that.binding);
-                var ret;
-                if (that.binding.dataContact &&
-                    !that.binding.dataContact.EMail) {
-                    ret = new WinJS.Promise.as().then(function () {
-                        var err = { status: 0, statusText: getResourceText("barcode.emailNeeded") };
-                        AppData.setErrorMsg(that.binding, err);
-                        error(err);
-                    });
-                } else {
-                    var dataContact = that.binding.dataContact;
-                    if (dataContact && AppBar.modified && !AppBar.busy) {
-                        var recordId = AppData.getRecordId("Kontakt");
-                        if (recordId) {
-                            AppBar.busy = true;
-                            ret = Barcode.contactView.update(function (response) {
-                                AppBar.busy = false;
-                                // called asynchronously if ok
-                                Log.print(Log.l.info, "contactData update: success!");
-                                AppBar.modified = false;
-                                AppData.getContactData();
-                                complete(response);
-                            }, function (errorResponse) {
-                                AppBar.busy = false;
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                                error(errorResponse);
-                            }, recordId, dataContact);
-                        } else {
-                            var err = { status: 0, statusText: "no record selected" };
-                            AppData.setErrorMsg(that.binding, err);
-                            return WinJS.Promise.as();
-                        }
-                    } else if (AppBar.busy) {
-                        ret = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
-                            return that.saveData(complete, error);
-                        });
-                    } else {
-                        ret = new WinJS.Promise.as().then(function () {
-                            complete(dataContact);
-                        });
-                    }
-                }
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-            this.saveData = saveData;
-             */
 
             var translateAnimantion = function (element, bIn) {
                 Log.call(Log.l.trace, "Contact.Controller.");
@@ -319,9 +281,9 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");
+                Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
-                Colors.loadSVGImageElements(pageElement, "scanning-image", 65, "#00417F", "id", function (svgInfo) {
+                Colors.loadSVGImageElements(pageElement, "scanning-image", 65, Colors.textColor, "id", function (svgInfo) {
                     if (svgInfo && svgInfo.element) {
                         that.translateAnimantion(svgInfo.element.firstElementChild ||
                                                  svgInfo.element.firstChild, true);

@@ -2,9 +2,18 @@
     styles for languagelist page
 */
 
-#languagelist .win-itemcontainer .win-itembox,
-#languagelist .win-listview .win-itembox {
-    background-color: transparent;
+
+#languagelist .nx-button--centered {
+    margin: 40px auto !important;
+}
+
+#languagelist .win-container {
+    margin-left: calc(12.5% - 78px) !important;
+    margin-right: calc(12.5% - 78px) !important;
+}
+#languagelist .win-itemcontainer,
+#languagelist .win-itembox {
+    background-color: transparent !important;
 }
 
 #languagelist .listview {
@@ -21,10 +30,16 @@
 }
  
  #languagelist .overlaid-item-template {
+    /*
     background-image: url("/www/images/bkgtexture.png");
-    left:0;
-    padding: 0;
-    height: 280px;
-    width: 460px;
+    */
+    height: 90px;
+    width: 150px;
+    padding: 2px;
+}
+
+#languagelist .list-image {
+    height: 90px;
+    width: 150px;
 }
 

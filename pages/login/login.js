@@ -25,11 +25,12 @@
             NavigationBar.disablePage("search");
 
             // add page specific commands to AppBar
-            AppBar.commandList = [
+            var commandList = [
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
                 { id: 'clickAccount', label: getResourceText('start.buttonAccount'), tooltip: getResourceText('start.buttonAccount'), section: 'secondary' }
             ];
-            this.controller = new Login.Controller(element);
+
+            this.controller = new Login.Controller(element, commandList);
             Log.ret(Log.l.trace);
         },
 

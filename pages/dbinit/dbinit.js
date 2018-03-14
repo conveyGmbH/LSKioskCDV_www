@@ -20,9 +20,9 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            AppBar.commandList = [];
+            var commandList = [];
 
-            this.controller = new DBInit.Controller(element);
+            this.controller = new DBInit.Controller(element, commandList);
             Log.ret(Log.l.trace);
         },
 

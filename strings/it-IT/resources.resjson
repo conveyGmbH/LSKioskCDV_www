@@ -50,7 +50,7 @@
     "tooltip.publish"       : "Pubblicare il questionario",
     "tooltip.photo"         : "Scattare foto",
 
-    "start.title"           : "Pagina iniziale",
+    "start.title"           : "Start",
     "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
     "start.buttonContact"   : "Ultimo contatto",
     "start.buttonListLocal" : "Locale",
@@ -78,7 +78,7 @@
     "start.info"            : "Informazioni importanti",
     "start.language"        : "Lingua",
 
-    "contact.title"         : "Contatto",
+    "contact.title"         : "Inserisci i tuoi dati di contatto per favore",
     "contact.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "contact.questionDelete": "Vuoi eliminare questo contatto?",
     "contact.name"          : "Cognome",
@@ -100,6 +100,7 @@
     "contact.incomplete"    : "Elaborazione incompleta",
 	"contact.notice"		: "Scorgere",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continua",
 
     "contact.closeImage"    : "Chiudi",
 
@@ -177,12 +178,13 @@
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
-    "barcode.title"         : "Scan your badge",  
-    "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
+    "barcode.title"         : "Analizza il tuo badge visitatore",  
+    "barcode.description"   : "Tieni il tuo badge visitatore<br>di fronte allo scanner sotto questa schermata",
     "barcode.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
     "barcode.emailNeeded"   : "Per favore, Inserisci il tuo indirizzo di email!",
+	"barcode.manualEdit"    : "Cattura manuale",
 
     "settings.title"        : "Impostazioni",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -266,7 +268,7 @@
     "account.unknown"       : "Nome utente specificato non trovato!",
     "account.inactive"      : "Il servizio è attualmente inattivo!",
      
-    "info.title"            : "Informazione",
+    "info.title"            : "Informazioni sull'applicazione",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Opzioni di Login",
@@ -285,6 +287,7 @@
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",
+    "info.useClippingCamera": "Riconoscimento automatico",
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
     "info.replInterval"     : "Intervallo in s",
@@ -292,6 +295,8 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Registrazione audio",
+    "info.autoShutterTime"  : "Tempo di innesco [ms]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",
@@ -402,24 +407,26 @@
     "appheader.notpublished": "Non pubblicato",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "#fitforfuture",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 
-    "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 10 STM32 Nucleos) + (1 out of 2 ST25 shields)",
-    "productlist.selected"  : "Selection completed?",
+    "productlist.title"     : "",
+    "productlist.subtitle"  : "",
+    "productlist.selected"  : "Selezione completata?",
     "productlist.comment"   : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "productlist.count"     : "Totale",
     "productlist.continue"  : "Continua",
     "productlist.titletext" : "Choose products to get more informations",
 
-    "languagelist.title"    : "Selezione del Lingue",
-    "languagelist.comment"  : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+    "languagelist.title"    : "Adler ti<br>prepara al futuro!",
+    "languagelist.comment"  : "Ottieni uno Smartwatch da Apple<br>o Samsung a tua scelta.",
+    "languagelist.continue" : "Continuare",
 	
-    "finished.title"        : "Badge successfully scanned",
-    "finished.complete"     : "Complete",
-    "finished.description"  : " will receive the product link<br>and promotion code for free purchase valid till March 5th",
+    "finished.title"        : "Registrato con successo",
+    "finished.complete"     : "Uscita",
+    "finished.description"  : "&nbsp;riceverà un' e-mail di conferma<br>e parteciperà al concorso",
     "finished.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
     "failed.title"          : "An error occured",

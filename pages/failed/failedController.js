@@ -67,6 +67,12 @@
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
+                clickForward: function (event) {
+                    Log.call(Log.l.trace, "Failed.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("contact", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickScan: function (event) {
                     Log.call(Log.l.trace, "Failed.Controller.");
                     that.cancelPromises();

@@ -55,7 +55,7 @@
                     Log.ret(Log.l.trace);
                 },
                 onSelectionChanged: function (eventInfo) {
-                    Log.call(Log.l.trace, "EmpList.Controller.");
+                    Log.call(Log.l.trace, "LanguageList.Controller.");
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
                         if (listControl.selection) {
@@ -71,13 +71,11 @@
                                         AppData._persistentStates.languageId = item.data.LanguageID;
                                         Application.pageframe.savePersistentStates();
                                         Application.pageframe.reCheckForLanguage(function() {
-                                            Application.navigateById("productlist");
+                                            WinJS.Resources.processAll(pageElement);
                                         }, function() {
                                             var errorResponse = "Error: failed to switch language!";
                                             AppData.setErrorMsg(that.binding, errorResponse);
                                         });
-                                    } else {
-                                        Application.navigateById("productlist");
                                     }
                                 });
                             }

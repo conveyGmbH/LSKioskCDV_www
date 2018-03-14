@@ -11,9 +11,9 @@
     border-color: Window;
 }
 
-.toggle-switch-parent {
+/*.toggle-switch-parent {
     height: 40px;
-}
+}*/
 #isDarkTheme .win-toggleswitch-header,
 #individualColors .win-toggleswitch-header,
 #shopAppBkg .win-toggleswitch-header {

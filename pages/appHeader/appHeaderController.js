@@ -70,7 +70,17 @@
                                 if (eventDocContent) {
                                     sub = eventDocContent.search("\r\n\r\n");
                                     if (sub >= 0) {
-                                        showLogo("eventLogo", eventDocFormat, eventDocContent.substr(sub + 4));
+                                        var appBkg = null;
+                                        var docType = null;
+                                        if (AppData._persistentStates.showAppBkg) {
+                                            appBkg = document.querySelector(".app-bkg");
+                                            docType = AppData.getDocType(eventDocFormat);
+                                        }
+                                        if (appBkg && appBkg.style && docType) {
+                                            appBkg.style.background = "url('data:" + docType + ";base64," + eventDocContent.substr(sub + 4) + "') no-repeat center center fixed";
+                                        } else {
+                                            showLogo("eventLogo", eventDocFormat, eventDocContent.substr(sub + 4));
+                                        }
                                     }
                                 }
                                 if (organizerDocContent) {
@@ -104,7 +114,7 @@
                     Colors.loadSVGImageElements(pageElement, "event-logo-image"); //, noSize; //{ width: 250, height: 51 }, "#FFFFFF");
                 }
                 if (!that.binding.organizerLogoSrc) {
-                    Colors.loadSVGImageElements(pageElement, "logo-image", noSize, "#FFFFFF");
+                    Colors.loadSVGImageElements(pageElement, "logo-image");//, noSize, "#FFFFFF");
                 }
                 Log.print(Log.l.trace, "Data loaded");
             });

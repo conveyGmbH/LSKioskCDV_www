@@ -2,48 +2,17 @@
     font-family: 'Roboto';
     src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
 
-html, body {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    color: #000000;
-    background: #f6f7f7 !important; }
+@font-face {
+    font-family: 'TheMixOsF-SemiBold';
+    src: url("../fonts/TheMixOsF-SemiBold.ttf") format("truetype"); }
 
-.nx-body {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    color: #000000;
-    background: #f6f7f7 !important; }
+@font-face {
+    font-family: 'TheMixOsF-ExtraBold';
+    src: url("../fonts/TheMixOsF-ExtraBold.ttf") format("truetype"); }
 
-/* Text styles */
-h2 {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 1;
-    text-align: center;
-    color: #000000; }
+html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
 
-h1 {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 36px;
-    font-weight: 300;
-    line-height: 1.25;
-    text-align: center;
-    color: #000000; }
-
-p {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 24px;
-    font-weight: 300;
-    line-height: 1;
-    text-align: center;
-    color: #00417f; }
-
-.p-small {
-    font-family: "Roboto", "Segoe UI", "Arial";
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 2.5;
-    text-align: right;
-    color: #00417f; }
+.nx-body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
 
 .display-none {
     display: none; }
@@ -57,23 +26,29 @@ p {
     clear: both; }
 
 .nx--nullify-button, .nx-button {
+    /*
     background: none;
     border-radius: 0;
     border: none;
+    */
     cursor: pointer; }
 
 .nx-button {
     display: block;
     padding: 20px 60px !important;
+    /*
     background-color: #00417f !important;
-    color: #ffffff !important;
     font-family: "Roboto", "Segoe UI", "Arial" !important;
+    */
+    background-color: gray !important;
+    color: #ffffff !important;
+    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
     font-size: 36px !important;
     line-height: 1.5 !important;
     text-align: center !important;
     text-transform: uppercase; }
 .nx-button--centered {
-    margin: 8px auto; }
+    margin: 8px auto !important; }
 
 .nx-header {
     left: 0;
@@ -81,10 +56,13 @@ p {
     top: 0;
     width: 100%;
     overflow: hidden;
+    /*
     background: #f6f7f7;
+    */
     z-index: 100; }
 .nx-header .nx-header__top-bar {
-    background: #00417f;
+    /*
+    */
     width: 100%;
     height: 111px;
     position: relative; }
@@ -114,11 +92,14 @@ p {
 .nx-cancel {
     position: absolute;
     right: 40px;
-    top: 30px; }
+    top: 30px;
+    background-color: transparent !important;
+    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+}
 .nx-cancel span {
     font-size: 24px;
     font-weight: 300;
-    line-height: 65px;
+    line-height: 40px;
     padding-right: 20px;
     text-align: right;
     color: #00417f;
@@ -127,17 +108,99 @@ p {
     display: inline-block;
     float: right;
     width: 40px;
-    height: 40px; }
+    height: 40px;
+    margin-right: 20px;
+}
+
+.nx-forward {
+    position: absolute;
+    right: 40px;
+    top: 150px;
+    background-color: transparent !important;
+    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+}
+.nx-forward span {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 80px;
+    text-align: right;
+    color: #00417f;
+    display: inline-block; }
+.nx-forward svg {
+    display: inline-block;
+    float: right;
+    width: 80px;
+    height: 80px; }
+
+
+.nx-nav-back {
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    width: 150px;
+    border-color: transparent !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+.nx-nav-back .navigate {
+    margin-left: calc(50% - 50px);
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+.nx-nav-back .navigate-image-bkg {
+    position: relative;
+    left: 0;
+    top: 0;
+    opacity: 0.5;
+    transition: opacity 200ms;
+}
+.nx-nav-back:hover .navigate-image-bkg {
+    opacity: 0.7;
+}
+.nx-nav-back:active .navigate-image-bkg {
+    opacity: 0.9;
+}
+.nx-nav-back .navigate-image {
+    position: relative;
+    left: 0px;
+    top: -95px;
+}
+.nx-nav-back span {
+    font-size: 24px;
+    text-align: center;
+    color: #00417f;
+    display: inline-block;
+    float: left;
+    width: 100%;
+}
 
 .nx-title {
     margin:auto;
     font-size: 48px;
-    font-weight: 300;
+    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
     line-height: 1;
     text-align: center; }
 
+.nx-title--bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
 .nx-subtitle {
     font-size: 36px;
+}
+
+.nx-title--bold {
+    font-family: "TheMixOsF-ExtraBold", "Segoe UI", "Arial" !important;
+    /*
+    font-weight: 900 !important;
+    */
+}
+
+.nx-title--upper {
+    text-transform: uppercase;
 }
 
 .nx-title_black {
@@ -154,6 +217,26 @@ p {
     /* 
     margin-top: 35px;
     margin-bottom: 20px;
-    */
     color: #767676;
+    */
+    color: gray;
     margin-top: 5px; }
+
+.nx-title_color {
+    /* 
+    margin-top: 35px;
+    margin-bottom: 20px;
+    color: #767676;
+    */
+    color: #000000;
+    margin-top: 5px; }
+
+.nx-proitem .nx-proitem__title {
+    color: #00417f;
+}
+.nx-proitem .nx-proitem__img-container .nx-proitem__preload-bg-color {
+    background-color: #767676 !important;
+}
+.nx-proitem .nx-proitem__overlay {
+    background-color: #00417f;
+}

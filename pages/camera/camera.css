@@ -1,0 +1,9 @@
+﻿body {
+}
+
+#largeImage {
+    display: none; 
+    width: 100%; 
+    height: calc(100% - 80px);
+    object-fit: contain;
+}

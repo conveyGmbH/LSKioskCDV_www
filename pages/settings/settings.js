@@ -21,11 +21,11 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            AppBar.commandList = [
+            var commandList = [
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
 
-			this.controller = new Settings.Controller(element);
+            this.controller = new Settings.Controller(element, commandList);
 			if (this.controller.eventHandlers) {
 			    // general event listener for hardware back button, too!
 			    this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickOk.bind(this.controller));

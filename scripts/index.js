@@ -17,7 +17,12 @@
             // navigation-color with 100% saturation and brightness
             accentColor: "#ff3c00"
         },
-        showAppBkg: false,
+        showAppBkg: true,
+        cameraQuality: 50,
+        cameraUseGrayscale: true,
+        cameraMaxSize: 2560,
+        useClippingCamera: false,
+        autoShutterTime: 0,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
@@ -85,8 +90,15 @@
             // clear contactId 
             AppData.setRecordId("Kontakt", null);
             // re-route directly to productlist page
-            id = "productlist";
+            //id = "productlist";
             //id = "languagelist";
+        } else if (id === "newlanguagelist") {
+            id = "languagelist";
+        } else if (id === "barcode") {
+            // re-route to camera page
+            if (AppData._persistentStates.kioskUsesCamera) {
+                id = "camera";
+            }
         }
         Log.ret(Log.l.trace);
         return id;

@@ -50,7 +50,7 @@
     "tooltip.publish"       : "Publish questionnaire",
     "tooltip.photo"         : "Capture photo",
 
-    "start.title"           : "Start Page",
+    "start.title"           : "Start",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
     "start.buttonContact"   : "recent contact",
     "start.buttonListLocal" : "local",
@@ -78,7 +78,7 @@
     "start.info"            : "Important informations",
     "start.language"        : "Language",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Please enter your contact data",
     "contact.comment"       : "On this page, use the Back button to go back!",
     "contact.questionDelete": "Do you want to delete the current contact?",
     "contact.name"          : "Last name",
@@ -100,6 +100,7 @@
     "contact.incomplete"    : "Editing incomplete",
 	"contact.notice"		: "Comment",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continue",
 
     "contact.closeImage"    : "Close",
 
@@ -177,12 +178,13 @@
     "camera.title"          : "Camera",
     "camera.comment"        : "On this page, use the Back button to go back!",
 
-    "barcode.title"         : "Scan your badge",
-    "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
+    "barcode.title"         : "Scan your visitor badge",
+    "barcode.description"   : "Please hold your visitor badge<br>in front of the scanner below this screen",
     "barcode.comment"       : "On this page, use the Back button to go back!",
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Place a barcode inside the scan area",
     "barcode.emailNeeded"   : "Please, enter your e-mail address!",
+	"barcode.manualEdit"    : "Capture manually",
 
     "settings.title"        : "Design",
     "settings.comment"      : "On this page, use the Back button to go back!",
@@ -266,7 +268,7 @@
     "account.unknown"       : "Specified user not found!",
     "account.inactive"      : "The service is currently inactive!",
     
-    "info.title"            : "Information",
+    "info.title"            : "Information about the app",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Logging options",
@@ -285,6 +287,7 @@
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
+    "info.useClippingCamera": "Automatic recognition",
     "info.replication"      : "Synchronisation options",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Interval in s",
@@ -292,6 +295,8 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Audio recording",
+    "info.autoShutterTime"  : "Trigger time [ms]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",
@@ -402,23 +407,25 @@
     "appheader.notpublished": "Not published",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "#fitforfuture",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
-    "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 10 STM32 Nucleos) + (1 out of 2 ST25 shields)",
+    "productlist.title"     : "",
+    "productlist.subtitle"  : "",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
     "productlist.continue"  : "Continue",
 
-    "languagelist.title"    : "Language selection",
-    "languagelist.comment"  : "On this page, use the Back button to go back!",
+    "languagelist.title"    : "Adler makes you<br>fit for the future!",
+    "languagelist.comment"  : "Win a Smartwatch from Apple<br>or Samsung of your choice.",
+    "languagelist.continue" : "Continue",
 	
-    "finished.title"        : "Badge successfully scanned",
-    "finished.complete"     : "Complete",
-    "finished.description"  : "&nbspwill receive the product link<br>and promotion code for free purchase valid till March 5th",
+    "finished.title"        : "Successfully registered",
+    "finished.complete"     : "Exit",
+    "finished.description"  : "&nbsp;will receive a confirmation email<br>and participate in the competition",
     "finished.comment"      : "On this page, use the Back button to go back!",
 	
     "failed.title"          : "An error occured",

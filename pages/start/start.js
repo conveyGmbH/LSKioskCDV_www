@@ -29,7 +29,7 @@
             options.showHalfCircle = true;
 
             AppBar.commandList = [
-                { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
+                // { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
             this.controller = new Start.Controller(element);
             Log.ret(Log.l.trace);

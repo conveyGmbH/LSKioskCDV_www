@@ -50,7 +50,7 @@
     "tooltip.publish"       : "Publier le questionnaire",
     "tooltip.photo"         : "Prendre photo",
 
-    "start.title"           : "Accueil",
+    "start.title"           : "Start",
     "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
     "start.buttonContact"   : "Dernier contacts",
     "start.buttonListLocal" : "Locale",
@@ -78,7 +78,7 @@
     "start.info"            : "Instructions importantes",
     "start.language"        : "Langue",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Veuillez entrer vos coordonnées contact",
     "contact.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "contact.questionDelete": "êtes -vous s\u00FBr de vouloir supprimer le contact?",
     "contact.name"          : "Nom",
@@ -100,6 +100,7 @@
     "contact.incomplete"    : "Édition incomplète",
 	"contact.notice"		: "Préavis",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continuer",	
 
     "contact.closeImage"    : "Fermer",
 
@@ -177,12 +178,13 @@
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
 
-    "barcode.title"         : "Scan your badge",  
-    "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
+    "barcode.title"         : "Scanner votre badge visiteur",  
+    "barcode.description"   : "Veuillez tenir votre badge visiteur<br> devant le scanner sous cet écran.",
     "barcode.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
     "barcode.emailNeeded"   : "S’il vous plaît, entrez votre adresse e-mail!",
+	"barcode.manualEdit"    : "Capture manuelle",
 
     "settings.title"        : "Design",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -266,7 +268,7 @@
     "account.unknown"       : "Utilisateur spécifié introuvable!",
     "account.inactive"      : "Le service est actuellement inactif!",
     
-    "info.title"            : "Information",
+    "info.title"            : "Informations sur l’application",
     "info.comment"          : "&copy; convey Information Systems GmbH 2015-2017",
     "info.homepage"         : "www.convey.de",
     "info.logOptions"       : "Paramètres de protocol",
@@ -285,6 +287,7 @@
     "info.cameraOptions"    : "Paramètres de caméra",
     "info.cameraQuality"    : "Qualité",
     "info.cameraUseGrayscale" : "Niveaux de gris",
+    "info.useClippingCamera": "Reconnaissance automatique",
     "info.replication"      : "Paramètres de sync",
     "info.replActive"       : "Sync",
     "info.replInterval"     : "Intervalle en sec",
@@ -292,6 +295,8 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Enregistrement audio",
+    "info.autoShutterTime"  : "Temps de déclenchement [ms]",
 
 	"infodesk.employee"		: "Personnel",
 	"infodesk.title"		: "Infodesk",
@@ -402,23 +407,25 @@
     "appheader.notpublished": "Pas publié",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "#fitforfuture",
 
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
 	
-    "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 10 STM32 Nucleos) + (1 out of 2 ST25 shields)",
-    "productlist.selected"  : "Selection completed?",
+    "productlist.title"     : "",
+    "productlist.subtitle"  : "",
+    "productlist.selected"  : "Sélection terminée?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
     "productlist.continue"  : "Continuer",	
 
-    "languagelist.title"    : "Sélection de Langues",
-    "languagelist.comment"  : "Utilisez le bouton Retour sur cette page pour y retourner!",
+    "languagelist.title"    : "Adler vous met<br>en forme pour l'avenir!",
+    "languagelist.comment"  : "Gagnez une montre Smartwatch d'Apple<br>ou Samsung de votre choix.",
+    "languagelist.continue" : "Continuer",
 	
-    "finished.title"        : "Badge successfully scanned",
-    "finished.complete"     : "Complete",
-    "finished.description"  : " will receive the product link<br>and promotion code for free purchase valid till March 5th",
+    "finished.title"        : "Inscription réussie",
+    "finished.complete"     : "Quitter",
+    "finished.description"  : "&nbsp;recevra un email de confirmation<br>et participera au concours",
     "finished.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
 	
     "failed.title"          : "An error occured",

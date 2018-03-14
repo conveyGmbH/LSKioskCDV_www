@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="camera.css" rel="stylesheet" />
+    <script type="text/javascript" src="cameraService.js"></script>
+    <script type="text/javascript" src="cameraController.js"></script>
+    <script type="text/javascript" src="camera.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="camera fragment">
+        <div id="cameraController" class="data-container">
+            <section aria-label="Main content" role="main" class="animationElement">
+                <div class="contentarea win-type-body">
+                    <div class="header-separator"></div>
+                    <div class="content-header">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="content-header-line win-type-caption">
+                            <span class="id-field" data-win-bind="textContent: generalData.globalContactID"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'camera.title'}"></span>
+                            <span class="date-field" data-win-bind="textContent: generalData.contactDate Binding.Converter.toDateString"></span>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="win-type-subtitle" data-win-bind="textContent: states.errorMessage"></div>
+                        <br />
+                        <div class="header-comment" data-win-res="{textContent: 'camera.comment'}"></div>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

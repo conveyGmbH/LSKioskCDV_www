@@ -10,20 +10,22 @@
 <body class="win-type-body">
     <div class="languagelist">
         <div id="languagelistController" class="data-container">
-            <section aria-label="Main content" role="main" class="animationElement">
+            <section aria-label="Main content" role="main">
                 <div class="contentarea win-type-body">
                     <div class="headerFooterPlaceholder">
                         <div class="list-header">
-                            <div class="header-separator"></div>
-                            <div class="content-header">
-                                <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                                <div class="content-header-line win-type-caption">
-                                    <div class="idAndDate win-type-caption">
-                                        <span class="id-field"></span>
-                                        <span class="caption-field" data-win-res="{textContent: 'languagelist.title'}"></span>
-                                        <span class="date-field"></span>
-                                    </div>
+                            <div class="nx-title">
+                                <div class="nx-title_color nx-title--upper nx-title--bold">
+                                    <span data-win-res="{innerHTML: 'languagelist.title'}"></span>
                                 </div>
+                                <div class="nx-title_black">
+                                    <span class="nx-subtitle"
+                                          data-win-res="{innerHTML: 'languagelist.comment'}"></span>
+                                </div>
+                                <button class="win-button nx-button nx-button--centered nx-title--bold"
+                                        onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                    <span data-win-res="{textContent: 'languagelist.continue'}"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -34,13 +36,19 @@
                                  data-win-bind="docId: LandflaggeVIEWID">
                                 <div class="list-image-fgd"></div>
                             </div>
-                            <div class="win-type-body window-color overlay">
-                                <div class="item-title" data-win-bind="textContent: TITLE"></div>
-                            </div>
+                            <!--
+                    <div class="win-type-body window-color overlay">
+                        <div class="item-title" data-win-bind="textContent: TITLE"></div>
+                    </div>
+                    -->
                         </div>
                     </div>
+                    <div class="nx-title nx-title--bottom">
+                        <img class="start-image"
+                             src="/www/images/start_image.png" />
+                    </div>
                     <div id="languagelist"
-                         class="listview"
+                         class="listview animationElement"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
                             itemTemplate: select('.languages-template'),

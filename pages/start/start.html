@@ -10,16 +10,29 @@
 <body class="win-type-body">
     <div class="start">
         <div id="startController" class="data-container">
-            <section aria-label="Main content" role="main" class="animationElement">
-                <div class="contentarea win-type-body">
-                    <div class="header-separator"></div>
-                    <div class="content-header">
-                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
-                        <div class="content-header-line win-type-caption">
-                            <span class="id-field"></span>
-                            <span class="caption-field" data-win-res="{textContent: 'start.title'}"></span>
-                            <span class="date-field"></span>
-                        </div>
+            <section aria-label="Main content" role="main" >
+                <div class="contentarea nx-body">
+                    <div class="nx-title animationElement">
+                        <button class="win-button nx-button nx-button--centered start-button"
+                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <div class="nx-title_color start-navigate start-navigate-text-container">
+                                <span class="nx-title--bold start-navigate-text"
+                                      data-win-res="{innerHTML: 'start.title'}"></span>
+                            </div>
+                            <div class="start-navigate start-navigate-image-container">
+                                <div title="hand_touch" class="start-navigate-image"></div>
+                            </div>
+                            <div class="start-navigate start-navigate-image-black-container">
+                                <div title="hand_touch" class="start-navigate-image-black"></div>
+                            </div>
+                            <div class="start-navigate start-navigate-image-color-container">
+                                <div title="hand_point_up" class="start-navigate-image"></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="nx-title nx-title--bottom">
+                        <img class="start-image"
+                             src="/www/images/start_image.png" />
                     </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
