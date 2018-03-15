@@ -344,6 +344,13 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickStart: function (event) {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    // cancel navigates now directly back to start
+                    that.cancelPromises();
+                    Application.navigateById("start", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickScan: function (event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.cancelPromises();
