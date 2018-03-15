@@ -10,9 +10,9 @@
 <body class="win-type-body">
     <div class="productlist">
         <div id="listLocalController" class="data-container">
-            <section aria-label="Main content" role="main" class="animationElement">
+            <section aria-label="Main content" role="main" >
                 <div class="contentarea nx-body">
-                    <div class="list-header nx-title">
+                    <div class="list-header nx-title animationElement" >
                         <div class="nx-title_black"
                                 data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
                             <span data-win-bind="innerHTML: listTitle"></span><br/>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div id="productlist"
-                         class="listview"
+                         class="listview animationElement"
                          data-win-control="WinJS.UI.ListView"
                          data-win-options="{
                             itemTemplate: select('.products-template'),
