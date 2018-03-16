@@ -5,6 +5,7 @@
 
 .contact-line {
     margin: 20px;
+    width: calc(100% - 40px);
 }
 
 .contact-label {
@@ -18,4 +19,8 @@
     float: left;
     height: 60px;
     font-size: 32px;
+}
+
+#InitLand {
+    min-width: 100%;
 }

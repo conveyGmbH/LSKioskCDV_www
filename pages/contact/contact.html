@@ -28,9 +28,18 @@
                                     <span class="contact-label" data-win-res="{textContent: 'contact.email'}"></span>
                                     <input class="win-textbox contact-input" type="email" data-win-bind="value: dataContact.EMail Binding.Mode.twoway" />
                                 </div>
+                                <div class="contact-line">
+                                    <span class="contact-label" data-win-res="{textContent: 'contact.country'}"></span>
+                                    <select id="InitLand"
+                                            class="win-dropdown contact-input"
+                                            data-win-control="WinJS.UI.Repeater"
+                                            data-win-bind="value: dataContact.INITLandID Binding.Mode.twoway">
+                                        <option data-win-bind="value: INITLandID; textContent: TITLE"></option>
+                                    </select>
+                                </div>
 
                                 <div class="contact-line">
-                                    <!--<span class="contact-label" data-win-res="{textContent: 'contact.formOf'}"></span>-->
+                                    <span class="contact-label" data-win-res="{textContent: 'contact.formOf'}"></span>
                                     <select id="InitAnrede" class="win-dropdown contact-input"
                                             data-win-control="WinJS.UI.Repeater"
                                             data-win-bind="value: dataContact.INITAnredeID Binding.Mode.twoway">

@@ -26,10 +26,14 @@
 
             // select combo
             var initAnrede = pageElement.querySelector("#InitAnrede");
+            var initLand = pageElement.querySelector("#InitLand");
 
             this.dispose = function () {
                 if (initAnrede && initAnrede.winControl) {
                     initAnrede.winControl.data = null;
+                }
+                if (initLand && initLand.winControl) {
+                    initLand.winControl.data = null;
                 }
             }
 
@@ -39,7 +43,8 @@
                 AppBar.notifyModified = false;
                 that.binding.dataContact = newDataContact;
                 if (that.binding.dataContact.EMail &&
-                    that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0) {
+                    that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0 &&
+                    that.binding.dataContact.INITLandID) {
                     that.binding.clickOkDisabled = false;
                 } else {
                     that.binding.clickOkDisabled = true;
@@ -98,7 +103,8 @@
                     Log.call(Log.l.u2, "Contact.Controller.");
                     if (that.binding.dataContact &&
                         that.binding.dataContact.EMail &&
-                        that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0) {
+                        that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0 &&
+                        that.binding.dataContact.INITLandID) {
                         that.binding.clickOkDisabled = false;
                     } else {
                         that.binding.clickOkDisabled = true;
@@ -144,6 +150,32 @@
                         if (initAnrede && initAnrede.winControl &&
                             (!initAnrede.winControl.data || !initAnrede.winControl.data.length)) {
                             initAnrede.winControl.data = new WinJS.Binding.List(AppData.initAnredeView.getResults());
+                        }
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    if (!AppData.initLandView.getResults().length) {
+                        Log.print(Log.l.trace, "calling select initLandData...");
+                        //@nedra:25.09.2015: load the list of INITLand for Combobox
+                        return AppData.initLandView.select(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "initLandView: success!");
+                            if (json && json.d && json.d.results) {
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                if (initLand && initLand.winControl) {
+                                    initLand.winControl.data = new WinJS.Binding.List(json.d.results);
+                                }
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        if (initLand && initLand.winControl &&
+                            (!initLand.winControl.data || !initLand.winControl.data.length)) {
+                            initLand.winControl.data = new WinJS.Binding.List(AppData.initLandView.getResults());
                         }
                         return WinJS.Promise.as();
                     }
