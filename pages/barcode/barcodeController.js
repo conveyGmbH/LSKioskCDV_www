@@ -41,11 +41,6 @@
 
             var cancelPromises = function() {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                if (that.refreshPromise) {
-                    Log.print(Log.l.trace, "cancel previous refresh Promise");
-                    that.refreshPromise.cancel();
-                    that.refreshPromise = null;
-                }
                 if (that.animationPromise) {
                     Log.print(Log.l.trace, "cancel previous animation Promise");
                     that.animationPromise.cancel();
@@ -76,6 +71,12 @@
                         // this callback will be called asynchronously
                         Log.print(Log.l.trace, "contactView: deleteRecord success!");
                         AppData.setRecordId("Kontakt", null);
+                        if (that.refreshPromise) {
+                            Log.print(Log.l.trace, "cancel previous refresh Promise");
+                            that.refreshPromise.cancel();
+                            that.refreshPromise = null;
+                        }
+                        that.cancelPromises();
                         Application.navigateById(targetPage);
                     }, function(errorResponse) {
                         // called asynchronously if an error occurs
@@ -92,6 +93,11 @@
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function() {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("start");
                 });
@@ -104,6 +110,11 @@
                 that.cancelPromises();
                 that.failurePromise = WinJS.Promise.timeout(that.failureWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, navigate to failed page!");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("failed");
                 });
@@ -115,6 +126,11 @@
             this.eventHandlers = {
                 clickBack: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("start", event);
                     //if (WinJS.Navigation.canGoBack === true) {
@@ -125,6 +141,11 @@
                 },
                 clickForward: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("contact", event);
                     Log.ret(Log.l.trace);
@@ -132,12 +153,22 @@
                 // only for navigation tests:
                 clickFinished: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("finished", event);
                     Log.ret(Log.l.trace);
                 },
                 clickFailed: function (event) {
                     Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("failed", event);
                     Log.ret(Log.l.trace);
@@ -147,6 +178,11 @@
                     // cancel navigates now directly back to start
                     // now, don't delete contact in case of error
                     //that.deleteAndNavigate("start");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
                     that.cancelPromises();
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
@@ -193,6 +229,11 @@
                                 if (that.binding.dataContact.EMail &&
                                     that.binding.dataContact.EMail.length > 0) {
                                     Log.print(Log.l.trace, "contactView: EMail=" + that.binding.dataContact.EMail + " => navigate to finished page!");
+                                    if (that.refreshPromise) {
+                                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                                        that.refreshPromise.cancel();
+                                        that.refreshPromise = null;
+                                    }
                                     that.cancelPromises();
                                     if (that.binding.dataContact.ExistsProductMail ||
                                         that.binding.dataContact.ProductLimitExceeded) {
@@ -229,6 +270,11 @@
                                 }
                             } else {
                                 Log.print(Log.l.trace, "contactView: no data found!");
+                                if (that.refreshPromise) {
+                                    Log.print(Log.l.trace, "cancel previous refresh Promise");
+                                    that.refreshPromise.cancel();
+                                    that.refreshPromise = null;
+                                }
                                 that.cancelPromises();
                                 Application.navigateById("start", event);
                             }
@@ -247,6 +293,11 @@
                         //var err = { status: 0, statusText: "no record selected" };
                         //AppData.setErrorMsg(that.binding, err);
                         Log.print(Log.l.trace, "contactView: no record selected!");
+                        if (that.refreshPromise) {
+                            Log.print(Log.l.trace, "cancel previous refresh Promise");
+                            that.refreshPromise.cancel();
+                            that.refreshPromise = null;
+                        }
                         that.cancelPromises();
                         Application.navigateById("start", event);
                         return WinJS.Promise.as();
