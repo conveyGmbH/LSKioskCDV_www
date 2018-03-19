@@ -20,7 +20,8 @@
             Application.Controller.apply(this, [pageElement, {
                 clickOkDisabled: true,
                 dataContact: getEmptyDefaultValue(Contact.contactView.defaultValue),
-                InitAnredeItem: { InitAnredeID: 0, TITLE: "" }
+                InitAnredeItem: { InitAnredeID: 0, TITLE: "" },
+                isSaved: false
             }, commandList]);
             var that = this;
 
@@ -219,9 +220,11 @@
                     dataContact.Nachbearbeitet = 1;
                 }
                 var recordId = getRecordId();
-                if (recordId && dataContact && dataContact.KontaktVIEWID && AppBar.modified && !AppBar.busy) {
+                if (recordId && dataContact && dataContact.KontaktVIEWID && !AppBar.busy &&
+                     (AppBar.modified || !that.binding.isSaved && !that.binding.clickOkDisabled)) {
                     AppBar.busy = true;
                     ret = Contact.contactView.update(function (response) {
+                        that.binding.isSaved = true;
                         AppBar.busy = false;
                         // called asynchronously if ok
                         Log.print(Log.l.info, "contactData update: success!");
