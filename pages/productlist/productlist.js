@@ -10,6 +10,38 @@
     "use strict";
 
     WinJS.Namespace.define("Application.ProductListLayout", {
+        GroupsLayout: WinJS.Class.derive(WinJS.UI.GridLayout, function (options) {
+            WinJS.UI.GridLayout.apply(this, [options]);
+            this._site = null;
+            this._surface = null;
+        },
+        {
+            // This sets up any state and CSS layout on the surface of the custom layout
+            initialize: function (site) {
+                if (this.__proto__ &&
+                    typeof this.__proto__.initialize === "function") {
+                    this.__proto__.initialize(site);
+                }
+                this._site = site;
+                this._surface = this._site.surface;
+
+                // Add a CSS class to control the surface level layout
+                WinJS.Utilities.addClass(this._surface, "productgroupLayout");
+
+                return WinJS.UI.Orientation.vertical;
+            },
+
+            // Reset the layout to its initial state
+            uninitialize: function () {
+                WinJS.Utilities.removeClass(this._surface, "productgroupLayout");
+                this._site = null;
+                this._surface = null;
+                if (this.__proto__ &&
+                    typeof this.__proto__.uninitialize === "function") {
+                    this.__proto__.uninitialize();
+                }
+            }
+        }),
         ProductsLayout: WinJS.Class.derive(WinJS.UI.GridLayout, function (options) {
             WinJS.UI.GridLayout.apply(this, [options]);
             this._site = null;
@@ -88,7 +120,8 @@
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
                     var listView = element.querySelector("#productlist.listview");
-                    if (listView && listView.style) {
+                    var sezoom = element.querySelector("#sezoom");
+                    if (listView && listView.style && sezoom && sezoom.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var listHeader = element.querySelector(".list-header");
@@ -96,16 +129,18 @@
                             var height = contentarea.clientHeight - 8;
 
                             if (listHeader) {
+                                //var strTop = listHeader.clientHeight.toString() + "px";
+                                //sezoom.style.top = strTop;
                                 height -= listHeader.clientHeight;
                             }
 
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                listView.style.width = width.toString() + "px";
+                                sezoom.style.width = width.toString() + "px";
                             }
                             if (height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                listView.style.height = height.toString() + "px";
+                                sezoom.style.height = height.toString() + "px";
                             }
                         }
                     }

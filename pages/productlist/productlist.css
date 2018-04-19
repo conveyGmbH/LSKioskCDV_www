@@ -1,12 +1,19 @@
 ﻿/*
     styles for productlist page
 */
-#listLocalController .list-header {
-    /*
-        height: 220px;
-    */
-    height: 165px;
+
+.productlist .list-header {
+    height: 220px;
     overflow: hidden; }
+
+.productlist .list-header .nx-forward {
+    top: 60px;
+}
+.productlist .list-header .nx-button {
+    padding: 10px 60px !important;
+    font-size: 24px !important;
+}
+
 
 #productlist .win-itemscontainer {
     padding-left: 30px; }
@@ -53,18 +60,10 @@
     font-weight: 300;
     margin-bottom: 40px; }
 
-#productlist .list-header {
-    position: fixed;
-    top: 111px;
-    left: 0;
-    width: 100%;
-    right: 0;
-    z-index: 100;
-    height: 209px;
-    background: #ffffff; }
-
 #productlist .nx-button {
-    margin-top: 30px; }
+    background-color: transparent !important;
+    display: inline;
+}
 
 #productlist .nx-title_black {
     margin-top: 30px; }
@@ -72,10 +71,58 @@
 #productlist .nx-title_gray {
     margin-top: 35px; }
 
+#productlist .win-groupheadercontainer {
+    /*margin-top: 30px;*/
+}
+#productlist .win-groupheader {
+    width: 100%;
+    /*
+    padding-top: 0;
+    padding-bottom: 0;
+    */
+}
+
+.products-group-item {
+    width: 600px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", "Arial" !important;
+    font-size: 36px !important;
+    line-height: 1.5 !important;
+}
+
+.products-group-item .nx-proitem__title {
+    width: 100%;
+    text-align: center;
+}
+
+.products-group-header {
+    width: 100%;
+    margin: 10px 28px;
+    text-align: center;
+    font-family: "Segoe UI", "Arial" !important;
+    font-size: 36px !important;
+    line-height: 1.5 !important;
+}
+
+.product-group-button {
+    padding: 10px 60px !important;
+    /*
+    background-color: #00417f !important;
+    font-family: "Roboto", "Segoe UI", "Arial" !important;
+    */
+    background-color: transparent !important;
+    font-family: "Segoe UI", "Arial" !important;
+    font-size: 36px !important;
+    line-height: 1.5 !important;
+    text-align: center !important; }
+
+
 .nx-proitem {
     position: relative;
     margin: 10px 10px;
-    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important; }
+    font-family: "Segoe UI", "Arial" !important; }
 .nx-proitem .nx-proitem__img-container {
     width: 445px;
     height: 250px;

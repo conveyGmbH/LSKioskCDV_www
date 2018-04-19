@@ -177,6 +177,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "On this page, use the Back button to go back!",
+    "camera.appbartext"     : "Please place your business card on the shelf below",
 
     "barcode.title"         : "Scan your visitor badge",
     "barcode.description"   : "Please hold your visitor badge<br>in front of the scanner below this screen",
@@ -407,25 +408,27 @@
     "appheader.notpublished": "Not published",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
-    "appheader.title"       : "#fitforfuture",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
-    "productlist.title"     : "",
+    "productlist.title"     : "Select the brochures you require here:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
     "productlist.continue"  : "Continue",
+    "productlist.barcode"   : "Scan barcode",
+    "productlist.camera"    : "Capture business card",
 
-    "languagelist.title"    : "Adler makes you<br>fit for the future!",
-    "languagelist.comment"  : "Win a Smartwatch from Apple<br>or Samsung of your choice.",
+    "languagelist.title"    : "Send information material easily and conveniently!",
+    "languagelist.comment"  : "Please select the desired language.",
     "languagelist.continue" : "Continue",
 	
     "finished.title"        : "Successfully registered",
     "finished.complete"     : "Exit",
-    "finished.description"  : "&nbsp;will receive a confirmation email<br>and participate in the competition",
+    "finished.description"  : "You will receive an email with the requested information",
     "finished.comment"      : "On this page, use the Back button to go back!",
 	
     "failed.title"          : "An error occured",

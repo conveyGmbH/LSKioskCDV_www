@@ -177,6 +177,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
+    "camera.appbartext"     : "Veuillez placer votre carte de visite sur l'étagère ci-dessous",
 
     "barcode.title"         : "Scanner votre badge visiteur",  
     "barcode.description"   : "Veuillez tenir votre badge visiteur<br> devant le scanner sous cet écran.",
@@ -407,25 +408,27 @@
     "appheader.notpublished": "Pas publié",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
-    "appheader.title"       : "#fitforfuture",
+    "appheader.title"       : "",
 
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
 	
-    "productlist.title"     : "",
+    "productlist.title"     : "Sélectionnez ici les brochures dont vous avez besoin:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Sélection terminée?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
     "productlist.continue"  : "Continuer",	
+    "productlist.barcode"   : "Scanner le code-barres",
+    "productlist.camera"    : "Capturer la carte de visite",
 
-    "languagelist.title"    : "Adler vous met<br>en forme pour l'avenir!",
-    "languagelist.comment"  : "Gagnez une montre Smartwatch d'Apple<br>ou Samsung de votre choix.",
+    "languagelist.title"    : "Envoyez du matériel d'information facilement et facilement!",
+    "languagelist.comment"  : "Veuillez sélectionner la langue souhaitée.",
     "languagelist.continue" : "Continuer",
 	
     "finished.title"        : "Inscription réussie",
     "finished.complete"     : "Quitter",
-    "finished.description"  : "&nbsp;recevra un email de confirmation<br>et participera au concours",
+    "finished.description"  : "Vous recevrez un email avec les informations demandées",
     "finished.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
 	
     "failed.title"          : "An error occured",

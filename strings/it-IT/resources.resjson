@@ -177,6 +177,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+    "camera.appbartext"     : "Metti il tuo biglietto da visita sullo scaffale sottostante",
 	
     "barcode.title"         : "Analizza il tuo badge visitatore",  
     "barcode.description"   : "Tieni il tuo badge visitatore<br>di fronte allo scanner sotto questa schermata",
@@ -407,26 +408,27 @@
     "appheader.notpublished": "Non pubblicato",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
-    "appheader.title"       : "#fitforfuture",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 
-    "productlist.title"     : "",
+    "productlist.title"     : "Selezionate qui l'opuscolo desiderato:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Selezione completata?",
     "productlist.comment"   : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "productlist.count"     : "Totale",
     "productlist.continue"  : "Continua",
-    "productlist.titletext" : "Choose products to get more informations",
+    "productlist.barcode"   : "Scansione codice a barre",
+    "productlist.camera"    : "Acquisizione biglietto da visita",
 
-    "languagelist.title"    : "Adler ti<br>prepara al futuro!",
-    "languagelist.comment"  : "Ottieni uno Smartwatch da Apple<br>o Samsung a tua scelta.",
+    "languagelist.title"    : "Inviateci materiale informativo in modo semplice e comodo!",
+    "languagelist.comment"  : "Selezionare la lingua desiderata.",
     "languagelist.continue" : "Continuare",
 	
     "finished.title"        : "Registrato con successo",
     "finished.complete"     : "Uscita",
-    "finished.description"  : "&nbsp;riceverà un' e-mail di conferma<br>e parteciperà al concorso",
+    "finished.description"  : "Riceverai un'e-mail con le informazioni richieste",
     "finished.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 	
     "failed.title"          : "An error occured",

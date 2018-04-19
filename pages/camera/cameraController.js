@@ -199,20 +199,24 @@
 
             var onPhotoDataSuccess = function (imageData) {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                // Get image handle
-                //
-                var cameraImage = new Image();
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                cameraImage.src = "data:image/jpeg;base64," + imageData;
+                if (imageData) {
+                    // Get image handle
+                    //
+                    var cameraImage = new Image();
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    cameraImage.src = "data:image/jpeg;base64," + imageData;
 
-                var width = cameraImage.width;
-                var height = cameraImage.height;
-                Log.print(Log.l.trace, "width=" + width + " height=" + height);
+                    var width = cameraImage.width;
+                    var height = cameraImage.height;
+                    Log.print(Log.l.trace, "width=" + width + " height=" + height);
 
-                // todo: create preview from imageData
-                that.insertCameradata(imageData, width, height);
+                    // todo: create preview from imageData
+                    that.insertCameradata(imageData, width, height);
+                } else {
+                    Application.navigateById("contact", event);
+                }
                 Log.ret(Log.l.trace);
             }
 
@@ -221,10 +225,7 @@
                 //message: The message is provided by the device's native code
                 that.updateStates({ errorMessage: message });
 
-                WinJS.Promise.timeout(2000).then(function () {
-                    // go back to start
-                    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
-                });
+                Application.navigateById("contact", event);
                 Log.ret(Log.l.error);
             }
 
@@ -233,6 +234,7 @@
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
                 if (that.binding.generalData.useClippingCamera) {
+                    var appBarText = getResourceText("camera.appbartext");
                     if (navigator.clippingCamera &&
                         typeof navigator.clippingCamera.getPicture === "function") {
                         navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
@@ -240,7 +242,9 @@
                             convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                             maxResolution: 3000000,
                             //aspectRatio: "1600/896",
-                            autoShutter: that.binding.generalData.autoShutterTime
+                            autoShutter: that.binding.generalData.autoShutterTime,
+                            appBarSize: 96,
+                            appBarText: appBarText
                         });
                     }
                 } else {

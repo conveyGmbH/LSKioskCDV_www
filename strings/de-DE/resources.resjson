@@ -178,6 +178,7 @@
 
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+    "camera.appbartext"     : "Bitte Ihre Visitenkarte auf die Ablage unten legen",
 
     "barcode.title"         : "Scannen Sie Ihren Besucherausweis",  
     "barcode.description"   : "Bitte halten Sie Ihren Besucherausweis<br>vor den Scanner unterhalb dieses Bildschirms.",
@@ -411,25 +412,27 @@
     "appheader.notpublished": "Nicht publiziert",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
-    "appheader.title"       : "#fitforfuture",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
-    "productlist.title"     : "",
+    "productlist.title"     : "Hier gewünschten Prospekt auswählen:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Auswahl abgeschlossen?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "productlist.count"     : "Anzahl",
     "productlist.continue"  : "Weiter",
+    "productlist.barcode"   : "Barcode scannen",
+    "productlist.camera"    : "Vistenkarte aufnehmen",
 
-    "languagelist.title"    : "Adler macht Sie<br>fit für die Zukunft!",
-    "languagelist.comment"  : "Gewinnen Sie eine Smartwatch von Apple<br>oder Samsung Ihrer Wahl.",
+    "languagelist.title"    : "Einfach und bequem Infomaterial zusenden lassen!",
+    "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus",
     "languagelist.continue" : "Weiter",
 
     "finished.title"        : "Erfolgreich registriert",
     "finished.complete"     : "Beenden",
-    "finished.description"  : "&nbsp;erhält eine Bestätigungsmail<br>und nimmt am Wettbewerb teil.",
+    "finished.description"  : "Sie werden eine Email mit den gewünschten Informationen erhalten",
     "finished.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 	
     "failed.title"          : "An error occured",

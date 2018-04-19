@@ -456,7 +456,11 @@
             Colors[colorProperty] = color;
             switch (colorProperty) {
                 case "kioskHeaderBackgroundColor":
-                    Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
+                    if (AppData._persistentStates.showAppBkg) {
+                        Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", "transparent");
+                    } else {
+                        Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
+                    }
                     break;
                 case "kioskButtonBackgroundColor":
                     Colors.changeCSS(".nx-button", "background-color", Colors.kioskButtonBackgroundColor + " !important");

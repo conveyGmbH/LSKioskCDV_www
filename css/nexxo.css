@@ -2,17 +2,9 @@
     font-family: 'Roboto';
     src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
 
-@font-face {
-    font-family: 'TheMixOsF-SemiBold';
-    src: url("../fonts/TheMixOsF-SemiBold.ttf") format("truetype"); }
+html, body { font-family: "Segoe UI", "Arial"; }
 
-@font-face {
-    font-family: 'TheMixOsF-ExtraBold';
-    src: url("../fonts/TheMixOsF-ExtraBold.ttf") format("truetype"); }
-
-html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
-
-.nx-body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
+.nx-body { font-family: "Segoe UI", "Arial"; }
 
 .display-none {
     display: none; }
@@ -42,7 +34,7 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
     */
     background-color: gray !important;
     color: #ffffff !important;
-    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+    font-family: "Segoe UI", "Arial" !important;
     font-size: 36px !important;
     line-height: 1.5 !important;
     text-align: center !important;
@@ -65,10 +57,12 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
     */
     width: 100%;
     height: 111px;
-    position: relative; }
+    position: relative;
+    background-color: transparent;
+}
 .nx-header .nx-header__top-bar .nx-header__logo-left {
     float: left;
-    margin-left: 0px;
+    margin-left: 40px;
     margin-top: 20px; }
 .nx-header .nx-header__top-bar .nx-header__logo-left svg {
     height: 70px; }
@@ -94,7 +88,7 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
     right: 40px;
     top: 30px;
     background-color: transparent !important;
-    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+    font-family: "Segoe UI", "Arial" !important;
 }
 .nx-cancel span {
     font-size: 24px;
@@ -117,7 +111,7 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
     right: 40px;
     top: 150px;
     background-color: transparent !important;
-    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+    font-family: "Segoe UI", "Arial" !important;
 }
 .nx-forward span {
     font-size: 24px;
@@ -178,7 +172,7 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
 .nx-title {
     margin:auto;
     font-size: 48px;
-    font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial" !important;
+    font-family: "Segoe UI", "Arial" !important;
     line-height: 1;
     text-align: center; }
 
@@ -193,7 +187,7 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
 }
 
 .nx-title--bold {
-    font-family: "TheMixOsF-ExtraBold", "Segoe UI", "Arial" !important;
+    font-family: "Segoe UI", "Arial" !important;
     /*
     font-weight: 900 !important;
     */
@@ -235,7 +229,9 @@ html, body { font-family: "TheMixOsF-SemiBold", "Segoe UI", "Arial"; }
     color: #00417f;
 }
 .nx-proitem .nx-proitem__img-container .nx-proitem__preload-bg-color {
-    background-color: #767676 !important;
+    background-color: #767676;
+    opacity: 1;
+    transition: opacity 100ms;
 }
 .nx-proitem .nx-proitem__overlay {
     background-color: #00417f;

@@ -17,7 +17,7 @@
             // navigation-color with 100% saturation and brightness
             accentColor: "#ff3c00"
         },
-        showAppBkg: true,
+        showAppBkg: false,
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
