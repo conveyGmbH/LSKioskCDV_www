@@ -88,6 +88,15 @@
                                data-win-bind="value: generalData.autoShutterTime"
                                onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
                     </div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.videoRotation'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.videoRotation'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.videoRotation"></span>
+                        <input id="videoRotation" class="input_field win-range"
+                               type="range" min="0" max="270" step="90"
+                               data-win-bind="value: generalData.videoRotation"
+                               onchange="AppBar.handleEvent('change', 'changedVideoRotation', event)" />
+                    </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_full">
                         &nbsp;

@@ -18,7 +18,8 @@
                 Log.call(Log.l.trace, "LanguageList.");
                 var ret = LanguageList._languageView.select(complete, error, {
                     // select restriction
-                    LanguageSpecID: AppData.getLanguageId()
+                    LanguageSpecID: AppData.getLanguageId(),
+                    LanguageID: [1031,1033]
                 }, {
                     // select options
                     ordered: true,

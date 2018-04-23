@@ -298,6 +298,7 @@
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Audio recording",
     "info.autoShutterTime"  : "Trigger time [ms]",
+    "info.videoRotation"    : "Rotation angle [°]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",
@@ -422,7 +423,7 @@
     "productlist.barcode"   : "Scan barcode",
     "productlist.camera"    : "Capture business card",
 
-    "languagelist.title"    : "Send information material easily and conveniently!",
+    "languagelist.title"    : "Comes with<br>efficiency, not<br>with clogging.",
     "languagelist.comment"  : "Please select the desired language.",
     "languagelist.continue" : "Continue",
 	

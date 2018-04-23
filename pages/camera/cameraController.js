@@ -243,6 +243,7 @@
                             maxResolution: 3000000,
                             //aspectRatio: "1600/896",
                             autoShutter: that.binding.generalData.autoShutterTime,
+                            rotationDegree: that.binding.generalData.videoRotation,
                             appBarSize: 96,
                             appBarText: appBarText
                         });

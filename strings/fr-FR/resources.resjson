@@ -298,6 +298,7 @@
     "info.portal"           : "Portal",
     "info.useAudioNote"     : "Enregistrement audio",
     "info.autoShutterTime"  : "Temps de déclenchement [ms]",
+    "info.videoRotation"    : "Angles de rotation [°]",
 
 	"infodesk.employee"		: "Personnel",
 	"infodesk.title"		: "Infodesk",

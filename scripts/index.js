@@ -23,6 +23,7 @@
         cameraMaxSize: 2560,
         useClippingCamera: false,
         autoShutterTime: 0,
+        videoRotation: 0,
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
@@ -91,7 +92,7 @@
             AppData.setRecordId("Kontakt", null);
             // re-route directly to productlist page
             //id = "productlist";
-            //id = "languagelist";
+            id = "languagelist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
         } else if (id === "barcode") {
