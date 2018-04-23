@@ -187,7 +187,8 @@ html, body { font-family: "Segoe UI", "Arial"; }
 }
 
 .nx-title--bold {
-    font-family: "Segoe UI", "Arial" !important;
+    font-family: "Segoe WP Black", "Arial" !important;
+    font-weight: bold;
     /*
     font-weight: 900 !important;
     */
@@ -203,6 +204,8 @@ html, body { font-family: "Segoe UI", "Arial"; }
     margin-bottom: 20px;
     padding-top:25px;
     */
+    font-family: "Segoe WP Semibold", "Arial" !important;
+    font-weight: 600;
     color: #000000; 
     margin-top: 25px;
     display: block; }

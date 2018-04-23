@@ -129,8 +129,6 @@
                             var height = contentarea.clientHeight - 8;
 
                             if (listHeader) {
-                                //var strTop = listHeader.clientHeight.toString() + "px";
-                                //sezoom.style.top = strTop;
                                 height -= listHeader.clientHeight;
                             }
 

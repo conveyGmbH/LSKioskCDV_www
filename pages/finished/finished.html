@@ -16,9 +16,10 @@
                         <span class="nx-title_black" data-win-res="{textContent: 'finished.title'}"></span>
                         <div id="icon-selected" class="finished-image"></div>
                         <div class="nx-subtitle finished-text">
-                            <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{innerHTML: 'finished.description'}"></span>
+                            <span data-win-bind="textContent: dataContact.EMail"></span><br />
+                            <span data-win-res="{innerHTML: 'finished.description'}"></span>
                         </div>
-                        <button class="win-button nx-button nx-button--centered"
+                        <button class="win-button nx-button nx-button--centered nx-title--bold"
                                 onclick="AppBar.handleEvent('click', 'clickStart', event)">
                             <span data-win-res="{textContent: 'finished.complete'}"></span>
                         </button>

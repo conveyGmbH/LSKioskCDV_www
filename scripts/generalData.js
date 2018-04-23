@@ -475,6 +475,9 @@
                     Colors.changeCSS(".nx-proitem .nx-proitem__title", "color", Colors.kioskProductTitleColor);
                     Colors.changeCSS(".nx-title_color", "color", Colors.kioskProductTitleColor);
                     break;
+                case "textColor":
+                    Colors.changeCSS(".nx-title_black", "color", Colors.textColor);
+                    break;
                 case "accentColor":
                     // fall through...
                 case "navigationColor":

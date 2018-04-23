@@ -18,7 +18,8 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "LanguageList.Controller.");
             Application.Controller.apply(this, [pageElement, {
-                count: 0
+                count: 0,
+                organizerLogoSrc: ""
             }]);
             this.languages = null;
 
@@ -282,6 +283,9 @@
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
+                if (AppHeader.controller && AppHeader.controller.binding) {
+                    that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
+                }
             });
             Log.ret(Log.l.trace);
         })

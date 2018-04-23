@@ -20,12 +20,15 @@
                         </div>
                         <div class="nx-title_gray"
                              data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone">
-                            <span data-win-res="{innerHTML: 'productlist.selected'}"></span><br />
                             <button class="win-button nx-button nx-button--centered nx-title--bold"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                     onclick="AppBar.handleEvent('click', 'clickScan', event)">
                                 <div id="id_card_camera" class="action-image"></div><br />
                                 <span data-win-bind="textContent: continueText"></span>
+                            </button>
+                            <button class="win-button nx-cancel" onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                                <div id="cross_new" class="navigate-image"></div>
+                                <span data-win-res="{textContent: 'general.cancel'}"></span>
                             </button>
                             <button class="win-button nx-forward"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
@@ -38,7 +41,7 @@
                     <div class="products-group-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="products-group-item"
                              data-win-bind="style.backgroundColor: groupBkgColor">
-                            <span class="nx-proitem__title"
+                            <span class="nx-proitem__title nx-title--upper"
                                   data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
                         </div>
                     </div>
@@ -60,7 +63,7 @@
                              data-win-bind="style.display: ProduktGruppeTitel Binding.Converter.toDisplay; style.backgroundColor: groupBkgColor">
                             <button class="win-button nx-button"
                                     onclick="AppBar.handleEvent('click', 'clickZoomOut', event)">
-                                <span class="nx-proitem__title"
+                                <span class="nx-proitem__title nx-title--upper"
                                       data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
                             </button>
                         </div>

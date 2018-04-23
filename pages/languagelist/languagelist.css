@@ -5,21 +5,30 @@
     margin-top: 255px;
 }
 #languagelist .nx-title_color {
+    /*
     color: white;
+    */
     text-align: left;
     padding-left: 460px;
     font-size: 80px;
-    font-weight: bold;
 }
 #languagelist .nx-title_black {
+    /*
     color: white;
+    */
     text-align: left;
     padding-left: 460px;
-    font-weight: bold;
 }
 
 #languagelist .nx-button--centered {
     margin: 40px auto !important;
+}
+
+#languagelist .organizer-image {
+    position: absolute;
+    top: 200px;
+    right: 380px;
+    height: 400px;
 }
 
 #languagelist .win-container {

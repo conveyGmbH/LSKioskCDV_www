@@ -3,13 +3,14 @@
 */
 
 .productlist .list-header {
-    height: 220px;
+    height: 210px;
     overflow: hidden; }
 
 .productlist .list-header .nx-forward {
-    top: 60px;
+    top: 88px;
 }
 .productlist .list-header .nx-button {
+    margin-top: 31px !important;
     padding: 10px 60px !important;
     font-size: 24px !important;
 }

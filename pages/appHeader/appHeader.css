@@ -2,6 +2,11 @@
     styles for appheader
 */
 
+#headerhost {
+    display: none;
+}
+
+
 .bkg-splitviewpanetoggle {
     border: none;
     margin: 0;
@@ -30,9 +35,6 @@
     color: gray;
     background-color: Window;
     z-index: 10010;
-    /*
-    height: 48px;
-    */
 }
 
 .app-header-title {
