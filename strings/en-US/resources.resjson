@@ -426,7 +426,7 @@
     "languagelist.comment"  : "Please select the desired language.",
     "languagelist.continue" : "Continue",
 	
-    "finished.title"        : "Successfully registered",
+    "finished.title"        : "Thank you for your registration",
     "finished.complete"     : "Exit",
     "finished.description"  : "You will receive an email with the requested information",
     "finished.comment"      : "On this page, use the Back button to go back!",

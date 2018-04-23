@@ -426,7 +426,7 @@
     "languagelist.comment"  : "Veuillez sélectionner la langue souhaitée.",
     "languagelist.continue" : "Continuer",
 	
-    "finished.title"        : "Inscription réussie",
+    "finished.title"        : "Merci pour votre inscription",
     "finished.complete"     : "Quitter",
     "finished.description"  : "Vous recevrez un email avec les informations demandées",
     "finished.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",

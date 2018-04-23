@@ -417,7 +417,8 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
-    "productlist.title"     : "Hier gewünschten Prospekt auswählen:",
+    "productlist.title"     : "Bitte wählen Sie die gewünschte Bauart:",
+	//"productlist.title": "Einfach und bequem Infomaterial zusenden lassen!",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Auswahl abgeschlossen?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -426,13 +427,13 @@
     "productlist.barcode"   : "Barcode scannen",
     "productlist.camera"    : "Vistenkarte aufnehmen",
 
-    "languagelist.title"    : "Einfach und bequem Infomaterial zusenden lassen!",
-    "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus",
+    "languagelist.title"    : "Bitte wählen Sie die gewünschte Sprache aus",
+    "languagelist.comment"  : "",
     "languagelist.continue" : "Weiter",
 
-    "finished.title"        : "Erfolgreich registriert",
+    "finished.title"        : "Vielen Dank für Ihre Registrierung",
     "finished.complete"     : "Beenden",
-    "finished.description"  : "Sie werden eine Email mit den gewünschten Informationen erhalten",
+    "finished.description"  : "Die gewünschten Informationen erhalten Sie  per E-Mail.",
     "finished.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 	
     "failed.title"          : "An error occured",
