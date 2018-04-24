@@ -27,6 +27,8 @@
             }]);
             this.nextUrl = null;
             this.loading = false;
+            this.groupLoading = false;
+            this.indexOfFirstVisible = -1;
             this.products = null;
             this.selection = [];
             this.prevSelectionIndices = [];
@@ -43,7 +45,7 @@
 
             // ListView control
             var listView = pageElement.querySelector("#productlist.listview");
-            var groupView = pageElement.querySelector("#productproups.listview");
+            var groupView = pageElement.querySelector("#productgroups.listview");
             var sezoom = pageElement.querySelector("#sezoom");
 
             this.dispose = function () {
@@ -271,7 +273,8 @@
                 if (selGroup && index >= 0) {
                     if (selected) {
                         selGroup.selIndexes.push(index);
-                        WinJS.Promise.timeout(0).then(function () {
+                        WinJS.Promise.timeout(0).then(function disableSelection() {
+                            Log.call(Log.l.trace, "ProductList.Controller.");
                             if (selGroup && selGroup.indexes) {
                                 for (var di = 0; di < selGroup.indexes.length; di++) {
                                     var sgi = selGroup.indexes[di];
@@ -280,7 +283,7 @@
                                     } else if (selGroup.selIndexes.length < selGroup.maxSel) {
                                         Log.print(Log.l.u2, "yet " + selGroup.maxSel - selGroup.selIndexes.length + " items selectable");
                                     } else {
-                                        Log.print(Log.l.u2, "already " + selGroup.selIndexes.length + " other item(s) in group selected!");
+                                        Log.print(Log.l.trace, "already " + selGroup.selIndexes.length + " other item(s) in group selected!");
                                         var item = that.products.getAt(sgi);
                                         if (item) {
                                             item.disabled = true;
@@ -289,22 +292,26 @@
                                     }
                                 }
                             }
+                            Log.ret(Log.l.trace);
                         });
                     } else {
                         var prevIndex = selGroup.selIndexes.indexOf(index);
                         if (prevIndex >= 0) {
                             selGroup.selIndexes.splice(prevIndex, 1);
                         }
-                        WinJS.Promise.timeout(0).then(function () {
+                        WinJS.Promise.timeout(0).then(function enableSelection() {
+                            Log.call(Log.l.trace, "ProductList.Controller.");
                             if (selGroup && selGroup.indexes) {
                                 for (var ei = 0; ei < selGroup.indexes.length; ei++) {
                                     var item = that.products.getAt(selGroup.indexes[ei]);
                                     if (item && (!item.SelLimit || item.SelCount < item.SelLimit)) {
+                                        Log.print(Log.l.trace, "only " + item.SelCount + " of limit " + item.SelLimit + " in group selected!");
                                         item.disabled = false;
                                         that.products.setAt(selGroup.indexes[ei], item);
                                     }
                                 }
                             }
+                            Log.ret(Log.l.trace);
                         });
                     }
                 }
@@ -377,23 +384,13 @@
             this.eventHandlers = {
                 clickBack: function(event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
+                    // cancel navigates now directly back to start
                     that.cancelPromises();
-                    if (Application.navigateByIdOverride("start") === "start") {
-                        Application.navigateById("start", event);
-                    } else {
+                    if (Application.navigateByIdOverride("start") === "productlist") {
                         AppData.setRecordId("Kontakt", null);
                         that.loadData();
-                    }
-                    Log.ret(Log.l.trace);
-                },
-                clickNew: function (event) {
-                    Log.call(Log.l.trace, "ProductList.Controller.");
-                    that.cancelPromises();
-                    if (Application.navigateByIdOverride("start") === "start") {
-                        Application.navigateById("start", event);
                     } else {
-                        AppData.setRecordId("Kontakt", null);
-                        that.loadData();
+                        Application.navigateById("start", event);
                     }
                     Log.ret(Log.l.trace);
                 },
@@ -428,6 +425,31 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                onZoomChanged: function(eventInfo) {
+                    Log.call(Log.l.trace, "ProductList.Controller.", "zoomedOut=" + (eventInfo && eventInfo.detail));
+                    if (eventInfo && !eventInfo.detail) {
+                        that.scrollIntoView();
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                onGroupItemInvoked: function(eventInfo) {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    if (eventInfo && eventInfo.detail && eventInfo.detail.itemIndex) {
+                        Log.print(Log.l.trace, "groupIndex=" + eventInfo.detail.itemIndex);
+                        if (that.products && that.products.groups) {
+                            var item = that.products.groups.getAt(eventInfo.detail.itemIndex);
+                            if (item && item.ProduktSelektionsGruppeID && that.productSelectionGroup) {
+                                var curGroup = that.productSelectionGroup[item.ProduktSelektionsGruppeID];
+                                if (curGroup && curGroup.indexes) {
+                                    var itemIndex = curGroup.indexes[0];
+                                    Log.print(Log.l.trace, "itemIndex=" + itemIndex);
+                                    that.indexOfFirstVisible = itemIndex;
+                                }
+                            }
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 onGroupLoadingStateChanged: function (eventInfo) {
                     var i;
                     Log.call(Log.l.trace, "ProductList.Controller.");
@@ -442,7 +464,7 @@
                                 };
                             }
                         } else if (groupView.winControl.loadingState === "complete") {
-                            if (that.loading) {
+                            if (that.groupLoading) {
                                 progress = groupView.querySelector(".list-footer .progress");
                                 counter = groupView.querySelector(".list-footer .counter");
                                 if (progress && progress.style) {
@@ -451,7 +473,7 @@
                                 if (counter && counter.style) {
                                     counter.style.display = "inline";
                                 }
-                                that.loading = false;
+                                that.groupLoading = false;
                             }
                         }
                     }
@@ -464,7 +486,7 @@
                         counter = groupView.querySelector(".list-footer .counter");
                         var visible = eventInfo.detail.visible;
                         if (visible && that.nextUrl) {
-                            that.loading = true;
+                            that.groupLoading = true;
                             if (progress && progress.style) {
                                 progress.style.display = "inline";
                             }
@@ -501,7 +523,7 @@
                                 if (counter && counter.style) {
                                     counter.style.display = "inline";
                                 }
-                                that.loading = false;
+                                that.groupLoading = false;
                                 that.waitForIdleAction();
                             }, null, that.nextUrl);
                         } else {
@@ -511,7 +533,7 @@
                             if (counter && counter.style) {
                                 counter.style.display = "inline";
                             }
-                            that.loading = false;
+                            that.groupLoading = false;
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -592,47 +614,49 @@
                                 };
                             }
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
-                            var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
-                            var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                            var maxIndex = 2 * indexOfLastVisible - indexOfFirstVisible + 1;
-                            if (maxIndex >= that.binding.count) {
-                                maxIndex = that.binding.count - 1;
-                            }
-                            for (i = indexOfFirstVisible; i <= maxIndex; i++) {
-                                var element = listView.winControl.elementFromIndex(i);
-                                if (element) {
-                                    var size = itemInfo(i);
-                                    var itemBox = element.parentElement;
-                                    if (itemBox && itemBox.style) {
-                                        var winContainer = itemBox.parentElement;
-                                        if (size.width && winContainer) {
-                                            var w = size.width + 20;
-                                            if (itemBox.clientWidth !== w) {
-                                                itemBox.style.width = w.toString() + "px";
+                            if (that.products && that.products.length > 0) {
+                                var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                                var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+                                var maxIndex = 2 * indexOfLastVisible - indexOfFirstVisible + 1;
+                                if (maxIndex >= that.binding.count) {
+                                    maxIndex = that.binding.count - 1;
+                                }
+                                for (i = indexOfFirstVisible; i <= maxIndex; i++) {
+                                    var element = listView.winControl.elementFromIndex(i);
+                                    if (element) {
+                                        var size = itemInfo(i);
+                                        var itemBox = element.parentElement;
+                                        if (itemBox && itemBox.style) {
+                                            var winContainer = itemBox.parentElement;
+                                            if (size.width && winContainer) {
+                                                var w = size.width + 20;
+                                                if (itemBox.clientWidth !== w) {
+                                                    itemBox.style.width = w.toString() + "px";
+                                                }
+                                                if (winContainer.style && winContainer.clientWidth !== w) {
+                                                    winContainer.style.width = w.toString() + "px";
+                                                }
                                             }
-                                            if (winContainer.style && winContainer.clientWidth !== w) {
-                                                winContainer.style.width = w.toString() + "px";
+                                            if (size.height > 1 && winContainer) {
+                                                var h = size.height + 96;
+                                                if (itemBox.clientHeight !== h) {
+                                                    itemBox.style.height = h.toString() + "px";
+                                                }
                                             }
                                         }
-                                        if (size.height > 1 && winContainer) {
-                                            var h = size.height + 96;
-                                            if (itemBox.clientHeight !== h) {
-                                                itemBox.style.height = h.toString() + "px";
-                                            }
+                                        var listImageConainer = element.querySelector(".list-image-container");
+                                        if (listImageConainer && listImageConainer.docId) {
+                                            that.loadPicture(listImageConainer.docId, listImageConainer);
                                         }
-                                    }
-                                    var listImageConainer = element.querySelector(".list-image-container");
-                                    if (listImageConainer && listImageConainer.docId) {
-                                        that.loadPicture(listImageConainer.docId, listImageConainer);
-                                    }
-                                    if (element.firstElementChild) {
-                                        if (element.firstElementChild.disabled) {
-                                            if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
-                                                WinJS.Utilities.addClass(element, "win-nonselectable");
-                                            }
-                                        } else {
-                                            if (WinJS.Utilities.hasClass(element, "win-nonselectable")) {
-                                                WinJS.Utilities.removeClass(element, "win-nonselectable");
+                                        if (element.firstElementChild) {
+                                            if (element.firstElementChild.disabled) {
+                                                if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
+                                                    WinJS.Utilities.addClass(element, "win-nonselectable");
+                                                }
+                                            } else {
+                                                if (WinJS.Utilities.hasClass(element, "win-nonselectable")) {
+                                                    WinJS.Utilities.removeClass(element, "win-nonselectable");
+                                                }
                                             }
                                         }
                                     }
@@ -737,11 +761,10 @@
             };
             this.disableHandlers = {
                 clickBack: function () {
-                    if (WinJS.Navigation.canGoBack === true) {
-                        return false;
-                    } else {
-                        return true;
-                    }
+                    return that.binding.clickOkDisabled;
+                },
+                clickStart: function () {
+                    return that.binding.clickOkDisabled;
                 },
                 clickScan: function () {
                     return that.binding.clickOkDisabled;
@@ -755,9 +778,33 @@
                 }
             };
 
+            var scrollIntoView = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                WinJS.Promise.timeout(1000).then(function () {
+                    if (that.loading) {
+                        that.scrollIntoView();
+                        Log.ret(Log.l.trace, "still loading");
+                        return;
+                    }
+                    if (listView && listView.winControl && that.indexOfFirstVisible >= 0) {
+                        Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible);
+                        listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
+                        WinJS.Promise.timeout(50).then(function() {
+                            var scrollPosition = listView.winControl.scrollPosition;
+                            if (scrollPosition > 100) {
+                                listView.winControl.scrollPosition = scrollPosition - 100;
+                            }
+                        });
+                    }
+                });
+                Log.ret(Log.l.trace);
+            }
+            this.scrollIntoView = scrollIntoView;
+
             var showPicture = function (imageContainer, imageData, bDoAnimation) {
-                Log.call(Log.l.u1, "ProductList.Controller.");
-                var ret = WinJS.Promise.as().then(function () {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                var ret = new WinJS.Promise.as().then(function insertImage() {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
                     var element = imageContainer.firstElementChild || imageContainer.firstChild;
                     if (element) {
                         if (element.className === "list-image") {
@@ -773,13 +820,15 @@
                                 preloadBkg.style.opacity = 0;
                             }
                             if (bDoAnimation) {
+                                Log.ret(Log.l.trace, "calling Animation.fadeIn");
                                 return WinJS.UI.Animation.fadeIn(img);
                             }
                         }
                     }
+                    Log.ret(Log.l.trace);
                     return WinJS.Promise.as();
                 });
-                Log.ret(Log.l.u1);
+                Log.ret(Log.l.trace);
                 return ret;
             }
             this.showPicture = showPicture;
@@ -839,6 +888,7 @@
                 this.addRemovableEventListener(listView, "headervisibilitychanged", this.eventHandlers.onHeaderVisibilityChanged.bind(this));
                 this.addRemovableEventListener(listView, "footervisibilitychanged", this.eventHandlers.onFooterVisibilityChanged.bind(this));
 
+                this.addRemovableEventListener(groupView, "iteminvoked", this.eventHandlers.onGroupItemInvoked.bind(this));
                 this.addRemovableEventListener(groupView, "loadingstatechanged", this.eventHandlers.onGroupLoadingStateChanged.bind(this));
                 this.addRemovableEventListener(groupView, "footervisibilitychanged", this.eventHandlers.onGroupFooterVisibilityChanged.bind(this));
             }
@@ -846,13 +896,26 @@
                 Log.call(Log.l.trace, "ProductList.Controller.");
                 AppBar.notifyModified = false;
                 that.loading = true;
-                progress = listView.querySelector(".list-footer .progress");
-                counter = listView.querySelector(".list-footer .counter");
-                if (progress && progress.style) {
-                    progress.style.display = "inline";
+                that.groupLoading = true;
+                if (listView) {
+                    progress = listView.querySelector(".list-footer .progress");
+                    counter = listView.querySelector(".list-footer .counter");
+                    if (progress && progress.style) {
+                        progress.style.display = "inline";
+                    }
+                    if (counter && counter.style) {
+                        counter.style.display = "none";
+                    }
                 }
-                if (counter && counter.style) {
-                    counter.style.display = "none";
+                if (groupView) {
+                    progress = groupView.querySelector(".list-footer .progress");
+                    counter = groupView.querySelector(".list-footer .counter");
+                    if (progress && progress.style) {
+                        progress.style.display = "inline";
+                    }
+                    if (counter && counter.style) {
+                        counter.style.display = "none";
+                    }
                 }
                 AppData.setErrorMsg(that.binding);
                 var contactId = AppData.getRecordId("Kontakt");
@@ -929,11 +992,14 @@
                                 that.nextUrl = ProductList.productView.getNextUrl(json);
                                 var results = json.d.results;
                                 var prevIsGrouped = that.binding.isGrouped;
-                                if (results[0] && results[0].ProduktGruppeIndex) {
-                                    that.binding.isGrouped = true;
-                                } else {
-                                    that.binding.isGrouped = false;
+                                var newIsGrouped = false;
+                                for (var i = 0; i < results.length; i++) {
+                                    if (results[i] && results[i].ProduktGruppeIndex) {
+                                        newIsGrouped = true;
+                                        break;
+                                    }
                                 }
+                                that.binding.isGrouped = newIsGrouped;
                                 if (that.binding.isGrouped !== prevIsGrouped) {
                                     // free products list on grouped change!
                                     that.products = null;
@@ -947,6 +1013,7 @@
                                     that.products = products.createGrouped(groupKey, groupData, groupSorter);
                                     if (sezoom && sezoom.winControl) {
                                         sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
+                                        sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
                                     }
                                     if (listView && listView.winControl) {
                                         // add ListView dataSource
@@ -968,6 +1035,35 @@
                             } else {
                                 that.binding.count = 0;
                                 that.nextUrl = null;
+                                if (listView) {
+                                    progress = listView.querySelector(".list-footer .progress");
+                                    counter = listView.querySelector(".list-footer .counter");
+                                    if (progress && progress.style) {
+                                        progress.style.display = "none";
+                                    }
+                                    if (counter && counter.style) {
+                                        counter.style.display = "inline";
+                                    }
+                                }
+                                if (groupView) {
+                                    progress = groupView.querySelector(".list-footer .progress");
+                                    counter = groupView.querySelector(".list-footer .counter");
+                                    if (progress && progress.style) {
+                                        progress.style.display = "none";
+                                    }
+                                    if (counter && counter.style) {
+                                        counter.style.display = "inline";
+                                    }
+                                }
+                                that.loading = false;
+                                that.groupLoading = false;
+                                that.waitForIdleAction();
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            if (listView) {
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");
                                 if (progress && progress.style) {
@@ -976,26 +1072,24 @@
                                 if (counter && counter.style) {
                                     counter.style.display = "inline";
                                 }
-                                that.loading = false;
-                                that.waitForIdleAction();
                             }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            progress = listView.querySelector(".list-footer .progress");
-                            counter = listView.querySelector(".list-footer .counter");
-                            if (progress && progress.style) {
-                                progress.style.display = "none";
-                            }
-                            if (counter && counter.style) {
-                                counter.style.display = "inline";
+                            if (groupView) {
+                                progress = groupView.querySelector(".list-footer .progress");
+                                counter = groupView.querySelector(".list-footer .counter");
+                                if (progress && progress.style) {
+                                    progress.style.display = "none";
+                                }
+                                if (counter && counter.style) {
+                                    counter.style.display = "inline";
+                                }
                             }
                             that.loading = false;
+                            that.groupLoading = false;
                             that.waitForIdleAction();
                         });
                     }
                 }).then(function () {
+                    Log.print(Log.l.trace, "Data loaded");
                     AppBar.notifyModified = true;
                 });
                 Log.ret(Log.l.trace);
@@ -1096,8 +1190,6 @@
                 }
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 return that.loadData();
-            }).then(function () {
-                Log.print(Log.l.trace, "Data loaded");
             });
             Log.ret(Log.l.trace);
         })

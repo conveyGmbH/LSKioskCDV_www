@@ -15,7 +15,6 @@
     font-size: 24px !important;
 }
 
-
 #productlist .win-itemscontainer {
     padding-left: 30px; }
 
@@ -105,6 +104,9 @@
     font-family: "Segoe UI", "Arial" !important;
     font-size: 36px !important;
     line-height: 1.5 !important;
+}
+.products-group-header .nx-button {
+    width: 100%;
 }
 
 .product-group-button {

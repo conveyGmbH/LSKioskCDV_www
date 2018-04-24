@@ -26,7 +26,8 @@
                                 <div id="id_card_camera" class="action-image"></div><br />
                                 <span data-win-bind="textContent: continueText"></span>
                             </button>
-                            <button class="win-button nx-cancel" onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                            <button class="win-button nx-cancel" 
+                                    onclick="AppBar.handleEvent('click', 'clickStart', event)">
                                 <div id="cross_new" class="navigate-image"></div>
                                 <span data-win-res="{textContent: 'general.cancel'}"></span>
                             </button>
@@ -73,7 +74,7 @@
                             <div class="status">
                                 <progress class="win-progress-bar progress"></progress>
                                 <div class="counter">
-                                    <span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>
+                                    <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
                                 </div>
                             </div>
                         </div>
@@ -89,7 +90,7 @@
                             groupHeaderTemplate: select('.products-group-header-template'),
                             footer: select('.list-footer') }">
                         </div>
-                        <div id="productproups"
+                        <div id="productgroups"
                              class="listview animationElement"
                              data-win-control="WinJS.UI.ListView"
                              data-win-options="{ itemTemplate: select('.products-group-template'),
