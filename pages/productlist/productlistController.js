@@ -29,6 +29,7 @@
             this.loading = false;
             this.groupLoading = false;
             this.indexOfFirstVisible = -1;
+            this.scrollIntoViewDelay = 250;
             this.products = null;
             this.selection = [];
             this.prevSelectionIndices = [];
@@ -434,11 +435,11 @@
                 },
                 onGroupItemInvoked: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
-                    if (eventInfo && eventInfo.detail && eventInfo.detail.itemIndex) {
+                    if (eventInfo && eventInfo.detail) {
                         Log.print(Log.l.trace, "groupIndex=" + eventInfo.detail.itemIndex);
                         if (that.products && that.products.groups) {
                             var item = that.products.groups.getAt(eventInfo.detail.itemIndex);
-                            if (item && item.ProduktSelektionsGruppeID && that.productSelectionGroup) {
+                            if (item && that.productSelectionGroup) {
                                 var curGroup = that.productSelectionGroup[item.ProduktSelektionsGruppeID];
                                 if (curGroup && curGroup.indexes) {
                                     var itemIndex = curGroup.indexes[0];
@@ -474,6 +475,13 @@
                                     counter.style.display = "inline";
                                 }
                                 that.groupLoading = false;
+                                if (that.scrollIntoViewDelay > 0) {
+                                    WinJS.Promise.timeout(3500).then(function () {
+                                        if (!that.groupLoading) {
+                                            that.scrollIntoViewDelay = 0;
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
@@ -674,6 +682,13 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
+                                if (that.scrollIntoViewDelay > 0) {
+                                    WinJS.Promise.timeout(3500).then(function () {
+                                        if (!that.groupLoading) {
+                                            that.scrollIntoViewDelay = 0;
+                                        }
+                                    });
+                                }
                             }
                         }
                     }
@@ -780,20 +795,31 @@
 
             var scrollIntoView = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                WinJS.Promise.timeout(1000).then(function () {
+                if (that.indexOfFirstVisible < 0) {
+                    Log.ret(Log.l.trace, "extra ignored");
+                    return;
+                }
+                WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function () {
                     if (that.loading) {
-                        that.scrollIntoView();
+                        WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
+                            that.scrollIntoView();
+                        });
                         Log.ret(Log.l.trace, "still loading");
                         return;
                     }
-                    if (listView && listView.winControl && that.indexOfFirstVisible >= 0) {
+                    if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible);
                         listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
-                        WinJS.Promise.timeout(50).then(function() {
-                            var scrollPosition = listView.winControl.scrollPosition;
-                            if (scrollPosition > 100) {
-                                listView.winControl.scrollPosition = scrollPosition - 100;
+                        WinJS.Promise.timeout(0).then(function() {
+                            if (listView && listView.winControl) {
+                                var scrollPosition = listView.winControl.scrollPosition;
+                                if (scrollPosition > 100) {
+                                    listView.winControl.scrollPosition = scrollPosition - 100;
+                                } else {
+                                    listView.winControl.scrollPosition = 0;
+                                }
                             }
+                            that.indexOfFirstVisible = -1;
                         });
                     }
                 });
