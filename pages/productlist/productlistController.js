@@ -476,8 +476,8 @@
                                 }
                                 that.groupLoading = false;
                                 if (that.scrollIntoViewDelay > 0) {
-                                    WinJS.Promise.timeout(3500).then(function () {
-                                        if (!that.groupLoading) {
+                                    WinJS.Promise.timeout(5000).then(function () {
+                                        if (!that.loading) {
                                             that.scrollIntoViewDelay = 0;
                                         }
                                     });
@@ -683,7 +683,7 @@
                                 }
                                 that.loading = false;
                                 if (that.scrollIntoViewDelay > 0) {
-                                    WinJS.Promise.timeout(3500).then(function () {
+                                    WinJS.Promise.timeout(5000).then(function () {
                                         if (!that.groupLoading) {
                                             that.scrollIntoViewDelay = 0;
                                         }
@@ -810,16 +810,20 @@
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible);
                         listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
-                        WinJS.Promise.timeout(0).then(function() {
-                            if (listView && listView.winControl) {
-                                var scrollPosition = listView.winControl.scrollPosition;
-                                if (scrollPosition > 100) {
-                                    listView.winControl.scrollPosition = scrollPosition - 100;
-                                } else {
-                                    listView.winControl.scrollPosition = 0;
+                        WinJS.Promise.timeout(50).then(function() {
+                            if (listView.winControl.indexOfFirstVisible === that.indexOfFirstVisible) {
+                                if (listView && listView.winControl) {
+                                    var scrollPosition = listView.winControl.scrollPosition;
+                                    if (scrollPosition > 100) {
+                                        listView.winControl.scrollPosition = scrollPosition - 100;
+                                    } else {
+                                        listView.winControl.scrollPosition = 0;
+                                    }
                                 }
+                                that.indexOfFirstVisible = -1;
+                            } else {
+                                that.scrollIntoView();
                             }
-                            that.indexOfFirstVisible = -1;
                         });
                     }
                 });
