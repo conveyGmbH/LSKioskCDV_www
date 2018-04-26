@@ -42,6 +42,11 @@
             this.reloadPromise = null;
             this.reloadWaitTimeMs = 500;
 
+            this.scrollDelayPromise = null;
+            this.scrollDelayTimeMs = 500;
+
+            this.scrollIntoViewPromise = null;
+
             var that = this;
 
             // ListView control
@@ -75,6 +80,16 @@
 
             var cancelPromises = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.scrollIntoViewPromise) {
+                    Log.print(Log.l.trace, "cancel previous scrollIntoView Promise");
+                    that.scrollIntoViewPromise.cancel();
+                    that.scrollIntoViewPromise = null;
+                }
+                if (that.scrollDelayPromise) {
+                    Log.print(Log.l.trace, "cancel previous scrollDelay Promise");
+                    that.scrollDelayPromise.cancel();
+                    that.scrollDelayPromise = null;
+                }
                 if (that.reloadPromise) {
                     Log.print(Log.l.trace, "cancel previous reload Promise");
                     that.reloadPromise.cancel();
@@ -88,6 +103,26 @@
                 Log.ret(Log.l.trace);
             }
             this.cancelPromises = cancelPromises;
+
+            var waitForScrollDelay = function() {
+                Log.call(Log.l.trace, "ProductList.Controller.", "scrollIntoViewDelay=" + that.scrollIntoViewDelay);
+                if (that.scrollDelayPromise) {
+                    Log.ret(Log.l.trace, "extra ignored");
+                    return;
+                }
+                if (that.scrollIntoViewDelay > 0) {
+                    that.scrollDelayPromise = WinJS.Promise.timeout(that.scrollDelayTimeMs).then(function () {
+                        that.scrollDelayPromise = null;
+                        Log.print(Log.l.trace, "groupLoading=" + that.groupLoading + " loading=" + that.loading);
+                        if (!that.groupLoading && !that.loading) {
+                            Log.print(Log.l.trace, "reset scrollIntoViewDelay");
+                            that.scrollIntoViewDelay = 0;
+                        }
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            that.waitForScrollDelay = waitForScrollDelay;
 
             var waitForReloadAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "reloadWaitTimeMs=" + that.reloadWaitTimeMs);
@@ -475,13 +510,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.groupLoading = false;
-                                if (that.scrollIntoViewDelay > 0) {
-                                    WinJS.Promise.timeout(5000).then(function () {
-                                        if (!that.loading) {
-                                            that.scrollIntoViewDelay = 0;
-                                        }
-                                    });
-                                }
+                                that.waitForScrollDelay();
                             }
                         }
                     }
@@ -682,13 +711,7 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
-                                if (that.scrollIntoViewDelay > 0) {
-                                    WinJS.Promise.timeout(5000).then(function () {
-                                        if (!that.groupLoading) {
-                                            that.scrollIntoViewDelay = 0;
-                                        }
-                                    });
-                                }
+                                that.waitForScrollDelay();
                             }
                         }
                     }
@@ -795,13 +818,16 @@
 
             var scrollIntoView = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                if (that.indexOfFirstVisible < 0) {
+                if (that._disposed || that.scrollIntoViewPromise || that.indexOfFirstVisible < 0) {
                     Log.ret(Log.l.trace, "extra ignored");
                     return;
                 }
-                WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function () {
+                that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function delayedScrollIntoView() {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.scrollIntoViewPromise = null;
                     if (that.loading) {
-                        WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
+                        that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
+                            that.scrollIntoViewPromise = null;
                             that.scrollIntoView();
                         });
                         Log.ret(Log.l.trace, "still loading");
@@ -810,8 +836,10 @@
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible);
                         listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
-                        WinJS.Promise.timeout(50).then(function() {
-                            if (listView.winControl.indexOfFirstVisible === that.indexOfFirstVisible) {
+                        WinJS.Promise.timeout(50).then(function () {
+                            Log.print(Log.l.trace, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible);
+                            if (listView && listView.winControl.indexOfFirstVisible === that.indexOfFirstVisible) {
+                                Log.print(Log.l.trace, "adjust group header");
                                 if (listView && listView.winControl) {
                                     var scrollPosition = listView.winControl.scrollPosition;
                                     if (scrollPosition > 100) {
@@ -822,10 +850,15 @@
                                 }
                                 that.indexOfFirstVisible = -1;
                             } else {
-                                that.scrollIntoView();
+                                Log.print(Log.l.trace, "try again");
+                                that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
+                                    that.scrollIntoViewPromise = null;
+                                    that.scrollIntoView();
+                                });
                             }
                         });
                     }
+                    Log.ret(Log.l.trace);
                 });
                 Log.ret(Log.l.trace);
             }
