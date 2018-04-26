@@ -94,6 +94,7 @@
     "contact.zip"           : "Codice Postale",
     "contact.city"          : "Città",
     "contact.country"       : "Nazione",
+    "contact.position"      : "Posizione",
     "contact.memo"          : "Notizie",
     "contact.count"         : "Totale",
     "contact.barcode"       : "Barcode",

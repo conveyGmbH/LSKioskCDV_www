@@ -94,6 +94,7 @@
     "contact.zip"           : "Zip",
     "contact.city"          : "City",
     "contact.country"       : "Country",
+    "contact.position"      : "Position",
     "contact.memo"          : "Memo",
     "contact.count"         : "Count",
     "contact.barcode"       : "Barcode",

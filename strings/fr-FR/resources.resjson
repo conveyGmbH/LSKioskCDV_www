@@ -94,6 +94,7 @@
     "contact.zip"           : "Code postal",
     "contact.city"          : "Ville",
     "contact.country"       : "Pays",
+    "contact.position"      : "Position",
     "contact.memo"          : "Mémo",
     "contact.count"         : "Nombre",
     "contact.barcode"       : "Barcode",
