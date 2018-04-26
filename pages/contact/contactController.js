@@ -39,13 +39,18 @@
             }
 
 
-            var setDataContact = function(newDataContact) {
+            var setDataContact = function (newDataContact) {
                 var prevNotifyModified = AppBar.notifyModified;
                 AppBar.notifyModified = false;
                 that.binding.dataContact = newDataContact;
                 if (that.binding.dataContact.EMail &&
                     that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0 &&
-                    that.binding.dataContact.INITLandID) {
+                    that.binding.dataContact.INITLandID &&
+                    that.binding.dataContact.INITAnredeID &&
+                    that.binding.dataContact.Vorname &&
+                    that.binding.dataContact.Name &&
+                    that.binding.dataContact.Firmenname
+                    ) {
                     that.binding.clickOkDisabled = false;
                 } else {
                     that.binding.clickOkDisabled = true;
@@ -100,12 +105,16 @@
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
                 },
-                onKeyUp: function(e) {
+                onKeyUp: function (e) {
                     Log.call(Log.l.u2, "Contact.Controller.");
                     if (that.binding.dataContact &&
                         that.binding.dataContact.EMail &&
                         that.binding.dataContact.EMail.search(/@.*[.]/i) >= 0 &&
-                        that.binding.dataContact.INITLandID) {
+                        that.binding.dataContact.INITLandID &&
+                        that.binding.dataContact.INITAnredeID &&
+                        that.binding.dataContact.Vorname &&
+                        that.binding.dataContact.Name &&
+                        that.binding.dataContact.Firmenname) {
                         that.binding.clickOkDisabled = false;
                     } else {
                         that.binding.clickOkDisabled = true;
@@ -115,7 +124,7 @@
             };
 
             this.disableHandlers = {
-                clickBack: function() {
+                clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {
                         return false;
                     } else {
@@ -252,7 +261,7 @@
                         }, recordId);
                     });
                 } else if (AppBar.busy) {
-                    ret = WinJS.Promise.timeout(100).then(function() {
+                    ret = WinJS.Promise.timeout(100).then(function () {
                         return that.saveData(complete, error);
                     });
                 } else {
