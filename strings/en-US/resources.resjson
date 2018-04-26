@@ -86,7 +86,7 @@
     "contact.formOf"        : "Mr/Ms",
     "contact.academicTitle" : "Title",
     "contact.company"       : "Company",
-    "contact.email"         : "Email",
+    "contact.email"         : "E-mail",
     "contact.fax"           : "Fax",
     "contact.phone"         : "Phone",
     "contact.mobile"        : "Mobile",
@@ -414,7 +414,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
-    "productlist.title"     : "Please choose the desired design:",
+    "productlist.title"     : "Please choose the desired design.",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
