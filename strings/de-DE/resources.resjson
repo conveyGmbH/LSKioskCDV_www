@@ -419,7 +419,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
-    "productlist.title"     : "Bitte wählen Sie die gewünschte Bauart.",
+    "productlist.title"     : "Bitte wählen Sie:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Auswahl abgeschlossen?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
