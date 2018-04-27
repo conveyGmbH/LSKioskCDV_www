@@ -415,7 +415,7 @@
     "mailing.title"         : "Messagerie",
     "mailing.contactinfo"   : "Si vous désirez un envoi postal, veuillez composer le + 49 (0) 8954 34 49 30 ou écrivez-nous un ",
 	
-    "productlist.title"     : "Veuillez choisir le design désiré:",
+    "productlist.title"     : "Veuillez choisir:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Sélection terminée?",
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -425,7 +425,7 @@
     "productlist.camera"    : "Capturer la carte de visite",
 
     "languagelist.title"    : "Envoyez du matériel d'information facilement et facilement!",
-    "languagelist.comment"  : "Veuillez sélectionner la langue souhaitée.",
+    "languagelist.comment"  : "Veuillez sélectionner la langue souhaitée:",
     "languagelist.continue" : "Continuer",
 	
     "finished.title"        : "Merci pour votre inscription",

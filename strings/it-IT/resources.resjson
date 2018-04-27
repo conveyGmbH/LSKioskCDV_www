@@ -415,7 +415,7 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 
-    "productlist.title"     : "Si prega di scegliere il design desiderato:",
+    "productlist.title"     : "Si prega di scegliere:",
     "productlist.subtitle"  : "",
     "productlist.selected"  : "Selezione completata?",
     "productlist.comment"   : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -425,7 +425,7 @@
     "productlist.camera"    : "Acquisizione biglietto da visita",
 
     "languagelist.title"    : "Inviateci materiale informativo in modo semplice e comodo!",
-    "languagelist.comment"  : "Selezionare la lingua desiderata.",
+    "languagelist.comment"  : "Selezionare la lingua desiderata:",
     "languagelist.continue" : "Continuare",
 	
     "finished.title"        : "Grazie per la tua registrazione",

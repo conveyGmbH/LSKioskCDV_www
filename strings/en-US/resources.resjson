@@ -425,7 +425,7 @@
     "productlist.camera"    : "Capture business card",
 
     "languagelist.title"    : "Comes with<br>efficiency, not<br>with clogging.",
-    "languagelist.comment"  : "Please select the desired language.",
+    "languagelist.comment"  : "Please select the desired language:",
     "languagelist.continue" : "Continue",
 	
     "finished.title"        : "Thank you for your registration",

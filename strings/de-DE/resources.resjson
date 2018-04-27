@@ -428,8 +428,8 @@
     "productlist.barcode"   : "Barcode scannen",
     "productlist.camera"    : "Vistenkarte aufnehmen",
 
-    "languagelist.title"    : "<br>Schluckt alles.<br>Ausser Geld.",
-    "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus",
+    "languagelist.title"    : "Schluckt alles.<br>Ausser Geld.",
+    "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus:",
     "languagelist.continue" : "Weiter",
 
     "finished.title"        : "Vielen Dank für Ihre Registrierung",

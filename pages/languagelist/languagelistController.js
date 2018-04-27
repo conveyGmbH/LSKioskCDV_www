@@ -28,6 +28,14 @@
             // ListView control
             var listView = pageElement.querySelector("#languagelist.listview");
 
+            var continueButton = pageElement.querySelector(".languagelist .list-header .nx-button--centered");
+            if (continueButton && continueButton.style) {
+                continueButton.style.backgroundColor = "transparent !important";
+                if (continueButton.firstElementChild && continueButton.firstElementChild.style) {
+                    continueButton.firstElementChild.style.color = Colors.kioskButtonBackgroundColor;
+                }
+            }
+
             this.dispose = function () {
                 if (listView && listView.winControl) {
                     // remove ListView dataSource

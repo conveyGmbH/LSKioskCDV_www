@@ -80,6 +80,7 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
+            /*
             var ret = null;
             var that = this;
             /// <param name="element" domElement="true" />
@@ -110,6 +111,7 @@
             }
             Log.ret(Log.l.u1);
             return ret;
+             */
         }
     });
 })();

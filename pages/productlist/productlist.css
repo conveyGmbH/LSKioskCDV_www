@@ -69,11 +69,11 @@
     display: inline;
 }
 
-#productlist .nx-title_black {
-    margin-top: 30px; }
+.productlist .nx-title_black {
+    margin-top: 70px; }
 
-#productlist .nx-title_gray {
-    margin-top: 35px; }
+.productlist .nx-title_gray {
+    margin-top: 30px; }
 
 #productlist .win-groupheadercontainer {
     /*margin-top: 30px;*/
@@ -87,7 +87,7 @@
 }
 
 .products-group-item {
-    width: 600px;
+    width: 615px;
     height: 180px;
     display: flex;
     align-items: center;
