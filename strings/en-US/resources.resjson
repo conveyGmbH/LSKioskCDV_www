@@ -424,7 +424,7 @@
     "productlist.barcode"   : "Scan barcode",
     "productlist.camera"    : "Capture business card",
 
-    "languagelist.title"    : "Comes with<br>efficiency, not<br>with clogging.",
+    "languagelist.title"    : "Comes with<br>efficiency. Not<br>with clogging.",
     "languagelist.comment"  : "Please select the desired language:",
     "languagelist.continue" : "Continue",
 	
