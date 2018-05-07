@@ -20,15 +20,16 @@
                                 <div id="user" class="contact-image"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplay"></div>
                                 <button class="win-button nx-button nx-button--centered nx-title--bold"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                    onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                                        data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                        onclick="AppBar.handleEvent('click', 'clickForward', event)">
                                     <span data-win-res="{textContent: 'contact.continue'}"></span>
                                 </button>
-                                <div class="contact-line">
+                                <div class="line-separator"></div>
+                                <div class="field_line field_line_odd contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.email'}"></span>
                                     <input class="win-textbox contact-input" type="email" data-win-bind="value: dataContact.EMail Binding.Mode.twoway" />
                                 </div>
-                                <div class="contact-line">
+                                <div class="field_line field_line_even contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.country'}"></span>
                                     <select id="InitLand"
                                             class="win-dropdown contact-input"
@@ -37,28 +38,35 @@
                                         <option data-win-bind="value: INITLandID; textContent: TITLE"></option>
                                     </select>
                                 </div>
-
-                                <div class="contact-line">
-                                    <span class="contact-label" data-win-res="{textContent: 'contact.formOf'}"></span>
-                                    <select id="InitAnrede" class="win-dropdown contact-input"
-                                            data-win-control="WinJS.UI.Repeater"
-                                            data-win-bind="value: dataContact.INITAnredeID Binding.Mode.twoway">
-                                        <option data-win-bind="value: INITAnredeID; textContent: TITLE"></option>
-                                    </select>
+                                <div class="line-separator"></div>
+                                <div class="field_line field_line_odd contact-line">
+                                    <div class="input_small_left">
+                                        <span class="contact-label" data-win-res="{textContent: 'contact.formOf'}"></span>
+                                    </div>
+                                    <div class="input_small_right">
+                                        <span class="contact-label" data-win-res="{textContent: 'contact.firstName'}"></span>
+                                    </div>
+                                    <div class="input_small_left">
+                                        <select id="InitAnrede" class="win-dropdown contact-input"
+                                                data-win-control="WinJS.UI.Repeater"
+                                                data-win-bind="value: dataContact.INITAnredeID Binding.Mode.twoway">
+                                            <option data-win-bind="value: INITAnredeID; textContent: TITLE"></option>
+                                        </select>
+                                    </div>
+                                    <div class="input_small_right">
+                                        <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Vorname Binding.Mode.twoway" />
+                                    </div>
                                 </div>
-                                <div class="contact-line">
-                                    <span class="contact-label" data-win-res="{textContent: 'contact.firstName'}"></span>
-                                    <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Vorname Binding.Mode.twoway" />
-                                </div>
-                                <div class="contact-line">
+                                <div class="field_line field_line_even contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.name'}"></span>
                                     <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Name Binding.Mode.twoway" />
                                 </div>
-                                <div class="contact-line">
+                                <div class="line-separator"></div>
+                                <div class="field_line field_line_odd contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.company'}"></span>
                                     <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Firmenname Binding.Mode.twoway" />
                                 </div>
-                                <div class="contact-line">
+                                <div class="field_line field_line_even contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.position'}"></span>
                                     <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Position Binding.Mode.twoway" />
                                 </div>

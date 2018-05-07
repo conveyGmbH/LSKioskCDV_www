@@ -1,11 +1,18 @@
 ﻿.contact-form {
-    width: 50%;
-    margin-left: 25%;
+    width: calc(100% - 100px);
+    margin-left: 50px;
 }
 
 .contact-line {
-    margin: 20px;
-    width: calc(100% - 40px);
+    margin: 20px 0;
+    border: none;
+}
+
+.contact-line .input_small_left {
+    width: 250px;
+}
+.contact-line .input_small_right {
+    width: calc(100% - 258px);
 }
 
 .contact-label {
