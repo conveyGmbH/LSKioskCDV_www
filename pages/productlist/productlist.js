@@ -119,9 +119,8 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var listView = element.querySelector("#productlist.listview");
                     var sezoom = element.querySelector("#sezoom");
-                    if (listView && listView.style && sezoom && sezoom.style) {
+                    if (sezoom && sezoom.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var listHeader = element.querySelector(".list-header");

@@ -173,6 +173,23 @@
             var grouplayout = null;
             var layout = null;
 
+            if (groupView && groupView.winControl) {
+                grouplayout = new Application.ProductListLayout.GroupsLayout;
+                groupView.winControl.layout = {
+                    type: grouplayout,
+                    orientation: WinJS.UI.Orientation.vertical
+                };
+            }
+            if (listView && listView.winControl) {
+                layout = new Application.ProductListLayout.ProductsLayout;
+                listView.winControl.layout = {
+                    type: layout,
+                    orientation: WinJS.UI.Orientation.vertical,
+                    groupHeaderPosition: "top"
+                };
+            }
+
+
             var resultConverter = function (item, index) {
                 Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
                 // convert result: set background color
@@ -492,6 +509,7 @@
                     if (groupView && groupView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + groupView.winControl.loadingState);
                         if (groupView.winControl.loadingState === "itemsLoading") {
+                            /*
                             if (!grouplayout) {
                                 grouplayout = new Application.ProductListLayout.GroupsLayout;
                                 groupView.winControl.layout = {
@@ -499,6 +517,7 @@
                                     orientation: WinJS.UI.Orientation.vertical
                                 };
                             }
+                             */
                         } else if (groupView.winControl.loadingState === "complete") {
                             if (that.groupLoading) {
                                 progress = groupView.querySelector(".list-footer .progress");
@@ -642,6 +661,7 @@
                             listView.winControl.tapBehavior = WinJS.UI.TapBehavior.toggleSelect;
                         }
                         if (listView.winControl.loadingState === "itemsLoading") {
+                            /*
                             if (!layout) {
                                 layout = new Application.ProductListLayout.ProductsLayout;
                                 listView.winControl.layout = {
@@ -650,6 +670,8 @@
                                     groupHeaderPosition: "top"
                                 };
                             }
+                             *
+                             */
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
                             if (that.products && that.products.length > 0) {
                                 var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
@@ -1095,9 +1117,18 @@
                             that.addSelection(results);
                         }
                         if (AppData._prefetchedProductView) {
-                            handleProductViewResult(AppData._prefetchedProductView);
-                            AppData._prefetchedProductView = null;
-                            return WinJS.Promise.as();
+                            return new WinJS.Promise.as().then(function() {
+                                var pageControl = pageElement.winControl;
+                                if (pageControl && pageControl.updateLayout) {
+                                    return pageControl.updateLayout.call(pageControl, pageElement);
+                                } else {
+                                    return WinJS.Promise.as();
+                                }
+                            }).then(function () {
+                                handleProductViewResult(AppData._prefetchedProductView);
+                                AppData._prefetchedProductView = null;
+                                return WinJS.Promise.as();
+                            });
                         } else {
                             return ProductList.productView.select(function (json) {
                                 // this callback will be called asynchronously
