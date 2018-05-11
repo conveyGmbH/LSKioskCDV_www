@@ -46,6 +46,7 @@
                 return ret;
             }
         },
+        _prefetchedProductView: null,
         _curGetUserDataId: 0,
         _curGetContactDataId: 0,
         _contactData: {},

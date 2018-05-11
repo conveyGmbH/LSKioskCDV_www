@@ -80,7 +80,9 @@
                                         AppData._persistentStates.languageId = item.data.LanguageID;
                                         Application.pageframe.savePersistentStates();
                                         Application.pageframe.reCheckForLanguage(function() {
-                                            WinJS.Resources.processAll(pageElement);
+                                            WinJS.Resources.processAll(pageElement).then(function() {
+                                                that.prefetchProductView();
+                                            });
                                         }, function() {
                                             var errorResponse = "Error: failed to switch language!";
                                             AppData.setErrorMsg(that.binding, errorResponse);
@@ -251,6 +253,68 @@
                 this.addRemovableEventListener(listView, "loadingstatechanged", this.eventHandlers.onLoadingStateChanged.bind(this));
                 this.addRemovableEventListener(listView, "headervisibilitychanged", this.eventHandlers.onHeaderVisibilityChanged.bind(this));
             }
+
+            var prefetchProductView = function() {
+                Log.call(Log.l.trace, "LanguageList.Controller.");
+                AppData._prefetchedProductView = null;
+                AppData.setErrorMsg(that.binding);
+                var contactId = AppData.getRecordId("Kontakt");
+                var ret = new WinJS.Promise.as().then(function() {
+                    if (!contactId) {
+                        var newContact = {
+                            //no UUID in this case!
+                            //HostName: (window.device && window.device.uuid),
+                            //Use ScanFlag to mark for delayed barcode scan!
+                            ScanFlag: -1,
+                            MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
+                            VeranstaltungID: AppData.getRecordId("Veranstaltung"),
+                            Nachbearbeitet: 1
+                        };
+                        Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
+                        return LanguageList.contactView.insert(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "LanguageList.contactView: insert success!");
+                            // contactData returns object already parsed from json data in response
+                            if (json && json.d && json.d.KontaktVIEWID) {
+                                contactId = json.d.KontaktVIEWID;
+                                AppData.setRecordId("Kontakt", contactId);
+                            } else {
+                                AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        }, newContact);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                }).then(function () {
+                    if (!contactId) {
+                        // error message already returned
+                        return WinJS.Promise.as();
+                    } else {
+                        return LanguageList.productView.select(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "LanguageList.productView: select success!");
+                            // productView returns object already parsed from json data in response
+                            if (json && json.d) {
+                                AppData._prefetchedProductView = json;
+                            }
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.prefetchProductView = prefetchProductView;
+
             var loadData = function() {
                 Log.call(Log.l.trace, "LanguageList.Controller.");
                 AppData.setErrorMsg(that.binding);
@@ -279,6 +343,8 @@
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
                     });
+                }).then(function () {
+                    that.prefetchProductView();
                 });
                 Log.ret(Log.l.trace);
                 return ret;

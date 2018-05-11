@@ -981,9 +981,11 @@
                     }
                 }
                 AppData.setErrorMsg(that.binding);
+                var isNewContact = false;
                 var contactId = AppData.getRecordId("Kontakt");
                 var ret = new WinJS.Promise.as().then(function () {
                     if (!contactId) {
+                        isNewContact = true;
                         var newContact = {
                             //no UUID in this case!
                             //HostName: (window.device && window.device.uuid),
@@ -1015,8 +1017,9 @@
                     }
                 }).then(function () {
                     that.selection = [];
-                    if (!contactId) {
-                        // error message already returned
+                    if (!contactId || isNewContact || AppData._prefetchedProductView) {
+                        // message already returned in case of error
+                        // no selection needed in case of new contact
                         return WinJS.Promise.as();
                     } else {
                         return ProductList.productSelectionView.select(function (json) {
@@ -1046,58 +1049,94 @@
                         // error message already returned
                         return WinJS.Promise.as();
                     } else {
-                        return ProductList.productView.select(function (json) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            Log.print(Log.l.trace, "ProductList.productView: select success!");
-                            // productView returns object already parsed from json data in response
-                            if (json && json.d) {
-                                that.nextUrl = ProductList.productView.getNextUrl(json);
-                                var results = json.d.results;
-                                var prevIsGrouped = that.binding.isGrouped;
-                                var newIsGrouped = false;
-                                for (var i = 0; i < results.length; i++) {
-                                    if (results[i] && results[i].ProduktGruppeIndex) {
-                                        newIsGrouped = true;
-                                        break;
+                        function handleProductViewResult(json) {
+                            that.nextUrl = ProductList.productView.getNextUrl(json);
+                            var results = json.d.results;
+                            var prevIsGrouped = that.binding.isGrouped;
+                            var newIsGrouped = false;
+                            for (var i = 0; i < results.length; i++) {
+                                if (results[i] && results[i].ProduktGruppeIndex) {
+                                    newIsGrouped = true;
+                                    break;
+                                }
+                            }
+                            that.binding.isGrouped = newIsGrouped;
+                            if (that.binding.isGrouped !== prevIsGrouped) {
+                                // free products list on grouped change!
+                                that.products = null;
+                            }
+                            if (!that.products) {
+                                results.forEach(function (item, index) {
+                                    that.resultConverter(item, index);
+                                });
+                                // Now, we call WinJS.Binding.List to get the bindable list
+                                var products = new WinJS.Binding.List(results);
+                                that.products = products.createGrouped(groupKey, groupData, groupSorter);
+                                if (sezoom && sezoom.winControl) {
+                                    sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
+                                    sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
+                                }
+                                if (listView && listView.winControl) {
+                                    // add ListView dataSource
+                                    listView.winControl.itemDataSource = that.products.dataSource;
+                                    listView.winControl.groupDataSource = that.products.groups.dataSource;
+                                    if (groupView && groupView.winControl) {
+                                        groupView.winControl.itemDataSource = that.products.groups.dataSource;
                                     }
                                 }
-                                that.binding.isGrouped = newIsGrouped;
-                                if (that.binding.isGrouped !== prevIsGrouped) {
-                                    // free products list on grouped change!
-                                    that.products = null;
-                                }
-                                if (!that.products) {
-                                    results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
-                                    });
-                                    // Now, we call WinJS.Binding.List to get the bindable list
-                                    var products = new WinJS.Binding.List(results);
-                                    that.products = products.createGrouped(groupKey, groupData, groupSorter);
-                                    if (sezoom && sezoom.winControl) {
-                                        sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
-                                        sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
-                                    }
-                                    if (listView && listView.winControl) {
-                                        // add ListView dataSource
-                                        listView.winControl.itemDataSource = that.products.dataSource;
-                                        listView.winControl.groupDataSource = that.products.groups.dataSource;
-                                        if (groupView && groupView.winControl) {
-                                            groupView.winControl.itemDataSource = that.products.groups.dataSource;
+                            } else {
+                                that.products.length = 0;
+                                results.forEach(function (item, index) {
+                                    that.resultConverter(item, index);
+                                    that.products.push(item);
+                                });
+                            }
+                            that.binding.count = that.products.length;
+                            that.addSelection(results);
+                        }
+                        if (AppData._prefetchedProductView) {
+                            handleProductViewResult(AppData._prefetchedProductView);
+                            AppData._prefetchedProductView = null;
+                            return WinJS.Promise.as();
+                        } else {
+                            return ProductList.productView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "ProductList.productView: select success!");
+                                // productView returns object already parsed from json data in response
+                                if (json && json.d) {
+                                    handleProductViewResult(json);
+                                } else {
+                                    that.binding.count = 0;
+                                    that.nextUrl = null;
+                                    if (listView) {
+                                        progress = listView.querySelector(".list-footer .progress");
+                                        counter = listView.querySelector(".list-footer .counter");
+                                        if (progress && progress.style) {
+                                            progress.style.display = "none";
+                                        }
+                                        if (counter && counter.style) {
+                                            counter.style.display = "inline";
                                         }
                                     }
-                                } else {
-                                    that.products.length = 0;
-                                    results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
-                                        that.products.push(item);
-                                    });
+                                    if (groupView) {
+                                        progress = groupView.querySelector(".list-footer .progress");
+                                        counter = groupView.querySelector(".list-footer .counter");
+                                        if (progress && progress.style) {
+                                            progress.style.display = "none";
+                                        }
+                                        if (counter && counter.style) {
+                                            counter.style.display = "inline";
+                                        }
+                                    }
+                                    that.loading = false;
+                                    that.groupLoading = false;
+                                    that.waitForIdleAction();
                                 }
-                                that.binding.count = that.products.length;
-                                that.addSelection(results);
-                            } else {
-                                that.binding.count = 0;
-                                that.nextUrl = null;
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
                                 if (listView) {
                                     progress = listView.querySelector(".list-footer .progress");
                                     counter = listView.querySelector(".list-footer .counter");
@@ -1121,35 +1160,8 @@
                                 that.loading = false;
                                 that.groupLoading = false;
                                 that.waitForIdleAction();
-                            }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            if (listView) {
-                                progress = listView.querySelector(".list-footer .progress");
-                                counter = listView.querySelector(".list-footer .counter");
-                                if (progress && progress.style) {
-                                    progress.style.display = "none";
-                                }
-                                if (counter && counter.style) {
-                                    counter.style.display = "inline";
-                                }
-                            }
-                            if (groupView) {
-                                progress = groupView.querySelector(".list-footer .progress");
-                                counter = groupView.querySelector(".list-footer .counter");
-                                if (progress && progress.style) {
-                                    progress.style.display = "none";
-                                }
-                                if (counter && counter.style) {
-                                    counter.style.display = "inline";
-                                }
-                            }
-                            that.loading = false;
-                            that.groupLoading = false;
-                            that.waitForIdleAction();
-                        });
+                            });
+                        }
                     }
                 }).then(function () {
                     Log.print(Log.l.trace, "Data loaded");
