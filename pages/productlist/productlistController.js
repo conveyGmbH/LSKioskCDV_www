@@ -37,7 +37,7 @@
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
-            this.idleWaitTimeMs = 300000;
+            this.idleWaitTimeMs = 60000;
 
             this.reloadPromise = null;
             this.reloadWaitTimeMs = 500;
@@ -117,6 +117,12 @@
                         if (!that.groupLoading && !that.loading) {
                             Log.print(Log.l.trace, "reset scrollIntoViewDelay");
                             that.scrollIntoViewDelay = 0;
+                            if (that.scrollIntoViewPromise) {
+                                Log.print(Log.l.trace, "cancel previous scrollIntoView Promise");
+                                that.scrollIntoViewPromise.cancel();
+                            }
+                            that.scrollIntoViewPromise = null;
+                            that.scrollIntoView();
                         }
                     });
                 }
@@ -1245,7 +1251,7 @@
                 return ret;
             }
             this.insertData = insertData;
-            
+
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 if (AppData._persistentStates.kioskUsesCamera) {
