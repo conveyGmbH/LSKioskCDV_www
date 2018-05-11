@@ -531,6 +531,13 @@
                                 that.groupLoading = false;
                                 that.waitForScrollDelay();
                             }
+                            if (AppData._prefetchedProductView) {
+                                AppData._prefetchedProductView = null;
+                                WinJS.Promise.timeout(50).then(function() {
+                                    groupView.style.visibility = "";
+                                    WinJS.UI.Animation.enterContent(groupView);
+                                });
+                            }
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -1116,19 +1123,10 @@
                             that.binding.count = that.products.length;
                             that.addSelection(results);
                         }
-                        if (AppData._prefetchedProductView) {
-                            return new WinJS.Promise.as().then(function() {
-                                var pageControl = pageElement.winControl;
-                                if (pageControl && pageControl.updateLayout) {
-                                    return pageControl.updateLayout.call(pageControl, pageElement);
-                                } else {
-                                    return WinJS.Promise.as();
-                                }
-                            }).then(function () {
-                                handleProductViewResult(AppData._prefetchedProductView);
-                                AppData._prefetchedProductView = null;
-                                return WinJS.Promise.as();
-                            });
+                        if (AppData._prefetchedProductView && groupView && groupView.style) {
+                            groupView.style.visibility = "hidden";
+                            handleProductViewResult(AppData._prefetchedProductView);
+                            return WinJS.Promise.as();
                         } else {
                             return ProductList.productView.select(function (json) {
                                 // this callback will be called asynchronously
