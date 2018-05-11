@@ -47,6 +47,8 @@
 
             this.scrollIntoViewPromise = null;
 
+            this.hasSelLimit = false;
+
             var that = this;
 
             // ListView control
@@ -145,31 +147,22 @@
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
-                    Log.print(Log.l.trace, "timeout occurred, check for selectionCount!");
+                    Log.print(Log.l.trace, "timeout occurred, check for selection");
                     // Don't delete empty contacts now
                     var contactId = AppData.getRecordId("Kontakt");
                     Log.print(Log.l.trace, "contactId=" + contactId);
                     if (contactId && !that.binding.clickOkDisabled) {
-                        AppData.setRecordId("Kontakt", null);
-                    }
-                    that.loadData();
-                    /*
-                    var contactId = AppData.getRecordId("Kontakt");
-                    Log.print(Log.l.trace, "contactId=" + contactId);
-                    if (contactId && !that.binding.clickOkDisabled) {
-                        Log.print(Log.l.trace, "delete existing contactID=" + contactId);
-                        ProductList.contactView.deleteRecord(function (json) {
-                            // this callback will be called asynchronously
-                            Log.print(Log.l.trace, "contactView: deleteRecord success!");
+                        Log.print(Log.l.trace, "ignore unfinished selection!");
+                        if (Application.navigateByIdOverride("start") === "productlist") {
                             AppData.setRecordId("Kontakt", null);
                             that.loadData();
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, contactId);
+                        } else {
+                            Application.navigateById("start", event);
+                        }
+                    } else if (that.hasSelLimit) {
+                        Log.print(Log.l.trace, "releoad due to selLimit");
+                        that.loadData();
                     }
-                     */
                 });
                 Log.ret(Log.l.trace);
             };
@@ -219,6 +212,7 @@
                 }
                 if (item.SelLimit) {
                     Log.print(Log.l.u1, "SelLimit=" + item.SelLimit + " SelCount=" + item.SelCount);
+                    that.hasSelLimit = true;
                     if (item.SelCount >= item.SelLimit) {
                         Log.print(Log.l.u1, "limit exceeded!");
                         item.disabled = true;
