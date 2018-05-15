@@ -12,28 +12,29 @@
     <div id="startController" class="data-container">
         <section aria-label="Main content" role="main">
             <div class="contentarea nx-body" id="failedScreen">
-                <div class="nx-title animationElement">
-                    <span class="nx-title_black" data-win-res="{textContent: 'failed.title'}"></span>
-                    <div id="icon-error" class="failed-image"></div>
-                    <div class="nx-subtitle failed-text" 
+                <div class="nx-title">
+                    <span class="nx-title_black animationElement" 
+                          data-win-res="{textContent: 'failed.title'}"></span>
+                    <div id="icon-error" class="failed-image animationElement"></div>
+                    <div class="nx-subtitle failed-text animationElement" 
                          data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplayNone">
                         <span data-win-res="{innerHTML: 'failed.description'}"></span>
                     </div>
-                    <div class="nx-subtitle failed-text" 
+                    <div class="nx-subtitle failed-text animationElement" 
                          data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplay">
                         <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{textContent: 'failed.alreadyRegistred'}"></span><br />
                         <span data-win-bind="textContent: dataContact.ContactProductMailTS Binding.Converter.toRemoteDateString"></span>
                     </div>
-                    <button class="win-button nx-button nx-button--centered"
+                    <button class="win-button nx-button nx-button--centered animationElement"
                             onclick="AppBar.handleEvent('click', 'clickScan', event)">
                         <span data-win-res="{textContent: 'failed.scanagain'}"></span>
                     </button>
                 </div>
-                <button class="win-button nx-cancel" onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                <button class="win-button nx-cancel animationElement" onclick="AppBar.handleEvent('click', 'clickStart', event)">
                     <div id="cross_new" class="navigate-image"></div>
                     <span data-win-res="{textContent: 'general.cancel'}"></span>
                 </button>
-                <button class="win-button nx-forward" onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                <button class="win-button nx-forward animationElement" onclick="AppBar.handleEvent('click', 'clickForward', event)">
                     <div id="i_hand_touch" class="navigate-image"></div>
                     <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
                 </button>

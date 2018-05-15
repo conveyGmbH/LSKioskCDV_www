@@ -16,15 +16,19 @@
                         <span class="nx-title_black animationElement" data-win-res="{textContent: 'contact.title'}"></span>
                         <div class="nx-subtitle contact-text animationElement">
                             <span data-win-res="{innerHTML: 'contact.description'}"></span>
+                        </div>
+                        <div class="nx-subtitle contact-text">
+                            <div id="user" class="contact-image animationElement"
+                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplay"></div>
+                            <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                    onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                                <span data-win-res="{textContent: 'contact.continue'}"></span>
+                            </button>
+                        </div>
+                        <div class="line-separator"></div>
+                        <div class="nx-subtitle contact-text animationElement">
                             <div class="contact-form">
-                                <div id="user" class="contact-image"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplay"></div>
-                                <button class="win-button nx-button nx-button--centered nx-title--bold"
-                                        data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                        onclick="AppBar.handleEvent('click', 'clickForward', event)">
-                                    <span data-win-res="{textContent: 'contact.continue'}"></span>
-                                </button>
-                                <div class="line-separator"></div>
                                 <div class="field_line field_line_odd contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.email'}"></span>
                                     <input class="win-textbox contact-input" type="email" data-win-bind="value: dataContact.EMail Binding.Mode.twoway" />
@@ -73,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="win-button nx-cancel" onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                    <button class="win-button nx-cancel animationElement" onclick="AppBar.handleEvent('click', 'clickStart', event)">
                         <div id="cross_new" class="navigate-image"></div>
                         <span data-win-res="{textContent: 'general.cancel'}"></span>
                     </button>
