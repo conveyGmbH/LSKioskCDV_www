@@ -289,6 +289,7 @@
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
+    "info.useBarcodeScanner": "External barcode scanner",
     "info.useClippingCamera": "Automatic recognition",
     "info.replication"      : "Synchronisation options",
     "info.replActive"       : "Synchronisation",

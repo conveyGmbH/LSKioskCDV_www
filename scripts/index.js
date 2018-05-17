@@ -21,6 +21,7 @@
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
+        useBardoceScanner: true,
         useClippingCamera: false,
         autoShutterTime: 0,
         videoRotation: 0,
@@ -95,11 +96,6 @@
             id = "languagelist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
-        } else if (id === "barcode") {
-            // re-route to camera page
-            if (AppData._persistentStates.kioskUsesCamera) {
-                id = "camera";
-            }
         }
         Log.ret(Log.l.trace);
         return id;

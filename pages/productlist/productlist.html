@@ -18,13 +18,19 @@
                             <span data-win-res="{innerHTML: 'productlist.title'}"></span><br />
                             <span class="nx-subtitle" data-win-res="{innerHTML: 'productlist.subtitle'}"></span>
                         </div>
+                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickScan', event)">
+                            <div id="portable_barcode_scanner" class="action-image"></div><br />
+                            <span data-win-res="{textContent: 'productlist.barcode'}"></span>
+                        </button>
+                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickCamera', event)">
+                            <div id="id_card_camera" class="action-image"></div><br />
+                            <span data-win-res="{textContent: 'productlist.camera'}"></span>
+                        </button>
                         <div class="nx-title_gray">
-                            <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                    onclick="AppBar.handleEvent('click', 'clickScan', event)">
-                                <div id="id_card_camera" class="action-image"></div><br />
-                                <span data-win-bind="textContent: continueText"></span>
-                            </button>
                             <button class="win-button nx-cancel animationElement" 
                                     onclick="AppBar.handleEvent('click', 'clickStart', event)">
                                 <div id="cross_new" class="navigate-image"></div>

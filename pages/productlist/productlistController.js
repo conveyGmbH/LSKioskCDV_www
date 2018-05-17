@@ -465,8 +465,14 @@
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 },
+                clickCamera: function (event) {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    that.cancelPromises();
+                    Application.navigateById("camera", event);
+                    Log.ret(Log.l.trace);
+                },
                 clickForward: function (event) {
-                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    Log.call(Log.l.trace, "ProductList.Controller.");
                     that.cancelPromises();
                     Application.navigateById("contact", event);
                     Log.ret(Log.l.trace);

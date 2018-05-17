@@ -88,6 +88,16 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                clickUseBarcodeScanner: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.useBardoceScanner = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedAutoShutterTime: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
