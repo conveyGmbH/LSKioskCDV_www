@@ -533,7 +533,9 @@
                         });
                     } else {
                         Log.print(Log.l.trace, "NOT Android: calling barcodeScanner.scan...");
-                        cordova.plugins.barcodeScanner.scan(onBarcodeSuccess, onBarcodeError
+                        cordova.plugins.barcodeScanner.scan(onBarcodeSuccess, onBarcodeError,{
+                            rotationDegree: that.binding.generalData.videoRotation
+                        }
                         /*
                         , {
                             preferFrontCamera: false,
