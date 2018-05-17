@@ -188,6 +188,7 @@
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
     "barcode.emailNeeded"   : "Geben Sie bitte Ihre E-Mail Anschrift ein!",
 	"barcode.manualEdit"    : "Manuelle Erfassung",
+	"barcode.scanagain"     : "Erneut scannen",
 
     "settings.title"        : "Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",

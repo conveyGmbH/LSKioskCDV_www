@@ -211,6 +211,12 @@
                     that.cancelPromises();
                     Application.navigateById("start", event);
                     Log.ret(Log.l.trace);
+                },
+                clickScan: function(event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    that.cancelPromises();
+                    that.scanBarcode();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -553,6 +559,9 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                if (AppData._persistentStates.kioskUsesCamera) {
+                    Colors.loadSVGImageElements(pageElement, "action-image", 80, "#ffffff");
+                }
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 Colors.loadSVGImageElements(pageElement, "barcode-image");
                 Colors.loadSVGImageElements(pageElement, "scanning-image", 65, Colors.textColor, "id", function (svgInfo) {

@@ -187,6 +187,7 @@
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
     "barcode.emailNeeded"   : "S’il vous plaît, entrez votre adresse e-mail!",
 	"barcode.manualEdit"    : "Capture manuelle",
+    "barcode.scanagain"     : "Balayer à nouveau",
 
     "settings.title"        : "Design",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
