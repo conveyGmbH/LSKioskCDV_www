@@ -710,7 +710,7 @@
                                                 }
                                             }
                                             if (size.height > 1 && winContainer) {
-                                                var h = size.height + 96;
+                                                var h = size.height + 120;
                                                 if (itemBox.clientHeight !== h) {
                                                     itemBox.style.height = h.toString() + "px";
                                                 }

@@ -152,11 +152,16 @@
 .nx-proitem .nx-proitem__title {
     text-align: center;
     padding: 20px 15px;
+    /*
     white-space: nowrap;
+    line-height: 1.44;
+    */
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 25px;
-    line-height: 1.44; }
+    line-height: 1.1;
+    min-height: 60px;
+     }
 .nx-proitem .nx-proitem__overlay {
     position: absolute;
     left: 0;
