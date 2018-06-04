@@ -187,7 +187,6 @@
     "barcode.placement"     : "Place a barcode inside the scan area",
     "barcode.emailNeeded"   : "Please, enter your e-mail address!",
 	"barcode.manualEdit"    : "Capture manually",
-    "barcode.scanagain"     : "Scan again",
 
     "settings.title"        : "Design",
     "settings.comment"      : "On this page, use the Back button to go back!",
@@ -426,7 +425,7 @@
     "productlist.barcode"   : "Scan barcode",
     "productlist.camera"    : "Capture business card",
 
-    "languagelist.title"    : "Comes with<br>efficiency. Not<br>with clogging.",
+    "languagelist.title"    : "Pumps<br>the future<br>into your<br>system.",
     "languagelist.comment"  : "Please select the desired language:",
     "languagelist.continue" : "Continue",
 	

@@ -188,7 +188,6 @@
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
     "barcode.emailNeeded"   : "Geben Sie bitte Ihre E-Mail Anschrift ein!",
 	"barcode.manualEdit"    : "Manuelle Erfassung",
-	"barcode.scanagain"     : "Erneut scannen",
 
     "settings.title"        : "Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -430,7 +429,7 @@
     "productlist.barcode"   : "Barcode scannen",
     "productlist.camera"    : "Vistenkarte aufnehmen",
 
-    "languagelist.title"    : "Schluckt alles.<br>Ausser Geld.",
+    "languagelist.title"    : "Die Pumpt<br>Die Zukunft<br>In Ihr<br>System.",
     "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus:",
     "languagelist.continue" : "Weiter",
 

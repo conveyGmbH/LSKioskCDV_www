@@ -187,7 +187,6 @@
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
     "barcode.emailNeeded"   : "Per favore, Inserisci il tuo indirizzo di email!",
 	"barcode.manualEdit"    : "Cattura manuale",
-    "barcode.scanagain"     : "Eseguire di nuovo la scansione",
 
     "settings.title"        : "Impostazioni",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
