@@ -215,7 +215,10 @@
                     // todo: create preview from imageData
                     that.insertCameradata(imageData, width, height);
                 } else {
-                    Application.navigateById("contact", event);
+                    WinJS.Promise.timeout(0).then(function () {
+                        // go back to start
+                        WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    });
                 }
                 Log.ret(Log.l.trace);
             }
@@ -225,7 +228,10 @@
                 //message: The message is provided by the device's native code
                 that.updateStates({ errorMessage: message });
 
-                Application.navigateById("contact", event);
+                WinJS.Promise.timeout(0).then(function () {
+                    // go back to start
+                    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                });
                 Log.ret(Log.l.error);
             }
 
