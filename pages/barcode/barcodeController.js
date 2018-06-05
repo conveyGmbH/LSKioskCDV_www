@@ -572,7 +572,7 @@
                                                  svgInfo.element.firstChild, true);
                     }
                 });
-                if (!AppData._persistentStates.useBardoceScanner) {
+                if (!AppData._persistentStates.useBarcodeScanner) {
                     that.scanBarcode();
                 } else {
                     that.loadData();

@@ -21,7 +21,7 @@
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
-        useBardoceScanner: true,
+        useBarcodeScanner: true,
         useClippingCamera: false,
         autoShutterTime: 0,
         videoRotation: 0,

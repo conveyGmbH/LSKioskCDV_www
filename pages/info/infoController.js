@@ -93,7 +93,7 @@
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
-                            that.binding.generalData.useBardoceScanner = toggle.checked;
+                            that.binding.generalData.useBarcodeScanner = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);
