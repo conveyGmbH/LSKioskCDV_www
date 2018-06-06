@@ -623,9 +623,11 @@
                             var listControl = listView.winControl;
                             if (listControl.selection && that.selection && that.products) {
                                 var i, selIndex, prevIndex, row;
-                                var curSelectionIndices = listControl.selection.getIndices();
-                                for (i = 0; i < that.prevSelectionIndices.length; i++) {
-                                    prevIndex = that.prevSelectionIndices[i];
+                                var productSelectionGroup = that.productSelectionGroup || {};
+                                var prevSelectionIndices = that.prevSelectionIndices || [];
+                                var curSelectionIndices = listControl.selection.getIndices() || [];
+                                for (i = 0; i < prevSelectionIndices.length; i++) {
+                                    prevIndex = prevSelectionIndices[i];
                                     selIndex = curSelectionIndices.indexOf(prevIndex);
                                     if (selIndex < 0) {
                                         // get from Binding.List
@@ -633,7 +635,7 @@
                                         if (row) {
                                             if (row.ProduktSelektionsGruppeID) {
                                                 Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
-                                                that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], prevIndex, false);
+                                                that.setSelectionGroupIndex(productSelectionGroup[row.ProduktSelektionsGruppeID], prevIndex, false);
                                             }
                                             that.deleteData(row.ProduktID);
                                         }
@@ -641,14 +643,14 @@
                                 }
                                 for (i = 0; i < curSelectionIndices.length; i++) {
                                     selIndex = curSelectionIndices[i];
-                                    prevIndex = that.prevSelectionIndices.indexOf(selIndex);
+                                    prevIndex = prevSelectionIndices.indexOf(selIndex);
                                     if (prevIndex < 0) {
                                         // get from Binding.List
                                         row = that.products.getAt(selIndex);
                                         if (row) {
                                             if (row.ProduktSelektionsGruppeID) {
                                                 Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelektionsGruppeID=" + row.ProduktSelektionsGruppeID);
-                                                that.setSelectionGroupIndex(that.productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex, true);
+                                                that.setSelectionGroupIndex(productSelectionGroup[row.ProduktSelektionsGruppeID], selIndex, true);
                                             }
                                             that.insertData(row.ProduktID);
                                         }
