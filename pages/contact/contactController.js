@@ -8,7 +8,6 @@
 /// <reference path="~/www/lib/hammer/scripts/hammer.js" />
 /// <reference path="~/www/scripts/generalData.js" />
 /// <reference path="~/www/pages/contact/contactService.js" />
-/// <reference path="~/www/pages/contactList/contactListController.js" />
 
 
 (function () {
