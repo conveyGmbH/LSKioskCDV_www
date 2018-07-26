@@ -31,7 +31,7 @@
                             <span data-win-res="{textContent: 'productlist.camera'}"></span>
                         </button>
                         <div class="nx-title_gray">
-                            <button class="win-button nx-cancel animationElement" 
+                            <button class="win-button nx-cancel animationElement"
                                     onclick="AppBar.handleEvent('click', 'clickStart', event)">
                                 <div id="cross_new" class="navigate-image"></div>
                                 <span data-win-res="{textContent: 'general.cancel'}"></span>
@@ -74,13 +74,19 @@
                             </button>
                         </div>
                     </div>
-                    <div class="headerFooterPlaceholder">
-                        <div class="list-footer">
-                            <div class="status">
-                                <progress class="win-progress-bar progress"></progress>
-                                <div class="counter">
-                                    <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
-                                </div>
+                    <div class="list-footer" data-win-control="WinJS.Binding.Template">
+                        <div class="status">
+                            <progress class="win-progress-bar progress"></progress>
+                            <div class="counter">
+                                <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-footer" data-win-control="WinJS.Binding.Template">
+                        <div class="status">
+                            <progress class="win-progress-bar progress"></progress>
+                            <div class="counter">
+                                <!--<span data-win-res="{textContent: 'productlist.count'}"></span><span>: </span><span data-win-bind="textContent: count"></span>-->
                             </div>
                         </div>
                     </div>
@@ -89,17 +95,17 @@
                          data-win-options="{ zoomFactor: 0.5,
                          initiallyZoomedOut: true }">
                         <div id="productlist"
-                             class="listview animationElement"
+                             class="listview"
                              data-win-control="WinJS.UI.ListView"
                              data-win-options="{ itemTemplate: select('.products-template'),
                             groupHeaderTemplate: select('.products-group-header-template'),
                             footer: select('.list-footer') }">
                         </div>
                         <div id="productgroups"
-                             class="listview animationElement"
+                             class="listview"
                              data-win-control="WinJS.UI.ListView"
                              data-win-options="{ itemTemplate: select('.products-group-template'),
-                            footer: select('.list-footer') }">
+                            footer: select('.group-footer') }">
                         </div>
                         <button class="win-button nx-cancel"
                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"

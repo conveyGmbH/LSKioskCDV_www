@@ -1,6 +1,7 @@
 ﻿// controller for page: info
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
@@ -164,6 +165,16 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.logNoStack = toggle.checked;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                clickLogLogWinJS: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var toggle = event.currentTarget.winControl;
+                        if (toggle) {
+                            that.binding.generalData.logWinJS = toggle.checked;
                         }
                     }
                     Log.ret(Log.l.trace);

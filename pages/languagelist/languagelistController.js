@@ -49,6 +49,19 @@
 
             var layout = null;
 
+            var navigateAfterPrefetch = function () {
+                Log.call(Log.l.trace, "LanguageList.Controller.");
+                if (AppData._prefetchedProductView) {
+                    Application.navigateById("productlist");
+                } else {
+                    WinJS.Promise.timeout(250).then(function () {
+                        that.navigateAfterPrefetch();
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.navigateAfterPrefetch = navigateAfterPrefetch;
+
             // define handlers
             this.eventHandlers = {
                 clickBack: function(event) {
@@ -60,7 +73,7 @@
                 },
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "LanguageList.Controller.");
-                    Application.navigateById("productlist", event);
+                    that.navigateAfterPrefetch();
                     Log.ret(Log.l.trace);
                 },
                 onSelectionChanged: function (eventInfo) {

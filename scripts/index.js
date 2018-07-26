@@ -29,6 +29,7 @@
         logLevel: 3,
         logGroup: false,
         logNoStack: true,
+        logWinJS: false,
         inputBorder: 1,
         appBarSize: 96,
         appBarHideOverflowButton: true,

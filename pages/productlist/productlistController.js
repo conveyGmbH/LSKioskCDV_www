@@ -1,6 +1,7 @@
 ﻿// controller for page: listLocal
 /// <reference path="~/www/lib/WinJS/scripts/base.js" />
 /// <reference path="~/www/lib/WinJS/scripts/ui.js" />
+/// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/appSettings.js" />
 /// <reference path="~/www/lib/convey/scripts/dataService.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
@@ -29,7 +30,6 @@
             this.loading = false;
             this.groupLoading = false;
             this.indexOfFirstVisible = -1;
-            this.scrollIntoViewDelay = 250;
             this.products = null;
             this.selection = [];
             this.prevSelectionIndices = [];
@@ -42,9 +42,7 @@
             this.reloadPromise = null;
             this.reloadWaitTimeMs = 500;
 
-            this.scrollDelayPromise = null;
-            this.scrollDelayTimeMs = 500;
-
+            this.scrollIntoViewDelay = 50;
             this.scrollIntoViewPromise = null;
 
             this.hasSelLimit = false;
@@ -82,15 +80,15 @@
 
             var cancelPromises = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.checkLoadingStatePromise) {
+                    Log.print(Log.l.trace, "cancel previous checkLoadingState Promise");
+                    that.checkLoadingStatePromise.cancel();
+                    that.checkLoadingStatePromise = null;
+                }
                 if (that.scrollIntoViewPromise) {
                     Log.print(Log.l.trace, "cancel previous scrollIntoView Promise");
                     that.scrollIntoViewPromise.cancel();
                     that.scrollIntoViewPromise = null;
-                }
-                if (that.scrollDelayPromise) {
-                    Log.print(Log.l.trace, "cancel previous scrollDelay Promise");
-                    that.scrollDelayPromise.cancel();
-                    that.scrollDelayPromise = null;
                 }
                 if (that.reloadPromise) {
                     Log.print(Log.l.trace, "cancel previous reload Promise");
@@ -105,32 +103,6 @@
                 Log.ret(Log.l.trace);
             }
             this.cancelPromises = cancelPromises;
-
-            var waitForScrollDelay = function() {
-                Log.call(Log.l.trace, "ProductList.Controller.", "scrollIntoViewDelay=" + that.scrollIntoViewDelay);
-                if (that.scrollDelayPromise) {
-                    Log.ret(Log.l.trace, "extra ignored");
-                    return;
-                }
-                if (that.scrollIntoViewDelay > 0) {
-                    that.scrollDelayPromise = WinJS.Promise.timeout(that.scrollDelayTimeMs).then(function () {
-                        that.scrollDelayPromise = null;
-                        Log.print(Log.l.trace, "groupLoading=" + that.groupLoading + " loading=" + that.loading);
-                        if (!that.groupLoading && !that.loading) {
-                            Log.print(Log.l.trace, "reset scrollIntoViewDelay");
-                            that.scrollIntoViewDelay = 0;
-                            if (that.scrollIntoViewPromise) {
-                                Log.print(Log.l.trace, "cancel previous scrollIntoView Promise");
-                                that.scrollIntoViewPromise.cancel();
-                            }
-                            that.scrollIntoViewPromise = null;
-                            that.scrollIntoView();
-                        }
-                    });
-                }
-                Log.ret(Log.l.trace);
-            }
-            that.waitForScrollDelay = waitForScrollDelay;
 
             var waitForReloadAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "reloadWaitTimeMs=" + that.reloadWaitTimeMs);
@@ -189,7 +161,6 @@
                 };
             }
 
-
             var resultConverter = function (item, index) {
                 Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
                 // convert result: set background color
@@ -212,19 +183,21 @@
                             indexes: [],
                             selIndexes: [],
                             maxSel: item.ProduktSelektionsMaxSel,
-                            mandatory: item.ProduktSelektionsMandatory,
+                            mandatory: !!item.ProduktSelektionsMandatory,
                             show: false
                         };
                     }
                     var curGroup = that.productSelectionGroup[item.ProduktSelektionsGruppeID];
-                    curGroup.indexes.push(index);
-                    if (curGroup.selIndexes.indexOf(index) >= 0) {
-                        Log.print(Log.l.u1, "item[" + index + "] is already selected!");
-                    } else if (curGroup.selIndexes.length < curGroup.maxSel) {
-                        Log.print(Log.l.u1, "yet " + curGroup.maxSel - curGroup.selIndexes.length + " items selectable");
-                    } else {
-                        Log.print(Log.l.u1, "already " + curGroup.selIndexes.length + " other item(s) in group selected!");
-                        item.disabled = true;
+                    if (curGroup.indexes && curGroup.selIndexes) {
+                        curGroup.indexes.push(index);
+                        if (curGroup.selIndexes.indexOf(index) >= 0) {
+                            Log.print(Log.l.u1, "item[" + index + "] is already selected!");
+                        } else if (curGroup.selIndexes.length < curGroup.maxSel) {
+                            Log.print(Log.l.u1, "yet " + (curGroup.maxSel - curGroup.selIndexes.length).toString() + " items selectable");
+                        } else {
+                            Log.print(Log.l.u1, "already " + curGroup.selIndexes.length + " other item(s) in group selected!");
+                            item.disabled = true;
+                        }
                     }
                 }
                 if (item.SelLimit) {
@@ -523,11 +496,11 @@
                                     orientation: WinJS.UI.Orientation.vertical
                                 };
                             }
-                             */
+                            */
                         } else if (groupView.winControl.loadingState === "complete") {
                             if (that.groupLoading) {
-                                progress = groupView.querySelector(".list-footer .progress");
-                                counter = groupView.querySelector(".list-footer .counter");
+                                progress = groupView.querySelector(".group-footer .progress");
+                                counter = groupView.querySelector(".group-footer .counter");
                                 if (progress && progress.style) {
                                     progress.style.display = "none";
                                 }
@@ -535,15 +508,16 @@
                                     counter.style.display = "inline";
                                 }
                                 that.groupLoading = false;
-                                that.waitForScrollDelay();
                             }
+                            /*
                             if (AppData._prefetchedProductView) {
                                 AppData._prefetchedProductView = null;
-                                WinJS.Promise.timeout(50).then(function() {
+                                WinJS.Promise.timeout(250).then(function() {
                                     groupView.style.visibility = "";
                                     WinJS.UI.Animation.enterContent(groupView);
                                 });
                             }
+                             */
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -551,8 +525,8 @@
                 onGroupFooterVisibilityChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     if (eventInfo && eventInfo.detail && groupView) {
-                        progress = groupView.querySelector(".list-footer .progress");
-                        counter = groupView.querySelector(".list-footer .counter");
+                        progress = groupView.querySelector(".group-footer .progress");
+                        counter = groupView.querySelector(".group-footer .counter");
                         var visible = eventInfo.detail.visible;
                         if (visible && that.nextUrl) {
                             that.groupLoading = true;
@@ -667,7 +641,7 @@
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     if (listView && listView.winControl) {
                         Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState);
-                        // single list selection
+                        // multi list selection
                         if (listView.winControl.selectionMode !== WinJS.UI.SelectionMode.multi) {
                             listView.winControl.selectionMode = WinJS.UI.SelectionMode.multi;
                         }
@@ -685,8 +659,7 @@
                                     groupHeaderPosition: "top"
                                 };
                             }
-                             *
-                             */
+                            */
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
                             if (that.products && that.products.length > 0) {
                                 var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
@@ -718,10 +691,6 @@
                                                 }
                                             }
                                         }
-                                        var listImageConainer = element.querySelector(".list-image-container");
-                                        if (listImageConainer && listImageConainer.docId) {
-                                            that.loadPicture(listImageConainer.docId, listImageConainer);
-                                        }
                                         if (element.firstElementChild) {
                                             if (element.firstElementChild.disabled) {
                                                 if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
@@ -736,8 +705,8 @@
                                     }
                                 }
                             }
-                        } else if (listView.winControl.loadingState === "complete") {
                             Colors.loadSVGImageElements(listView, "checkmark-image", 136, "#ffffff");
+                        } else if (listView.winControl.loadingState === "complete") {
                             if (that.loading) {
                                 progress = listView.querySelector(".list-footer .progress");
                                 counter = listView.querySelector(".list-footer .counter");
@@ -748,8 +717,8 @@
                                     counter.style.display = "inline";
                                 }
                                 that.loading = false;
-                                that.waitForScrollDelay();
                             }
+                            that.updatePicturesInView();
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -859,41 +828,66 @@
                     Log.ret(Log.l.trace, "extra ignored");
                     return;
                 }
-                that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function delayedScrollIntoView() {
+                if (that.loading || listView && listView.winControl && listView.winControl.loadingState !== "complete") {
+                    that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function () {
+                        that.scrollIntoViewPromise = null;
+                        that.scrollIntoView();
+                    });
+                    Log.ret(Log.l.trace, "still loading");
+                    return;
+                }
+                that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function delayedscrollIntoView() {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.scrollIntoViewPromise = null;
-                    if (that.loading) {
-                        that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
-                            that.scrollIntoViewPromise = null;
-                            that.scrollIntoView();
-                        });
-                        Log.ret(Log.l.trace, "still loading");
-                        return;
-                    }
-                    if (listView && listView.winControl) {
-                        Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible);
-                        listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
-                        WinJS.Promise.timeout(50).then(function () {
-                            Log.print(Log.l.trace, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible);
-                            if (listView && listView.winControl.indexOfFirstVisible === that.indexOfFirstVisible) {
-                                Log.print(Log.l.trace, "adjust group header");
-                                if (listView && listView.winControl) {
-                                    var scrollPosition = listView.winControl.scrollPosition;
-                                    if (scrollPosition > 100) {
-                                        listView.winControl.scrollPosition = scrollPosition - 100;
-                                    } else {
-                                        listView.winControl.scrollPosition = 0;
+                    if (listView && listView.winControl && that.products && that.products.length > 0) {
+                        if (that.indexOfFirstVisible < that.products.length - 4) {
+                            Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible + " current indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible + " products.length=" + that.products.length);
+                            listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
+                            WinJS.Promise.timeout(50).then(function () {
+                                Log.print(Log.l.trace, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible);
+                                if (listView && listView.winControl && listView.winControl.indexOfFirstVisible === that.indexOfFirstVisible) {
+                                    Log.print(Log.l.trace, "adjust group header");
+                                    if (listView && listView.winControl) {
+                                        var scrollPosition = listView.winControl.scrollPosition;
+                                        if (scrollPosition > 100) {
+                                            listView.winControl.scrollPosition = scrollPosition - 100;
+                                        } else {
+                                            listView.winControl.scrollPosition = 0;
+                                        }
                                     }
-                                }
-                                that.indexOfFirstVisible = -1;
-                            } else {
-                                Log.print(Log.l.trace, "try again");
-                                that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay || 250).then(function () {
-                                    that.scrollIntoViewPromise = null;
+                                    that.indexOfFirstVisible = -1;
+                                } else {
+                                    Log.print(Log.l.trace, "try again");
+                                    if (listView && listView.winControl) {
+                                        var scrollPosition = listView.winControl.scrollPosition;
+                                        listView.winControl.scrollPosition = scrollPosition + 50;
+                                    }
                                     that.scrollIntoView();
-                                });
-                            }
-                        });
+                                }
+                            });
+                        } else {
+                            var newindexOfFirstVisible = that.indexOfFirstVisible - 4;
+                            Log.print(Log.l.trace, "set indexOfFirstVisible=" + newindexOfFirstVisible + " current indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible + " products.length=" + that.products.length);
+                            listView.winControl.indexOfFirstVisible = newindexOfFirstVisible;
+                            WinJS.Promise.timeout(50).then(function () {
+                                Log.print(Log.l.trace, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible);
+                                if (listView && listView.winControl.indexOfFirstVisible === newindexOfFirstVisible) {
+                                    Log.print(Log.l.trace, "adjust group header");
+                                    if (listView && listView.winControl) {
+                                        var scrollPosition = listView.winControl.scrollPosition;
+                                        listView.winControl.scrollPosition = scrollPosition + 300;
+                                    }
+                                    that.indexOfFirstVisible = -1;
+                                } else {
+                                    Log.print(Log.l.trace, "try again");
+                                    if (listView && listView.winControl) {
+                                        var scrollPosition = listView.winControl.scrollPosition;
+                                        listView.winControl.scrollPosition = scrollPosition + 50;
+                                    }
+                                    that.scrollIntoView();
+                                }
+                            });
+                        }
                     }
                     Log.ret(Log.l.trace);
                 });
@@ -903,49 +897,64 @@
 
             var showPicture = function (imageContainer, imageData, bDoAnimation) {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                var ret = new WinJS.Promise.as().then(function insertImage() {
-                    Log.call(Log.l.trace, "ProductList.Controller.");
-                    var element = imageContainer.firstElementChild || imageContainer.firstChild;
-                    if (element) {
-                        if (element.className === "list-image") {
-                            Log.print(Log.l.u1, "extra ignored");
-                        } else {
-                            Log.print(Log.l.trace, "insert image");
-                            var img = new Image();
-                            imageContainer.insertBefore(img, element);
-                            WinJS.Utilities.addClass(img, "list-image");
-                            img.src = imageData;
-                            var preloadBkg = imageContainer.querySelector(".nx-proitem__preload-bg-color");
-                            if (preloadBkg && preloadBkg.style) {
-                                preloadBkg.style.opacity = 0;
-                            }
-                            if (bDoAnimation) {
-                                Log.ret(Log.l.trace, "calling Animation.fadeIn");
-                                return WinJS.UI.Animation.fadeIn(img);
-                            }
+                var element = imageContainer.firstElementChild || imageContainer.firstChild;
+                if (element) {
+                    if (element.className === "list-image") {
+                        Log.print(Log.l.u1, "extra ignored");
+                    } else {
+                        Log.print(Log.l.trace, "insert image");
+                        var img = new Image();
+                        imageContainer.insertBefore(img, element);
+                        WinJS.Utilities.addClass(img, "list-image");
+                        img.src = imageData;
+                        var preloadBkg = imageContainer.querySelector(".nx-proitem__preload-bg-color");
+                        if (preloadBkg && preloadBkg.style) {
+                            preloadBkg.style.opacity = 0;
+                        }
+                        if (bDoAnimation) {
+                            Log.ret(Log.l.trace, "calling Animation.fadeIn");
+                            return WinJS.UI.Animation.fadeIn(img);
                         }
                     }
-                    Log.ret(Log.l.trace);
-                    return WinJS.Promise.as();
-                });
+                }
                 Log.ret(Log.l.trace);
-                return ret;
+                return WinJS.Promise.as();;
             }
             this.showPicture = showPicture;
 
-            var loadPicture = function (pictureId, element) {
-                Log.call(Log.l.u1, "ProductList.Controller.", "pictureId=" + pictureId);
+            var loadPicture = function (pictureId, imageContainer) {
+                Log.call(Log.l.trace, "ProductList.Controller.", "pictureId=" + pictureId);
                 var ret = null;
-                if (ProductList.images.length > 0) {
+                var element = imageContainer.firstElementChild || imageContainer.firstChild;
+                if (element && element.className === "list-image") {
+                    Log.print(Log.l.trace, "already loaded -- extra ignored");
+                    ret = WinJS.Promise.as();
+                }
+                if (!ret && ProductList.images.length > 0) {
                     for (var i = 0; i < ProductList.images.length; i++) {
                         var imageItem = ProductList.images[i];
                         if (imageItem && imageItem.DOC1ProduktID === pictureId) {
-                            ret = that.showPicture(element, imageItem.picture);
+                            if (imageItem.picture) {
+                                ret = that.showPicture(imageContainer, imageItem.picture);
+                            } else {
+                                Log.print(Log.l.trace, "in loading -- extra ignored");
+                                ret = WinJS.Promise.as();
+                            }
                             break;
                         }
                     }
                 }
                 if (!ret) {
+                    var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                    var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+                    if (ProductList.images.length > (indexOfLastVisible - indexOfFirstVisible) * 4) {
+                        Log.print(Log.l.trace, "indexOfFirstVisible=" + indexOfFirstVisible + " indexOfLastVisible=" + indexOfLastVisible + " images.length=" + ProductList.images.length + " hit maximum!");
+                        ProductList.images.splice(0, 1);
+                    }
+                    ProductList.images.push({
+                        type: "item",
+                        DOC1ProduktID: pictureId
+                    });
                     ret = ProductList.productDocView.select(function (json) {
                         // this callback will be called asynchronously
                         // when the response is available
@@ -955,18 +964,14 @@
                             if (docContent) {
                                 var sub = docContent.search("\r\n\r\n");
                                 var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
-                                var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
-                                var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                                if (ProductList.images.length > (indexOfLastVisible - indexOfFirstVisible) * 4) {
-                                    Log.print(Log.l.trace, "indexOfFirstVisible=" + indexOfFirstVisible + " indexOfLastVisible=" + indexOfLastVisible + " images.length=" + ProductList.images.length + " hit maximum!");
-                                    ProductList.images.splice(0, 1);
+                                for (var i = ProductList.images.length - 1; i >= 0; i--) {
+                                    var imageItem = ProductList.images[i];
+                                    if (imageItem && imageItem.DOC1ProduktID === json.d.DOC1ProduktVIEWID) {
+                                        imageItem.picture = picture;
+                                        break;
+                                    }
                                 }
-                                ProductList.images.push({
-                                    type: "item",
-                                    DOC1ProduktID: json.d.DOC1ProduktVIEWID,
-                                    picture: picture
-                                });
-                                that.showPicture(element, picture, true);
+                                that.showPicture(imageContainer, picture, true);
                             }
                         }
                     }, function (errorResponse) {
@@ -975,10 +980,41 @@
                         AppData.setErrorMsg(that.binding, errorResponse);
                     }, pictureId);
                 }
-                Log.ret(Log.l.u1);
+                Log.ret(Log.l.trace);
                 return ret;
             }
             this.loadPicture = loadPicture;
+
+            var updatePicturesInView = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                if (sezoom && sezoom.winControl && sezoom.winControl.zoomedOut) {
+                    Log.print(Log.l.trace, "zoomedOut: extra ignored!")
+                } else if (that.scrollDelayPromise) {
+                    Log.print(Log.l.trace, "scrollDelayPromise: extra ignored!")
+                } else if (that.scrollIntoViewPromise) {
+                    Log.print(Log.l.trace, "scrollIntoViewPromise: extra ignored!")
+                } else if (listView && listView.winControl && listView.winControl.loadingState !== "complete") {
+                    Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState + ": extra ignored!")
+                } else if (that.products && that.products.length > 0) {
+                    var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                    var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+                    var maxIndex = 2 * indexOfLastVisible - indexOfFirstVisible + 1;
+                    if (maxIndex >= that.binding.count) {
+                        maxIndex = that.binding.count - 1;
+                    }
+                    for (var i = indexOfFirstVisible; i <= maxIndex; i++) {
+                        var element = listView.winControl.elementFromIndex(i);
+                        if (element) {
+                            var listImageConainer = element.querySelector(".list-image-container");
+                            if (listImageConainer && listImageConainer.docId) {
+                                that.loadPicture(listImageConainer.docId, listImageConainer);
+                            }
+                        }
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.updatePicturesInView = updatePicturesInView;
 
 
             // register ListView event handler
@@ -992,8 +1028,62 @@
                 this.addRemovableEventListener(groupView, "loadingstatechanged", this.eventHandlers.onGroupLoadingStateChanged.bind(this));
                 this.addRemovableEventListener(groupView, "footervisibilitychanged", this.eventHandlers.onGroupFooterVisibilityChanged.bind(this));
             }
-            var loadData = function() {
+            var loadData = function () {
+                var ret;
                 Log.call(Log.l.trace, "ProductList.Controller.");
+                function handleProductViewResult(json) {
+                    that.nextUrl = ProductList.productView.getNextUrl(json);
+                    var results = json.d.results;
+                    var prevIsGrouped = that.binding.isGrouped;
+                    var newIsGrouped = false;
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i] && results[i].ProduktGruppeIndex) {
+                            newIsGrouped = true;
+                            break;
+                        }
+                    }
+                    Log.print(Log.l.trace, "newIsGrouped=" + newIsGrouped + " (prev isGrouped=" + that.binding.isGrouped + ")");
+                    that.binding.isGrouped = newIsGrouped;
+                    if (that.binding.isGrouped !== prevIsGrouped) {
+                        // free products list on grouped change!
+                        that.products = null;
+                    }
+                    if (!that.products) {
+                        Log.print(Log.l.trace, "create new Binding.List of length=" + results.length);
+                        results.forEach(function (item, index) {
+                            that.resultConverter(item, index);
+                        });
+                        // Now, we call WinJS.Binding.List to get the bindable list
+                        var products = new WinJS.Binding.List(results);
+                        that.products = products.createGrouped(groupKey, groupData, groupSorter);
+                        if (sezoom && sezoom.winControl) {
+                            sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
+                            sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
+                        }
+                        if (listView && listView.winControl) {
+                            // multi list selection
+                            listView.winControl.selectionMode = WinJS.UI.SelectionMode.multi;
+
+                            // direct selection on each tap
+                            listView.winControl.tapBehavior = WinJS.UI.TapBehavior.toggleSelect;
+
+                            // add ListView dataSource
+                            listView.winControl.itemDataSource = that.products.dataSource;
+                            listView.winControl.groupDataSource = that.products.groups.dataSource;
+                            if (groupView && groupView.winControl) {
+                                groupView.winControl.itemDataSource = that.products.groups.dataSource;
+                            }
+                        }
+                    } else {
+                        that.products.length = 0;
+                        results.forEach(function (item, index) {
+                            that.resultConverter(item, index);
+                            that.products.push(item);
+                        });
+                    }
+                    that.binding.count = that.products.length;
+                    that.addSelection(results);
+                }
                 AppBar.notifyModified = false;
                 that.loading = true;
                 that.groupLoading = true;
@@ -1008,8 +1098,8 @@
                     }
                 }
                 if (groupView) {
-                    progress = groupView.querySelector(".list-footer .progress");
-                    counter = groupView.querySelector(".list-footer .counter");
+                    progress = groupView.querySelector(".group-footer .progress");
+                    counter = groupView.querySelector(".group-footer .counter");
                     if (progress && progress.style) {
                         progress.style.display = "inline";
                     }
@@ -1017,123 +1107,83 @@
                         counter.style.display = "none";
                     }
                 }
-                AppData.setErrorMsg(that.binding);
-                var isNewContact = false;
-                var contactId = AppData.getRecordId("Kontakt");
-                var ret = new WinJS.Promise.as().then(function () {
-                    if (!contactId) {
-                        isNewContact = true;
-                        var newContact = {
-                            //no UUID in this case!
-                            //HostName: (window.device && window.device.uuid),
-                            //Use ScanFlag to mark for delayed barcode scan!
-                            ScanFlag: -1,
-                            MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
-                            VeranstaltungID: AppData.getRecordId("Veranstaltung"),
-                            Nachbearbeitet: 1
-                        };
-                        Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
-                        return ProductList.contactView.insert(function (json) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            Log.print(Log.l.trace, "contactView: insert success!");
-                            // contactData returns object already parsed from json data in response
-                            if (json && json.d && json.d.KontaktVIEWID) {
-                                contactId = json.d.KontaktVIEWID;
-                                AppData.setRecordId("Kontakt", contactId);
-                            } else {
-                                AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                            }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, newContact);
-                    } else {
-                        return WinJS.Promise.as();
-                    }
-                }).then(function () {
-                    that.selection = [];
-                    if (!contactId || isNewContact || AppData._prefetchedProductView) {
-                        // message already returned in case of error
-                        // no selection needed in case of new contact
-                        return WinJS.Promise.as();
-                    } else {
-                        return ProductList.productSelectionView.select(function (json) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            Log.print(Log.l.trace, "ProductList.productSelectionView: select success!");
-                            // productSelectionView returns object already parsed from json data in response
-                            if (json && json.d) {
-                                var results = json.d.results;
-                                Log.print(Log.l.trace, "count=" + results.count);
-                                that.selection = results;
-                            }
+                if (AppData._prefetchedProductView && groupView && groupView.style) {
+                    //groupView.style.visibility = "hidden";
+                    WinJS.Promise.timeout(10).then(function() {
+                        handleProductViewResult(AppData._prefetchedProductView);
+                        AppData._prefetchedProductView = null;
+                        Log.print(Log.l.trace, "Data loaded");
+                        AppBar.notifyModified = true;
+                    });
+                    ret = WinJS.Promise.as();
+                } else {
+                    AppData.setErrorMsg(that.binding);
+                    var isNewContact = false;
+                    var contactId = AppData.getRecordId("Kontakt");
+                    ret = new WinJS.Promise.as().then(function () {
+                        if (!contactId) {
+                            isNewContact = true;
+                            var newContact = {
+                                //no UUID in this case!
+                                //HostName: (window.device && window.device.uuid),
+                                //Use ScanFlag to mark for delayed barcode scan!
+                                ScanFlag: -1,
+                                MitarbeiterID: AppData.getRecordId("Mitarbeiter"),
+                                VeranstaltungID: AppData.getRecordId("Veranstaltung"),
+                                Nachbearbeitet: 1
+                            };
+                            Log.print(Log.l.trace, "insert new contactView for MitarbeiterID=" + newContact.MitarbeiterID);
+                            return ProductList.contactView.insert(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "contactView: insert success!");
+                                // contactData returns object already parsed from json data in response
+                                if (json && json.d && json.d.KontaktVIEWID) {
+                                    contactId = json.d.KontaktVIEWID;
+                                    AppData.setRecordId("Kontakt", contactId);
+                                } else {
+                                    AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            }, newContact);
+                        } else {
                             return WinJS.Promise.as();
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                            return WinJS.Promise.as();
-                        }, {
-                            KontaktID: contactId
-                        });
-                    }
-                }).then(function () {
-                    that.prevSelectionIndices = [];
-                    that.productSelectionGroup = {};
-                    if (!contactId) {
-                        // error message already returned
-                        return WinJS.Promise.as();
-                    } else {
-                        function handleProductViewResult(json) {
-                            that.nextUrl = ProductList.productView.getNextUrl(json);
-                            var results = json.d.results;
-                            var prevIsGrouped = that.binding.isGrouped;
-                            var newIsGrouped = false;
-                            for (var i = 0; i < results.length; i++) {
-                                if (results[i] && results[i].ProduktGruppeIndex) {
-                                    newIsGrouped = true;
-                                    break;
-                                }
-                            }
-                            that.binding.isGrouped = newIsGrouped;
-                            if (that.binding.isGrouped !== prevIsGrouped) {
-                                // free products list on grouped change!
-                                that.products = null;
-                            }
-                            if (!that.products) {
-                                results.forEach(function (item, index) {
-                                    that.resultConverter(item, index);
-                                });
-                                // Now, we call WinJS.Binding.List to get the bindable list
-                                var products = new WinJS.Binding.List(results);
-                                that.products = products.createGrouped(groupKey, groupData, groupSorter);
-                                if (sezoom && sezoom.winControl) {
-                                    sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
-                                    sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
-                                }
-                                if (listView && listView.winControl) {
-                                    // add ListView dataSource
-                                    listView.winControl.itemDataSource = that.products.dataSource;
-                                    listView.winControl.groupDataSource = that.products.groups.dataSource;
-                                    if (groupView && groupView.winControl) {
-                                        groupView.winControl.itemDataSource = that.products.groups.dataSource;
-                                    }
-                                }
-                            } else {
-                                that.products.length = 0;
-                                results.forEach(function (item, index) {
-                                    that.resultConverter(item, index);
-                                    that.products.push(item);
-                                });
-                            }
-                            that.binding.count = that.products.length;
-                            that.addSelection(results);
                         }
-                        if (AppData._prefetchedProductView && groupView && groupView.style) {
-                            groupView.style.visibility = "hidden";
-                            handleProductViewResult(AppData._prefetchedProductView);
+                    }).then(function () {
+                        that.selection = [];
+                        if (!contactId || isNewContact) {
+                            // message already returned in case of error
+                            // no selection needed in case of new contact
+                            return WinJS.Promise.as();
+                        } else {
+                            return ProductList.productSelectionView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "ProductList.productSelectionView: select success!");
+                                // productSelectionView returns object already parsed from json data in response
+                                if (json && json.d) {
+                                    var results = json.d.results;
+                                    Log.print(Log.l.trace, "count=" + results.count);
+                                    that.selection = results;
+                                }
+                                return WinJS.Promise.as();
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                                return WinJS.Promise.as();
+                            }, {
+                                KontaktID: contactId
+                            });
+                        }
+                    }).then(function () {
+                        that.prevSelectionIndices = [];
+                        that.productSelectionGroup = {};
+                        if (!contactId) {
+                            // error message already returned
                             return WinJS.Promise.as();
                         } else {
                             return ProductList.productView.select(function (json) {
@@ -1157,8 +1207,8 @@
                                         }
                                     }
                                     if (groupView) {
-                                        progress = groupView.querySelector(".list-footer .progress");
-                                        counter = groupView.querySelector(".list-footer .counter");
+                                        progress = groupView.querySelector(".group-footer .progress");
+                                        counter = groupView.querySelector(".group-footer .counter");
                                         if (progress && progress.style) {
                                             progress.style.display = "none";
                                         }
@@ -1166,8 +1216,6 @@
                                             counter.style.display = "inline";
                                         }
                                     }
-                                    that.loading = false;
-                                    that.groupLoading = false;
                                     that.waitForIdleAction();
                                 }
                             }, function (errorResponse) {
@@ -1185,8 +1233,8 @@
                                     }
                                 }
                                 if (groupView) {
-                                    progress = groupView.querySelector(".list-footer .progress");
-                                    counter = groupView.querySelector(".list-footer .counter");
+                                    progress = groupView.querySelector(".group-footer .progress");
+                                    counter = groupView.querySelector(".group-footer .counter");
                                     if (progress && progress.style) {
                                         progress.style.display = "none";
                                     }
@@ -1199,11 +1247,11 @@
                                 that.waitForIdleAction();
                             });
                         }
-                    }
-                }).then(function () {
-                    Log.print(Log.l.trace, "Data loaded");
-                    AppBar.notifyModified = true;
-                });
+                    }).then(function () {
+                        Log.print(Log.l.trace, "Data loaded");
+                        AppBar.notifyModified = true;
+                    });
+                }
                 Log.ret(Log.l.trace);
                 return ret;
             };

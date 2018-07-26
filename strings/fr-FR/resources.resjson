@@ -286,6 +286,7 @@
     "info.log6"             : "Détail",
     "info.loggroup"         : "Regroupement",
     "info.lognostack"       : "Protocole plus simple",
+    "info.logWinJS"         : "Y compris la librairie de base",
     "info.cameraOptions"    : "Paramètres de caméra",
     "info.cameraQuality"    : "Qualité",
     "info.cameraUseGrayscale" : "Niveaux de gris",

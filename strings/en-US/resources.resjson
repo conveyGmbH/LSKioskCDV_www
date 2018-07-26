@@ -286,6 +286,7 @@
     "info.log6"             : "Details",
     "info.loggroup"         : "Group",
     "info.lognostack"       : "Optimized call stack",
+    "info.logWinJS"         : "Including base lib",
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",

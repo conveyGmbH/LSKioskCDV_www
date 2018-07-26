@@ -119,25 +119,49 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var sezoom = element.querySelector("#sezoom");
-                    if (sezoom && sezoom.style) {
-                        var contentarea = element.querySelector(".contentarea");
-                        if (contentarea) {
-                            var listHeader = element.querySelector(".list-header");
-                            var width = contentarea.clientWidth;
-                            var height = contentarea.clientHeight - 8;
-
-                            if (listHeader) {
-                                height -= listHeader.clientHeight;
-                            }
-
-                            if (width !== that.prevWidth) {
-                                that.prevWidth = width;
-                                sezoom.style.width = width.toString() + "px";
-                            }
-                            if (height !== that.prevHeight) {
-                                that.prevHeight = height;
-                                sezoom.style.height = height.toString() + "px";
+                    var contentarea = element.querySelector(".contentarea");
+                    if (contentarea) {
+                        var listHeader = element.querySelector(".list-header");
+                        var width = contentarea.clientWidth;
+                        var height = contentarea.clientHeight - 8;
+                        if (listHeader) {
+                            height -= listHeader.clientHeight;
+                        }
+                        if (width !== that.prevWidth || height !== that.prevHeight) {
+                            var listView = element.querySelector("#productlist.listview");
+                            var groupView = element.querySelector("#productgroups.listview");
+                            var sezoom = element.querySelector("#sezoom");
+                            if (sezoom && sezoom.style && listView && listView.style && groupView && groupView.style) {
+                                if (width !== that.prevWidth) {
+                                    that.prevWidth = width;
+                                    if (sezoom.clientWidth !== width) {
+                                        Log.print(Log.l.u1, "sezoom: width " + sezoom.clientWidth + " => " + height);
+                                        sezoom.style.width = width.toString() + "px";
+                                    }
+                                    if (listView.clientWidth !== width) {
+                                        Log.print(Log.l.u1, "listView: width " + listView.clientWidth + " => " + height);
+                                        listView.style.width = width.toString() + "px";
+                                    }
+                                    if (groupView.clientWidth !== width) {
+                                        Log.print(Log.l.u1, "groupView: width " + groupView.clientWidth + " => " + height);
+                                        groupView.style.width = width.toString() + "px";
+                                    }
+                                }
+                                if (height !== that.prevHeight) {
+                                    that.prevHeight = height;
+                                    if (sezoom.clientHeight !== height) {
+                                        Log.print(Log.l.u1, "sezoom: height " + sezoom.clientHeight + " => " + height);
+                                        sezoom.style.height = height.toString() + "px";
+                                    }
+                                    if (listView.clientHeight !== height) {
+                                        Log.print(Log.l.u1, "listView: height " + listView.clientHeight + " => " + height);
+                                        listView.style.height = height.toString() + "px";
+                                    }
+                                    if (groupView.clientHeight !== height) {
+                                        Log.print(Log.l.u1, "groupView: height " + groupView.clientHeight + " => " + height);
+                                        groupView.style.height = height.toString() + "px";
+                                    }
+                                }
                             }
                         }
                     }

@@ -16,6 +16,19 @@
     display: inline-block;
 }
 
+#sezoom {
+    width: 1920px;
+    height: 862px;
+}
+#productlist .listview {
+    width: 1920px;
+    height: 862px;
+}
+#productgroups .listview {
+    width: 1920px;
+    height: 862px;
+}
+
 #productlist .win-itemscontainer {
     padding-left: 30px; }
 
