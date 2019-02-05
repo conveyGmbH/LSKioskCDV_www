@@ -237,7 +237,7 @@
     "register.event"        : "Messe",
     "register.phone"        : "Telefon",
     "register.agreement"    : "Zustimmung",
-    "register.agreementText": "Hiermit stimme ich zu, dass convey Information Systems GmbH meine Daten für Marketingzwecke weiterverwenden kann. Ich möchte gerne über weitere Produkte informiert werden. Diese Zustimmung kann ich jederzeit per Email wiederrufen.",
+    "register.agreementText": "Hiermit stimme ich zu, dass convey Information Systems GmbH meine Daten für Marketingzwecke weiterverwenden kann. Ich möchte gerne über weitere Produkte informiert werden.",
     "register.password"     : "Kennwort",
     "register.confirmation" : "Bestätigung",
     "register.complete"     : "Vielen Dank für Ihre Registrierung! Sie erhalten in Kürze eine Email zur Bestätigung an die oben angegebene Adresse.",
