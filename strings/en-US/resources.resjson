@@ -407,7 +407,7 @@
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
     "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 10 STM32 Nucleos) + (1 out of 2 ST25 NFC X-Nucleos)",
+    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 ST25 board)",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
@@ -418,7 +418,7 @@
 	
     "finished.title"        : "Badge successfully scanned",
     "finished.complete"     : "Complete",
-    "finished.description"  : "&nbspwill receive the product link<br>and promotion code for free purchase valid till March 5th",
+    "finished.description"  : "Thank you for your interest in the selected boards(s).<br>Please await our assistant to provide you the board(s).",
     "finished.comment"      : "On this page, use the Back button to go back!",
 	
     "failed.title"          : "An error occured",
