@@ -12,6 +12,8 @@
 (function () {
     "use strict";
 
+    var nav = WinJS.Navigation;
+
     WinJS.Namespace.define("AppData", {
         _generalUserView: {
             get: function () {
@@ -575,6 +577,231 @@
     });
     WinJS.Namespace.define("Info", {
         getLogLevelName: null
+    });
+    WinJS.Namespace.define("Barcode", {
+        listening: false,
+        dontScan: false,
+        waitingScans: 0,
+        onBarcodeSuccess: function (result, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeSuccess === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeSuccess(result);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                    });
+                }
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function () {
+                    Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
+            }
+            Log.ret(Log.l.trace);
+        },
+        onBarcodeError: function (error, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeError === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeError(error);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeError(error, repeatCount + 1);
+                    });
+                }
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function () {
+                    Barcode.onBarcodeError(error, repeatCount + 1);
+                });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
+            }
+            Log.ret(Log.l.trace);
+        },
+        onDeviceConnected: function (result) {
+            var id = result && result.id;
+            var status = result && result.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(250);
+            Log.ret(Log.l.trace);
+        },
+        onDeviceConnectFailed: function (error) {
+            var id = error && error.id;
+            var status = error && error.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(2000);
+            Log.ret(Log.l.trace);
+        },
+        DeviceConstants: {
+            connectionStatus: {}
+        },
+        connectionStatus: "",
+        ioStatus: "",
+        deviceStatus: {
+            get: function() {
+                if (typeof Barcode === "object") {
+                    return Barcode.connectionStatus + (Barcode.ioStatus ? (" / " + Barcode.ioStatus) : "");
+                } else {
+                    return "";
+                }
+            }
+        },
+        startListenDelayed: function(delay) {
+            Log.call(Log.l.trace, "Barcode.", "delay=" + delay);
+            if (Barcode.listenPromise) {
+                Barcode.listenPromise.cancel();
+            }
+            if (!delay) {
+                Barcode.listenPromise = null;
+                Barcode.startListen();
+            } else {
+                Barcode.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+                    Barcode.listenPromise = null;
+                    Barcode.startListen();
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startListen: function () {
+            Log.call(Log.l.trace, "Barcode.");
+            var generalData = AppData.generalData;
+            if (typeof device === "object" && device.platform === "Android" &&
+                generalData.useBarcodeActivity &&
+                navigator &&
+                navigator.broadcast_intent_plugin &&
+                typeof navigator.broadcast_intent_plugin.listen === "function") {
+                Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
+                navigator.broadcast_intent_plugin.listen(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
+                Barcode.listening = true;
+            } else if (typeof device === "object" && device.platform === "windows" &&
+                generalData.useBarcodeActivity &&
+                generalData.barcodeDevice &&
+                navigator &&
+                navigator.serialDevice) {
+                if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected &&
+                    Barcode.ioStatus === Barcode.DeviceConstants.ioStatus.read) {
+                    Log.print(Log.l.trace, "Windows: already reading...");
+                } else if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.startRead();
+                } else if (!Barcode.listening) {
+                    navigator.serialDevice.enumConnectionStatus(function (result) {
+                        Barcode.DeviceConstants.connectionStatus = result;
+                    });
+                    navigator.serialDevice.enumIoStatus(function (result) {
+                        Barcode.DeviceConstants.ioStatus = result;
+                    });
+                    navigator.serialDevice.connectDevice(
+                        Barcode.connectionStatusChange,
+                        Barcode.onDeviceConnectFailed, {
+                            id: generalData.barcodeDevice,
+                            onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                        });
+                    Barcode.listening = true;
+                } else {
+                    Barcode.startListenDelayed(2000);
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
+        stopListen: function (id) {
+            Log.call(Log.l.trace, "Barcode.");
+            if (id &&
+                typeof device === "object" && device.platform === "windows" &&
+                navigator &&
+                navigator.serialDevice) {
+                navigator.serialDevice.disconnectDevice(function (result) {
+                    if (!AppData.generalData.barcodeDevice) {
+                        Barcode.connectionStatusChange(result);
+                    }
+                }, function (error) {
+                    if (!AppData.generalData.barcodeDevice) {
+                        Barcode.connectionStatusChange(error);
+                    }
+                }, {
+                    id: id,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startRead: function() {
+            var generalData = AppData.generalData;
+            Log.call(Log.l.trace, "Barcode.");
+            if (navigator &&
+                navigator.serialDevice) {
+                navigator.serialDevice.readFromDevice(function(readResult) {
+                    var data = readResult && readResult.data;
+                    Log.print(Log.l.trace, "readFromDevice: success! data=" + data);
+                    if (data) {
+                        Barcode.onBarcodeSuccess({
+                            text: data
+                        });
+                    } else {
+                        WinJS.Promise.timeout(0) .then(function() {
+                            Barcode.startRead();
+                        });
+                    }
+                }, function(readError) {
+                    Log.print(Log.l.error, "readFromDevice: failed!");
+                    if (readError && readError.id && readError.id === generalData.barcodeDevice) {
+                        Barcode.onBarcodeError(readError.status);
+                    }
+                }, {
+                    id: generalData.barcodeDevice,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange,
+                    prefixBinary: "#LSAD",
+                    prefixLengthAdd: 2
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        connectionStatusChange: function (result) {
+            var id = result && result.id;
+            var connectionStatus = result && result.connectionStatus;
+            var ioStatus = result && result.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
+            var prevConnectionStatus = Barcode.connectionStatus;
+
+            Barcode.connectionStatus = connectionStatus;
+            Barcode.ioStatus = ioStatus;
+            if (Application.getPageId(nav.location) === "info" &&
+                AppBar.scope && AppBar.scope.binding) {
+                AppBar.scope.binding.barcodeDeviceStatus = Barcode.deviceStatus;
+            }
+            switch (connectionStatus) {
+            case Barcode.DeviceConstants.connectionStatus.connected:
+                if (prevConnectionStatus !== Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.onDeviceConnected();
+                }
+                break;
+            case Barcode.DeviceConstants.connectionStatus.connecting:
+            case Barcode.DeviceConstants.connectionStatus.disconnecting:
+                break;
+            default:
+                Barcode.listening = false;
+            }
+            Log.ret(Log.l.trace);
+        }
     });
     // usage of binding converters
     //

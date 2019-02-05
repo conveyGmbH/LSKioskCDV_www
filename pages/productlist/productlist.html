@@ -26,12 +26,20 @@
                         </button>
                         <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                            <div id="i_hand_touch" class="action-image"></div><br />
+                            <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
+                        </button>
+                        <!--
+                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                 onclick="AppBar.handleEvent('click', 'clickCamera', event)">
                             <div id="id_card_camera" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'productlist.camera'}"></span>
                         </button>
                         <div class="nx-title_gray">
                             <button class="win-button nx-cancel animationElement"
+                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                     onclick="AppBar.handleEvent('click', 'clickStart', event)">
                                 <div id="cross_new" class="navigate-image"></div>
                                 <span data-win-res="{textContent: 'general.cancel'}"></span>
@@ -43,6 +51,7 @@
                                 <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
                             </button>
                         </div>
+                        -->
                     </div>
                     <div class="products-group-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="products-group-item"

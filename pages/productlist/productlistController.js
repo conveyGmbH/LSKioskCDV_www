@@ -18,6 +18,25 @@
         images: [],
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "ProductList.Controller.");
+
+            var isWindows = false;
+            var isWindows10 = false;
+            var isAndroid = false;
+            if (typeof device === "object" && typeof device.platform === "string") {
+                if (device.platform === "Android") {
+                    if (typeof AppData.generalData.useAudioNote === "undefined") {
+                        AppData._persistentStates.useAudioNote = false;
+                    }
+                    isAndroid = true;
+                } else if (device.platform === "windows") {
+                    isWindows = true;
+                    if (typeof device.version === "string" && device.version.substr(0, 4) === "10.0") {
+                        isWindows10 = true;
+                    }
+                }
+            }
+            var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
+
             Application.Controller.apply(this, [pageElement, {
                 count: 0,
                 clickOkDisabled: true,
@@ -435,6 +454,9 @@
                 clickScan: function (event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.cancelPromises();
+                    if (hasSerialDevice) {
+                        Barcode.dontScan = true;
+                    }
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 },
@@ -1057,7 +1079,7 @@
                         var products = new WinJS.Binding.List(results);
                         that.products = products.createGrouped(groupKey, groupData, groupSorter);
                         if (sezoom && sezoom.winControl) {
-                            sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
+                            sezoom.winControl.zoomedOut = that.binding.isGrouped;
                             sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
                         }
                         if (listView && listView.winControl) {
@@ -1345,9 +1367,9 @@
 
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                if (AppData._persistentStates.kioskUsesCamera) {
+                //if (AppData._persistentStates.kioskUsesCamera) {
                     Colors.loadSVGImageElements(pageElement, "action-image", 80, "#ffffff");
-                }
+                //}
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
                 return that.loadData();
             });

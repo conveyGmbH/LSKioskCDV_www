@@ -21,17 +21,18 @@
         cameraQuality: 50,
         cameraUseGrayscale: true,
         cameraMaxSize: 2560,
-        useBarcodeScanner: true,
         useClippingCamera: false,
         autoShutterTime: 0,
         videoRotation: 0,
+        useBarcodeActivity: false,
+        barcodeDevice: "",
         logEnabled: false,
         logLevel: 3,
         logGroup: false,
         logNoStack: true,
         logWinJS: false,
         inputBorder: 1,
-        appBarSize: 96,
+        appBarSize: 48,
         appBarHideOverflowButton: true,
         navigatorOptions: {
             splitViewDisplayMode: {
@@ -90,11 +91,17 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         if (id === "start") {
+            if (device &&
+                (device.platform === "Android" || device.platform === "windows") &&
+                AppData.generalData.useBarcodeActivity &&
+                Barcode && !Barcode.listening) {
+                Barcode.startListenDelayed(250);
+            }
             // clear contactId 
             AppData.setRecordId("Kontakt", null);
             // re-route directly to productlist page
-            //id = "productlist";
-            id = "languagelist";
+            id = "productlist";
+            //id = "languagelist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
         }
