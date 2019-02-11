@@ -20,11 +20,11 @@
             Log.call(Log.l.trace, pageName + ".");
             // TODO: Initialize the page here.
             // add page specific commands to AppBar
-            AppBar.commandList = [
-                { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check" }
+            var commandList = [
+                { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
 
-            this.controller = new Info.Controller(element);
+            this.controller = new Info.Controller(element, commandList);
             if (this.controller.eventHandlers) {
                 // general event listener for hardware back button, too!
                 this.controller.addRemovableEventListener(document, "backbutton", this.controller.eventHandlers.clickOk.bind(this.controller));
@@ -33,10 +33,12 @@
         },
 
         canUnload: function (complete, error) {
-            var that = this;
             Log.call(Log.l.trace, pageName + ".");
+            var that = this;
             var ret = WinJS.Promise.as().then(function (response) {
-                that.controller.setupLog();
+                if (that.controller) {
+                    that.controller.setupLog();
+                }
                 Application.pageframe.savePersistentStates();
                 complete(response);
             });
