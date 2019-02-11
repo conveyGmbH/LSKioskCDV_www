@@ -12,6 +12,8 @@
 (function () {
     "use strict";
 
+    var nav = WinJS.Navigation;
+
     WinJS.Namespace.define("AppData", {
         _generalUserView: {
             get: function () {
@@ -46,6 +48,7 @@
                 return ret;
             }
         },
+        _prefetchedProductView: null,
         _curGetUserDataId: 0,
         _curGetContactDataId: 0,
         _contactData: {},
@@ -318,43 +321,202 @@
             Log.ret(Log.l.u1, ret);
             return ret;
         },
+        getPropertyFromInitoptionTypeID: function (item) {
+            Log.call(Log.l.u1, "AppData.");
+            var plusRemote = false;
+            var property = "";
+            var color;
+            switch (item.INITOptionTypeID) {
+                case 9:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.showAppBkg = true;
+                    } else {
+                        AppData._persistentStates.showAppBkg = false;
+                    }
+                    break;
+                case 10:
+                    property = "individualColors";
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.individualColors = true;
+                    } else {
+                        AppData._persistentStates.individualColors = false;
+                    }
+                    break;
+                case 11:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "accentColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 12:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "backgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 13:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "navigationColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 14:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "textColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 15:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "labelColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 16:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "tileTextColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 17:
+                    if (AppData._persistentStates.individualColors) {
+                        property = "tileBackgroundColor";
+                        if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
+                            color = AppData.persistentStatesDefaults.colorSettings[property];
+                            item.LocalValue = color && color.replace("#", "");
+                        }
+                    }
+                    break;
+                case 18:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.isDarkTheme = true;
+                    } else {
+                        AppData._persistentStates.isDarkTheme = false;
+                    }
+                    Colors.isDarkTheme = AppData._persistentStates.isDarkTheme;
+                    break;
+                case 25:
+                    property = "kioskHeaderBackgroundColor";
+                    break;
+                case 26:
+                    property = "kioskButtonBackgroundColor";
+                    break;
+                case 27:
+                    property = "kioskProductBackgroundColor";
+                    break;
+                case 28:
+                    property = "kioskProductPreloadColor";
+                    break;
+                case 29:
+                    property = "kioskProductTitleColor";
+                    break;
+                case 32:
+                    if (item.LocalValue === "1") {
+                        AppData._persistentStates.kioskUsesCamera = true;
+                    } else {
+                        AppData._persistentStates.kioskUsesCamera = false;
+                    }
+                    break;
+                default:
+                    // defaultvalues
+            }
+            if (item.pageProperty) {
+                if (item.LocalValue === "1") {
+                    NavigationBar.disablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.disablePage(item.pageProperty + "Remote");
+                    }
+                } else {
+                    NavigationBar.enablePage(item.pageProperty);
+                    if (plusRemote) {
+                        NavigationBar.enablePage(item.pageProperty + "Remote");
+                    }
+                }
+            }
+            Log.ret(Log.l.u1, property);
+            return property;
+        },
+        applyColorSetting: function (colorProperty, color) {
+            Log.call(Log.l.u1, "AppData.", "colorProperty=" + colorProperty + " color=" + color);
+            Colors[colorProperty] = color;
+            switch (colorProperty) {
+                case "kioskHeaderBackgroundColor":
+                    if (AppData._persistentStates.showAppBkg) {
+                        Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", "transparent");
+                    } else {
+                        Colors.changeCSS(".nx-header .nx-header__top-bar", "background-color", Colors.kioskHeaderBackgroundColor);
+                    }
+                    break;
+                case "kioskButtonBackgroundColor":
+                    Colors.changeCSS(".nx-button", "background-color", Colors.kioskButtonBackgroundColor + " !important");
+                    break;
+                case "kioskProductBackgroundColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__overlay", "background-color", Colors.kioskProductBackgroundColor);
+                    break;
+                case "kioskProductPreloadColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__img-container .nx-proitem__preload-bg-color", "background-color", Colors.kioskProductPreloadColor + " !important");
+                    break;
+                case "kioskProductTitleColor":
+                    Colors.changeCSS(".nx-proitem .nx-proitem__title", "color", Colors.kioskProductTitleColor);
+                    Colors.changeCSS(".nx-title_color", "color", Colors.kioskProductTitleColor);
+                    break;
+                case "textColor":
+                    Colors.changeCSS(".nx-title_black", "color", Colors.textColor);
+                    break;
+                case "accentColor":
+                    // fall through...
+                case "navigationColor":
+                    AppBar.loadIcons();
+                    NavigationBar.groups = Application.navigationBarGroups;
+                    break;
+            }
+            Log.ret(Log.l.u1);
+        },
         generalData: {
             get: function () {
-                return {
-                    newContactPageId: AppData._persistentStates.newContactPageId,
-                    setRecordId: AppData.setRecordId,
-                    getRecordId: AppData.getRecordId,
-                    setRestriction: AppData.setRestriction,
-                    getRestriction: AppData.getRestriction,
-                    contactDateTime: (function () {
-                        return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
-                    })(),
-                    individualColors: AppData._persistentStates.individualColors,
-                    isDarkTheme: AppData._persistentStates.isDarkTheme,
-                    inputBorder: AppData._persistentStates.inputBorder,
-                    showAppBkg: AppData._persistentStates.showAppBkg,
-                    logEnabled: AppData._persistentStates.logEnabled,
-                    logLevel: AppData._persistentStates.logLevel,
-                    logGroup: AppData._persistentStates.logGroup,
-                    logNoStack: AppData._persistentStates.logNoStack,
-                    logTarget: Log.targets.console,
-                    cameraQuality: AppData._persistentStates.cameraQuality,
-                    cameraUseGrayscale: AppData._persistentStates.cameraUseGrayscale,
-                    eventName: AppData.getEventName(),
-                    userName: AppData.getUserName(),
-                    userPresent: AppData.getUserPresent(),
-                    contactDate: (AppData._contactData && AppData._contactData.Erfassungsdatum),
-                    contactId: (AppData._contactData && AppData._contactData.KontaktVIEWID),
-                    globalContactID: ((AppData._contactData && AppData._contactData.CreatorRecID) ?
-                        (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID) : ""),
-                    publishFlag: 1,
-                    on: getResourceText("settings.on"),
-                    off: getResourceText("settings.off"),
-                    dark: getResourceText("settings.dark"),
-                    light: getResourceText("settings.light"),
-                    present: getResourceText("userinfo.present"),
-                    absend: getResourceText("userinfo.absend")
-                };
+                var data = AppData._persistentStates;
+                data.logTarget = Log.targets.console;
+                data.setRecordId = AppData.setRecordId;
+                data.getRecordId = AppData.getRecordId;
+                data.setRestriction = AppData.setRestriction;
+                data.getRestriction = AppData.getRestriction;
+                data.contactDateTime = (function () {
+                    return (AppData.getContactDateString() + " " + AppData.getContactTimeString());
+                })();
+                data.eventName = AppData._userData.VeranstaltungName;
+                data.userName = AppData._userData.Login;
+                data.userPresent = AppData._userData.Present;
+                data.publishFlag = AppData._userData.PublishFlag;
+                data.contactDate = (AppData._contactData && AppData._contactData.Erfassungsdatum);
+                data.contactId = (AppData._contactData && AppData._contactData.KontaktVIEWID);
+                data.globalContactID = ((AppData._contactData && AppData._contactData.CreatorRecID)
+                    ? (AppData._contactData.CreatorSiteID + "/" + AppData._contactData.CreatorRecID)
+                    : "");
+                data.on = getResourceText("settings.on");
+                data.off = getResourceText("settings.off");
+                data.dark = getResourceText("settings.dark");
+                data.light = getResourceText("settings.light");
+                data.present = getResourceText("userinfo.present");
+                data.absend = getResourceText("userinfo.absend");
+                return data;
             }
         },
         _initAnredeView: {
@@ -415,6 +577,231 @@
     });
     WinJS.Namespace.define("Info", {
         getLogLevelName: null
+    });
+    WinJS.Namespace.define("Barcode", {
+        listening: false,
+        dontScan: false,
+        waitingScans: 0,
+        onBarcodeSuccess: function (result, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeSuccess === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeSuccess(result);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                    });
+                }
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function () {
+                    Barcode.onBarcodeSuccess(result, repeatCount + 1);
+                });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
+            }
+            Log.ret(Log.l.trace);
+        },
+        onBarcodeError: function (error, repeatCount) {
+            repeatCount = repeatCount || 0;
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            if (Application.getPageId(nav.location) === "barcode") {
+                if (Barcode.dontScan &&
+                    AppBar.scope &&
+                    typeof AppBar.scope.onBarcodeError === "function") {
+                    Barcode.dontScan = false;
+                    AppBar.scope.onBarcodeError(error);
+                } else {
+                    Barcode.waitingScans++;
+                    WinJS.Promise.timeout(250).then(function () {
+                        Barcode.waitingScans--;
+                        Barcode.onBarcodeError(error, repeatCount + 1);
+                    });
+                }
+            } else {
+                Barcode.dontScan = true;
+                Application.navigateById("barcode");
+                WinJS.Promise.timeout(250).then(function () {
+                    Barcode.onBarcodeError(error, repeatCount + 1);
+                });
+            }
+            if (!repeatCount) {
+                Barcode.startListenDelayed(0);
+            }
+            Log.ret(Log.l.trace);
+        },
+        onDeviceConnected: function (result) {
+            var id = result && result.id;
+            var status = result && result.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(250);
+            Log.ret(Log.l.trace);
+        },
+        onDeviceConnectFailed: function (error) {
+            var id = error && error.id;
+            var status = error && error.status;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            Barcode.startListenDelayed(2000);
+            Log.ret(Log.l.trace);
+        },
+        DeviceConstants: {
+            connectionStatus: {}
+        },
+        connectionStatus: "",
+        ioStatus: "",
+        deviceStatus: {
+            get: function() {
+                if (typeof Barcode === "object") {
+                    return Barcode.connectionStatus + (Barcode.ioStatus ? (" / " + Barcode.ioStatus) : "");
+                } else {
+                    return "";
+                }
+            }
+        },
+        startListenDelayed: function(delay) {
+            Log.call(Log.l.trace, "Barcode.", "delay=" + delay);
+            if (Barcode.listenPromise) {
+                Barcode.listenPromise.cancel();
+            }
+            if (!delay) {
+                Barcode.listenPromise = null;
+                Barcode.startListen();
+            } else {
+                Barcode.listenPromise = WinJS.Promise.timeout(delay).then(function () {
+                    Barcode.listenPromise = null;
+                    Barcode.startListen();
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startListen: function () {
+            Log.call(Log.l.trace, "Barcode.");
+            var generalData = AppData.generalData;
+            if (typeof device === "object" && device.platform === "Android" &&
+                generalData.useBarcodeActivity &&
+                navigator &&
+                navigator.broadcast_intent_plugin &&
+                typeof navigator.broadcast_intent_plugin.listen === "function") {
+                Log.print(Log.l.trace, "Android: calling  navigator.broadcast_intent_plugin.start...");
+                navigator.broadcast_intent_plugin.listen(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
+                Barcode.listening = true;
+            } else if (typeof device === "object" && device.platform === "windows" &&
+                generalData.useBarcodeActivity &&
+                generalData.barcodeDevice &&
+                navigator &&
+                navigator.serialDevice) {
+                if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected &&
+                    Barcode.ioStatus === Barcode.DeviceConstants.ioStatus.read) {
+                    Log.print(Log.l.trace, "Windows: already reading...");
+                } else if (Barcode.connectionStatus === Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.startRead();
+                } else if (!Barcode.listening) {
+                    navigator.serialDevice.enumConnectionStatus(function (result) {
+                        Barcode.DeviceConstants.connectionStatus = result;
+                    });
+                    navigator.serialDevice.enumIoStatus(function (result) {
+                        Barcode.DeviceConstants.ioStatus = result;
+                    });
+                    navigator.serialDevice.connectDevice(
+                        Barcode.connectionStatusChange,
+                        Barcode.onDeviceConnectFailed, {
+                            id: generalData.barcodeDevice,
+                            onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                        });
+                    Barcode.listening = true;
+                } else {
+                    Barcode.startListenDelayed(2000);
+                }
+            }
+            Log.ret(Log.l.trace);
+        },
+        stopListen: function (id) {
+            Log.call(Log.l.trace, "Barcode.");
+            if (id &&
+                typeof device === "object" && device.platform === "windows" &&
+                navigator &&
+                navigator.serialDevice) {
+                navigator.serialDevice.disconnectDevice(function (result) {
+                    if (!AppData.generalData.barcodeDevice) {
+                        Barcode.connectionStatusChange(result);
+                    }
+                }, function (error) {
+                    if (!AppData.generalData.barcodeDevice) {
+                        Barcode.connectionStatusChange(error);
+                    }
+                }, {
+                    id: id,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        startRead: function() {
+            var generalData = AppData.generalData;
+            Log.call(Log.l.trace, "Barcode.");
+            if (navigator &&
+                navigator.serialDevice) {
+                navigator.serialDevice.readFromDevice(function(readResult) {
+                    var data = readResult && readResult.data;
+                    Log.print(Log.l.trace, "readFromDevice: success! data=" + data);
+                    if (data) {
+                        Barcode.onBarcodeSuccess({
+                            text: data
+                        });
+                    } else {
+                        WinJS.Promise.timeout(0) .then(function() {
+                            Barcode.startRead();
+                        });
+                    }
+                }, function(readError) {
+                    Log.print(Log.l.error, "readFromDevice: failed!");
+                    if (readError && readError.id && readError.id === generalData.barcodeDevice) {
+                        Barcode.onBarcodeError(readError.status);
+                    }
+                }, {
+                    id: generalData.barcodeDevice,
+                    onDeviceConnectionStatusChange: Barcode.connectionStatusChange,
+                    prefixBinary: "#LSAD",
+                    prefixLengthAdd: 2
+                });
+            }
+            Log.ret(Log.l.trace);
+        },
+        connectionStatusChange: function (result) {
+            var id = result && result.id;
+            var connectionStatus = result && result.connectionStatus;
+            var ioStatus = result && result.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
+            var prevConnectionStatus = Barcode.connectionStatus;
+
+            Barcode.connectionStatus = connectionStatus;
+            Barcode.ioStatus = ioStatus;
+            if (Application.getPageId(nav.location) === "info" &&
+                AppBar.scope && AppBar.scope.binding) {
+                AppBar.scope.binding.barcodeDeviceStatus = Barcode.deviceStatus;
+            }
+            switch (connectionStatus) {
+            case Barcode.DeviceConstants.connectionStatus.connected:
+                if (prevConnectionStatus !== Barcode.DeviceConstants.connectionStatus.connected) {
+                    Barcode.onDeviceConnected();
+                }
+                break;
+            case Barcode.DeviceConstants.connectionStatus.connecting:
+            case Barcode.DeviceConstants.connectionStatus.disconnecting:
+                break;
+            default:
+                Barcode.listening = false;
+            }
+            Log.ret(Log.l.trace);
+        }
     });
     // usage of binding converters
     //
