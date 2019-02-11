@@ -50,7 +50,7 @@
     "tooltip.publish"       : "Fragebogen publizieren",
     "tooltip.photo"         : "Foto aufnehmen",
 
-    "start.title"           : "Startseite",
+    "start.title"           : "Start",
     "start.comment"         : "Verwende die Schaltflächen auf dieser Seite um auf weitere Seiten zu gehen!",
     "start.buttonContact"   : "Letzter Kontakt",
     "start.buttonListLocal" : "Lokal",
@@ -78,7 +78,7 @@
     "start.info"            : "Wichtige Hinweise",
     "start.language"        : "Sprache",
 
-    "contact.title"         : "Kontakt",
+    "contact.title"         : "Geben Sie bitte Ihre Kontaktdaten ein",
     "contact.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "contact.questionDelete": "Wollen Sie den aktuellen Kontakt löschen?",
     "contact.name"          : "Name",
@@ -86,7 +86,7 @@
     "contact.formOf"        : "Anrede",
     "contact.academicTitle" : "Titel",
     "contact.company"       : "Firma",
-    "contact.email"         : "Email",
+    "contact.email"         : "E-mail",
     "contact.fax"           : "Fax",
     "contact.phone"         : "Tel",
     "contact.mobile"        : "Mobil",
@@ -94,12 +94,14 @@
     "contact.zip"           : "PLZ",
     "contact.city"          : "Ort",
     "contact.country"       : "Land",
+    "contact.position"      : "Position",
     "contact.memo"          : "Memo",
     "contact.count"         : "Anzahl",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Bearbeitung unvollständig",
 	"contact.notice"		: "Bemerkung",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Weiter",
 
 
     "contact.closeImage"    : "Schliessen",
@@ -177,6 +179,7 @@
 
     "camera.title"          : "Kamera",
     "camera.comment"        : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+    "camera.appbartext"     : "Bitte Ihre Visitenkarte auf die Ablage unten legen",
 
     "barcode.title"         : "Scan your badge",  
     "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
@@ -184,6 +187,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Plazieren Sie den Barcode innerhalb des Scan-Feldes",
     "barcode.emailNeeded"   : "Geben Sie bitte Ihre E-Mail Anschrift ein!",
+	"barcode.manualEdit"    : "Manuelle Erfassung",
 
     "settings.title"        : "Gestaltung",
     "settings.comment"      : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -286,6 +290,9 @@
     "info.cameraOptions"    : "Kameraoptionen",
     "info.cameraQuality"    : "Qualität",
     "info.cameraUseGrayscale" : "Graustufen",
+    "info.useClippingCamera": "Automatische Erkennung",
+    "info.scannerOptions"   : "Scanneroptionen",
+    "info.useExternalCamera": "Visitenkarten Scanner",
     "info.replication"      : "Synchronisationsoptionen",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Intervall in s",
@@ -293,6 +300,16 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Tonaufnahme",
+    "info.autoShutterTime"  : "Selbstauslöser [ms]",
+    "info.useBarcodeActivity"    : "Integrierter Scanner",
+    "info.picturesDirectorySubFolder" : "Ordner",
+    "info.logOffOptionActive"  : "Abmelden erlauben",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.notesOptions"     : "Aufnahmeoptionen",
+    "info.barcodeDeviceId"  : "Gerät",
+    "info.barcodeDeviceStatus" : "Status",
+    "info.videoRotation"    : "Rotationswinkel [°]",
 
 	"infodesk.employee"		: "Mitarbeiter",
 	"infodesk.title"		: "Infodesk",
@@ -406,6 +423,7 @@
     "appheader.notpublished": "Nicht publiziert",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",

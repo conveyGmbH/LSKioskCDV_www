@@ -78,7 +78,7 @@
     "start.info"            : "Instructions importantes",
     "start.language"        : "Langue",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Veuillez entrer vos coordonnées contact",
     "contact.comment"       : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "contact.questionDelete": "êtes -vous s\u00FBr de vouloir supprimer le contact?",
     "contact.name"          : "Nom",
@@ -94,12 +94,14 @@
     "contact.zip"           : "Code postal",
     "contact.city"          : "Ville",
     "contact.country"       : "Pays",
+    "contact.position"      : "Position",
     "contact.memo"          : "Mémo",
     "contact.count"         : "Nombre",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Édition incomplète",
 	"contact.notice"		: "Préavis",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continuer",	
 
     "contact.closeImage"    : "Fermer",
 
@@ -176,6 +178,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!",
+    "camera.appbartext"     : "Veuillez placer votre carte de visite sur l'étagère ci-dessous",
 
     "barcode.title"         : "Scan your badge",  
     "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
@@ -183,6 +186,7 @@
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
     "barcode.emailNeeded"   : "S’il vous plaît, entrez votre adresse e-mail!",
+	"barcode.manualEdit"    : "Capture manuelle",
 
     "settings.title"        : "Design",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -285,6 +289,9 @@
     "info.cameraOptions"    : "Paramètres de caméra",
     "info.cameraQuality"    : "Qualité",
     "info.cameraUseGrayscale" : "Niveaux de gris",
+    "info.useClippingCamera": "Reconnaissance automatique",
+    "info.scannerOptions"   : "Paramètres de scanner",
+    "info.useExternalCamera": "Scanner de cartes de visite",
     "info.replication"      : "Paramètres de sync",
     "info.replActive"       : "Sync",
     "info.replInterval"     : "Intervalle en sec",
@@ -292,6 +299,16 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Enregistrement audio",
+    "info.autoShutterTime"  : "Temps de déclenchement [ms]",
+    "info.useBarcodeActivity"    : "Scanner intégré",
+    "info.picturesDirectorySubFolder" : "Répertoire",
+    "info.logOffOptionActive"  : "Autoriser la déconnexion",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.notesOptions"     : "Paramètres d'enregistrement",
+    "info.barcodeDeviceId"  : "Périphérique",
+    "info.barcodeDeviceStatus" : "État",
+    "info.videoRotation"    : "Angles de rotation [°]",
 
 	"infodesk.employee"		: "Personnel",
 	"infodesk.title"		: "Infodesk",
@@ -412,6 +429,8 @@
     "productlist.comment"   : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "productlist.count"     : "Nombre",
     "productlist.continue"  : "Continuer",	
+    "productlist.barcode"   : "Scanner le code-barres",
+    "productlist.camera"    : "Capturer la carte de visite",
 
     "languagelist.title"    : "Sélection de Langues",
     "languagelist.comment"  : "Utilisez le bouton Retour sur cette page pour y retourner!",

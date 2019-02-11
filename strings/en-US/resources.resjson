@@ -78,7 +78,7 @@
     "start.info"            : "Important informations",
     "start.language"        : "Language",
 
-    "contact.title"         : "Contact",
+    "contact.title"         : "Please enter your contact data",
     "contact.comment"       : "On this page, use the Back button to go back!",
     "contact.questionDelete": "Do you want to delete the current contact?",
     "contact.name"          : "Last name",
@@ -86,7 +86,7 @@
     "contact.formOf"        : "Mr/Ms",
     "contact.academicTitle" : "Title",
     "contact.company"       : "Company",
-    "contact.email"         : "Email",
+    "contact.email"         : "E-mail",
     "contact.fax"           : "Fax",
     "contact.phone"         : "Phone",
     "contact.mobile"        : "Mobile",
@@ -94,12 +94,14 @@
     "contact.zip"           : "Zip",
     "contact.city"          : "City",
     "contact.country"       : "Country",
+    "contact.position"      : "Position",
     "contact.memo"          : "Memo",
     "contact.count"         : "Count",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Editing incomplete",
 	"contact.notice"		: "Comment",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continue",
 
     "contact.closeImage"    : "Close",
 
@@ -176,6 +178,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "On this page, use the Back button to go back!",
+    "camera.appbartext"     : "Please place your business card on the shelf below",
 
     "barcode.title"         : "Scan your badge",
     "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
@@ -183,6 +186,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Place a barcode inside the scan area",
     "barcode.emailNeeded"   : "Please, enter your e-mail address!",
+	"barcode.manualEdit"    : "Capture manually",
 
     "settings.title"        : "Design",
     "settings.comment"      : "On this page, use the Back button to go back!",
@@ -285,6 +289,9 @@
     "info.cameraOptions"    : "Camera options",
     "info.cameraQuality"    : "Quality",
     "info.cameraUseGrayscale" : "Grayscale",
+    "info.useClippingCamera": "Automatic recognition",
+    "info.scannerOptions"   : "Scanner options",
+    "info.useExternalCamera": "Businesscard scanner",
     "info.replication"      : "Synchronisation options",
     "info.replActive"       : "Synchronisation",
     "info.replInterval"     : "Interval in s",
@@ -292,6 +299,16 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Audio recording",
+    "info.autoShutterTime"  : "Trigger time [ms]",
+    "info.useBarcodeActivity"    : "Integrated scanner",
+    "info.picturesDirectorySubFolder" : "Folder",
+    "info.logOffOptionActive"  : "Allow logoff",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.notesOptions"     : "Recording options",
+    "info.barcodeDeviceId"  : "Device",
+    "info.barcodeDeviceStatus" : "Status",
+    "info.videoRotation"    : "Rotation angle [°]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",
@@ -402,6 +419,7 @@
     "appheader.notpublished": "Not published",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
@@ -412,6 +430,8 @@
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
     "productlist.continue"  : "Continue",
+    "productlist.barcode"   : "Scan barcode",
+    "productlist.camera"    : "Capture business card",
 
     "languagelist.title"    : "Language selection",
     "languagelist.comment"  : "On this page, use the Back button to go back!",

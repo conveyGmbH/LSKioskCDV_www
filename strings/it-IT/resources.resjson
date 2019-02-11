@@ -78,7 +78,7 @@
     "start.info"            : "Informazioni importanti",
     "start.language"        : "Lingua",
 
-    "contact.title"         : "Contatto",
+    "contact.title"         : "Inserisci i tuoi dati di contatto per favore",
     "contact.comment"       : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "contact.questionDelete": "Vuoi eliminare questo contatto?",
     "contact.name"          : "Cognome",
@@ -94,12 +94,14 @@
     "contact.zip"           : "Codice Postale",
     "contact.city"          : "Città",
     "contact.country"       : "Nazione",
+    "contact.position"      : "Posizione",
     "contact.memo"          : "Notizie",
     "contact.count"         : "Totale",
     "contact.barcode"       : "Barcode",
     "contact.incomplete"    : "Elaborazione incompleta",
 	"contact.notice"		: "Scorgere",
 	"contact.url"			: "URL",
+    "contact.continue"      : "Continua",
 
     "contact.closeImage"    : "Chiudi",
 
@@ -176,6 +178,7 @@
 
     "camera.title"          : "Camera",
     "camera.comment"        : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+    "camera.appbartext"     : "Metti il tuo biglietto da visita sullo scaffale sottostante",
 	
     "barcode.title"         : "Scan your badge",  
     "barcode.description"   : "Please hold your badge<br>in front of the scanner below this screen",
@@ -183,6 +186,7 @@
     "barcode.barcode"       : "Barcode",
     "barcode.placement"     : "Posiziona un barcode all'interno dell'area di scansione",
     "barcode.emailNeeded"   : "Per favore, Inserisci il tuo indirizzo di email!",
+	"barcode.manualEdit"    : "Cattura manuale",
 
     "settings.title"        : "Impostazioni",
     "settings.comment"      : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
@@ -285,6 +289,9 @@
     "info.cameraOptions"    : "Opzioni fotocamera",
     "info.cameraQuality"    : "Qualità",
     "info.cameraUseGrayscale" : "Scala di grigi",
+    "info.useClippingCamera": "Riconoscimento automatico",
+    "info.scannerOptions"   : "Opzioni scanner",
+    "info.useExternalCamera": "Scanner per biglietti da visita",
     "info.replication"      : "Opzioni di sincronizzazione",
     "info.replActive"       : "Sincronizzazione",
     "info.replInterval"     : "Intervallo in s",
@@ -292,6 +299,16 @@
     "info.upload"           : "Upload",
     "info.download"         : "Download",
     "info.portal"           : "Portal",
+    "info.useAudioNote"     : "Registrazione audio",
+    "info.autoShutterTime"  : "Tempo di innesco [ms]",
+    "info.useBarcodeActivity"    : "Scanner integrato",
+    "info.picturesDirectorySubFolder" : "Repertorio",
+    "info.logOffOptionActive"  : "Consentire il logout",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.notesOptions"     : "Opzioni registrazione",
+    "info.barcodeDeviceId"  : "Periferico",
+    "info.barcodeDeviceStatus" : "Condizione",
+    "info.videoRotation"    : "Angoli di rotazione [°]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",
@@ -402,6 +419,7 @@
     "appheader.notpublished": "Non pubblicato",
     "appheader.portal"      : "Portal",
     "appheader.kiosk"       : "Kiosk",
+    "appheader.title"       : "",
 
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
@@ -413,9 +431,11 @@
     "productlist.count"     : "Totale",
     "productlist.continue"  : "Continua",
     "productlist.titletext" : "Choose products to get more informations",
+    "productlist.camera"    : "Acquisizione biglietto da visita",
 
     "languagelist.title"    : "Selezione del Lingue",
     "languagelist.comment"  : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
+   "languagelist.continue" : "Continuare",
 	
     "finished.title"        : "Badge successfully scanned",
     "finished.complete"     : "Complete",
