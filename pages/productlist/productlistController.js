@@ -17,11 +17,32 @@
         images: [],
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "ProductList.Controller.");
+
+            var isWindows = false;
+            var isWindows10 = false;
+            var isAndroid = false;
+            if (typeof device === "object" && typeof device.platform === "string") {
+                if (device.platform === "Android") {
+                    if (typeof AppData.generalData.useAudioNote === "undefined") {
+                        AppData._persistentStates.useAudioNote = false;
+                    }
+                    isAndroid = true;
+                } else if (device.platform === "windows") {
+                    isWindows = true;
+                    if (typeof device.version === "string" && device.version.substr(0, 4) === "10.0") {
+                        isWindows10 = true;
+                    }
+                }
+            }
+            var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
+
             Application.Controller.apply(this, [pageElement, {
                 count: 0,
                 clickOkDisabled: true,
                 clickOkDisabledInvert: false,
-                version: Application.version
+                version: Application.version,
+                isGrouped: false,
+                continueText: AppData._persistentStates.kioskUsesCamera ? getResourceText("productlist.camera") : getResourceText("productlist.barcode")
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -262,6 +283,9 @@
                 clickScan: function (event) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.cancelPromises();
+                    if (hasSerialDevice) {
+                        Barcode.dontScan = true;
+                    }
                     Application.navigateById("barcode", event);
                     Log.ret(Log.l.trace);
                 },
@@ -380,7 +404,7 @@
                 },
                 onHeaderVisibilityChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
-                    if (eventInfo && eventInfo.detail) {
+                    if (eventInfo && eventInfo.detail && listView) {
                         var visible = eventInfo.detail.visible;
                         if (visible) {
                             var contentHeader = listView.querySelector(".content-header");
@@ -399,7 +423,7 @@
                 },
                 onFooterVisibilityChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
-                    if (eventInfo && eventInfo.detail) {
+                    if (eventInfo && eventInfo.detail && listView) {
                         progress = listView.querySelector(".list-footer .progress");
                         counter = listView.querySelector(".list-footer .counter");
                         var visible = eventInfo.detail.visible;
