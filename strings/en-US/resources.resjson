@@ -438,7 +438,7 @@
 	
     "finished.title"        : "Badge successfully scanned",
     "finished.complete"     : "Complete",
-    "finished.description"  : "Thank you for your interest in the selected boards(s).<br>Please await our assistant to provide you the board(s).",
+    "finished.description"  : "Thank you for your interest in selected boards(s).<br>Please await our assistant to provide them to you.",
     "finished.comment"      : "On this page, use the Back button to go back!",
 	
     "failed.title"          : "An error occured",
