@@ -426,6 +426,7 @@
     "productlist.continue"  : "Continue",
     "productlist.barcode"   : "Scan barcode",
     "productlist.camera"    : "Capture business card",
+    "productlist.products"  : "Products",
 
     "languagelist.title"    : "CIP, SIP, <br>HOORAY!<br>",
     "languagelist.comment"  : "Please select the desired language:",

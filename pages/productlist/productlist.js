@@ -131,7 +131,11 @@
                             var listView = element.querySelector("#productlist.listview");
                             var groupView = element.querySelector("#productgroups.listview");
                             var sezoom = element.querySelector("#sezoom");
+                            var productMainGroupsContainer = element.querySelector(".productmaingroups-container");
                             if (sezoom && sezoom.style && listView && listView.style && groupView && groupView.style) {
+                                if (sezoom.winControl && !sezoom.winControl.zoomedOut && productMainGroupsContainer) {
+                                    height -= productMainGroupsContainer.clientHeight;
+                                }
                                 if (width !== that.prevWidth) {
                                     that.prevWidth = width;
                                     if (sezoom.clientWidth !== width) {

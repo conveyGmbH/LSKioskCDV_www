@@ -16,6 +16,35 @@
     display: inline-block;
 }
 
+.productmaingroups-container {
+    width: 100%;
+    height: 100px;
+}
+
+#productmaingroups {
+    width: calc(100% - 50px);
+    height: 90px;
+    margin-left: 25px;
+}
+
+.products-main-group-item {
+    width: 300px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", "Arial" !important;
+    font-size: 36px !important;
+    line-height: 1.5 !important;
+    border-width: 2px !important;
+    border-style: solid !important;
+}
+
+.products-main-group-item .nx-proitem__title {
+    width: 100%;
+    text-align: center;
+}
+
+
 #sezoom {
     width: 1920px;
     height: 862px;

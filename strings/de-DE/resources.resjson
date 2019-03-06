@@ -430,6 +430,7 @@
     "productlist.continue"  : "Weiter",
     "productlist.barcode"   : "Barcode scannen",
     "productlist.camera"    : "Vistenkarte aufnehmen",
+	"productlist.products"  : "Produkte",
 
     "languagelist.title"    : "Einmal klicken <br>statt schwer schleppen! <br>Sichern Sie sich Ihre Unterlagen<br>jetzt digital!<br>",
     "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus:",

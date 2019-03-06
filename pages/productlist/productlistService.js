@@ -98,6 +98,26 @@
                 Log.ret(Log.l.trace);
                 return ret;
             }
+        },
+        _productMainGroupView: {
+            get: function () {
+                return AppData.getFormatView("CR_V_Fragengruppe", 20577);
+            }
+        },
+        productMainGroupView: {
+            select: function (complete, error) {
+                Log.call(Log.l.trace, "ProductList.");
+                var ret = ProductList._productMainGroupView.select(complete, error, {
+                    // select restriction
+                    LanguageSpecID: AppData.getLanguageId()
+                }, {
+                    // select options
+                    ordered: true
+                });
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
         }
     });
 })();

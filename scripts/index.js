@@ -41,9 +41,9 @@
             }
         },
         odata: {
-            https: false,
-            hostName: "localhost",
-            onlinePort: 8090,
+            https: true,
+            hostName: "leadsuccess.convey.de",
+            onlinePort: 443,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
@@ -100,8 +100,8 @@
             // clear contactId 
             AppData.setRecordId("Kontakt", null);
             // re-route directly to productlist page
-            id = "productlist";
-            //id = "languagelist";
+            //id = "productlist";
+            id = "languagelist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
         }
