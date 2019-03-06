@@ -10,4 +10,7 @@
 .finished-text {
     margin: 100px auto;
 }
-
+.finished .nx-title_black {
+    margin-top: 70px; 
+    font-size: 36px;
+}

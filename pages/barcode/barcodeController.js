@@ -15,25 +15,6 @@
     WinJS.Namespace.define("Barcode", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "Barcode.Controller.");
-
-            var isWindows = false;
-            var isWindows10 = false;
-            var isAndroid = false;
-            if (typeof device === "object" && typeof device.platform === "string") {
-                if (device.platform === "Android") {
-                    if (typeof AppData.generalData.useAudioNote === "undefined") {
-                        AppData._persistentStates.useAudioNote = false;
-                    }
-                    isAndroid = true;
-                } else if (device.platform === "windows") {
-                    isWindows = true;
-                    if (typeof device.version === "string" && device.version.substr(0, 4) === "10.0") {
-                        isWindows10 = true;
-                    }
-                }
-            }
-            var hasSerialDevice = (isWindows10 && AppData.generalData.useBarcodeActivity) ? true : false;
-            
             Application.Controller.apply(this, [pageElement, {
                 states: {
                     errorMessage: "",
@@ -384,13 +365,14 @@
             }
             this.translateAnimantion = translateAnimantion;
 
+
             var insertBarcodedata = function (barcode, isVcard) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
                 that.updateStates({ errorMessage: "Request", barcode: barcode });
-                var ret = new WinJS.Promise.as().then(function() {
+                var ret = new WinJS.Promise.as().then(function () {
                     var recordId = AppData.getRecordId("Kontakt");
                     if (!recordId) {
-                        Log.print(Log.l.error, "no KontaktID");
+                        Log.print(Log.l.error, "no KontaktVIEWID");
                         return WinJS.Promise.as();
                     }
                     if (isVcard) {
@@ -410,23 +392,13 @@
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
                                 AppData._barcodeRequest = barcode;
-                                return WinJS.Promise.timeout(0).then(function() {
-                                    // do the following in case of success:
-                                    // go on to questionnaire
-                                    if (Barcode.waitingScans > 0) {
-                                        Barcode.dontScan = true;
-                                    } else {
-                                        AppData._barcodeType = "vcard";
-                                        AppData._barcodeRequest = barcode;
-                                        that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
-                                            that.loadData();
-                                        });
-                                    }
+                                that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                                    that.loadData();
                                 });
                             } else {
                                 AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
-                                return WinJS.Promise.as();
                             }
+                            return WinJS.Promise.as();
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
@@ -449,18 +421,8 @@
                                 AppData.generalData.setRecordId("ImportBarcodeScan", json.d.ImportBarcodeScanVIEWID);
                                 AppData._barcodeType = "barcode";
                                 AppData._barcodeRequest = barcode;
-                                WinJS.Promise.timeout(0).then(function () {
-                                    // do the following in case of success:
-                                    // go on to questionnaire
-                                    if (Barcode.waitingScans > 0) {
-                                        Barcode.dontScan = true;
-                                    } else {
-                                        AppData._barcodeType = "barcode";
-                                        AppData._barcodeRequest = barcode;
-                                        that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
-                                            that.loadData();
-                                        });
-                                    }
+                                that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
+                                    that.loadData();
                                 });
                             } else {
                                 AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
@@ -476,7 +438,6 @@
                 return ret;
             }
             this.insertBarcodedata = insertBarcodedata;
-
 
             var onBarcodeSuccess = function (result) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
@@ -543,7 +504,6 @@
                 });
                 Log.ret(Log.l.trace);
             }
-            this.onBarcodeSuccess = onBarcodeSuccess;
 
             var onBarcodeError = function (error) {
                 Log.call(Log.l.error, "Barcode.Controller.");
@@ -555,13 +515,10 @@
                 });
                 Log.ret(Log.l.error);
             }
-            this.onBarcodeError = onBarcodeError;
 
             var scanBarcode = function () {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                if (hasSerialDevice) {
-                    that.loadData();
-                } else if (typeof cordova !== "undefined" &&
+                if (typeof cordova !== "undefined" &&
                     cordova.plugins && cordova.plugins.barcodeScanner &&
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 
@@ -615,8 +572,10 @@
                                                  svgInfo.element.firstChild, true);
                     }
                 });
-                if (!Barcode.dontScan) {
+                if (!AppData._persistentStates.useBarcodeScanner) {
                     that.scanBarcode();
+                } else {
+                    that.loadData();
                 }
             });
             Log.ret(Log.l.trace);

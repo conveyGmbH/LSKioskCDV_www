@@ -97,38 +97,17 @@
                                data-win-bind="value: generalData.videoRotation"
                                onchange="AppBar.handleEvent('change', 'changedVideoRotation', event)" />
                     </div>
-                    <div class="line-separator" data-win-bind="style.display: hasBarcodeScanner Binding.Converter.toDisplay"></div>
-                    <div class="field_line field_line_odd" data-win-bind="style.display: hasBarcodeScanner Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.useBarcodeActivity'}"></span>
+                    <div class="line-separator"></div>
+                    <div class="field_line field_line_odd">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.useBarcodeScanner'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.useBarcodeScanner'}"></span>
                         <div class="input_field toggle-switch-parent">
-                            <div id="useBarcodeActivity" class="input_field"
+                            <div id="useBarcodeScanner" class="input_field"
                                  data-win-control="WinJS.UI.ToggleSwitch"
-                                 data-win-bind="winControl.checked: generalData.useBarcodeActivity; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
-                                 onchange="AppBar.handleEvent('change', 'clickUseBarcodeActivity', event)">
+                                 data-win-bind="winControl.checked: generalData.useBarcodeScanner; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseBarcodeScanner', event)">
                             </div>
                         </div>
-                    </div>
-                    <div class="field_line field_line_even" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
-                        <select id="barcodeDeviceSelect"
-                                class="input_field win-dropdown"
-                                data-win-control="WinJS.UI.Repeater"
-                                data-win-bind="value: generalData.barcodeDevice"
-                                onchange="AppBar.handleEvent('change', 'changeBarcodeDeviceSelect', event)">
-                            <option data-win-bind="value: id; textContent: name"></option>
-                        </select>
-                    </div>
-                    <div class="field_line field_line_odd" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
-                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.barcodeDevice"></span>
-                    </div>
-                    <div class="field_line field_line_even" data-win-bind="style.display: hasSerialDevice Binding.Converter.toDisplay">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
-                        <span class="input_field win-type-subtitle" data-win-bind="textContent: barcodeDeviceStatus"></span>
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_full">

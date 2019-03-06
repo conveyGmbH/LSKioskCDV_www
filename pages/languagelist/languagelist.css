@@ -16,49 +16,66 @@
     width: 100%;
     height: 100%;
 }
-
-.languagelist .nx-title {
-    margin-top: 320px;
-}
-.languagelist .list-header .nx-title_color {
-    color: white;
-    text-align: left;
-    padding-left: 80px;
-    font-size: 120px;
-}
-.languagelist .list-header .nx-title_black {
-    /*
-    color: white;
-    */
+.languagelist .organizer-image {
     position: absolute;
     left: 0;
-    top: 35px;
-    text-align: right;
-    width: calc(100% - 680px);
+    top: 178px;
+    width: 100%;
+    height: auto;
 }
 
-.languagelist .list-header .nx-button--centered {
-    /*
-    margin: 40px auto !important;
-    */
-    position: absolute;
-    top: 0;
-    right: 20px;
-    width: 120px;
-    height: 120px;
+.languagelist-button {
+    width: 500px;
+    height: 500px;
+    background-color: transparent !important;
+}
+.languagelist-navigate-container{
+    margin-top: 30px;
+}
+.languagelist-navigate {
+    display: block;
+    position: relative;
+}
+.languagelist-navigate-text-container {
+    top: 330px;
+}
+.languagelist-navigate-text {
+    font-size: 48px;
+    transition: color 100ms;
+}
+.nx-button:active .languagelist-navigate-text {
+    color: #000000;
+}
+.languagelist-navigate-image-container {
+    left: -80px;
+    top: -80px;
+}
+.languagelist-navigate-image {
+    margin-left: 16px;
+    margin-top: 110px;
 }
 
-.action-continue {
-    font-family: "Segoe UI Symbol";
-    font-size: 80px;
+.languagelist-navigate-image-black-container {
+    left: -64px;
+    top: -604px;
+    width: 400px;
+    height: 308px;
+    overflow: hidden;
 }
-.action-continue::before {
-    content: "\E0AC";
+.languagelist-navigate-image-black {
+    opacity: 0.1;
+    transition: opacity 200ms;
 }
-.action-continue:hover::before {
-    content: "\E0AF";
+.nx-button:active .languagelist-navigate-image-black {
+    opacity: 1;
 }
 
+.languagelist-navigate-image-color-container {
+    left: -64px;
+    top: -802px;
+}
+.languagelist-navigate-image-color {
+}
 
 #languagelist .win-container {
     margin-right: 30px;
@@ -80,8 +97,8 @@
 
 #languagelist.listview {
     position: absolute !important;
-    right: 250px;
-    top: 40px;
+    right: 0px;
+    top: 10px;
     width: 420px;
     height: 140px;
     /*
@@ -112,3 +129,11 @@
     width: 150px;
 }
 
+
+.languagelist-image {
+    display: block;
+    margin: 20px auto;
+}
+.languagelist .nx-title--bottom {
+    margin-bottom: 30px;
+}

@@ -18,6 +18,7 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement) {
             Log.call(Log.l.trace, "LanguageList.Controller.");
             Application.Controller.apply(this, [pageElement, {
+                showStart: true,
                 count: 0,
                 organizerLogoSrc: ""
             }]);
@@ -32,7 +33,7 @@
             if (continueButton && continueButton.style) {
                 continueButton.style.backgroundColor = "transparent !important";
                 if (continueButton.firstElementChild && continueButton.firstElementChild.style) {
-                    continueButton.firstElementChild.style.color = Colors.kioskButtonBackgroundColor;
+                    continueButton.firstElementChild.style.color = Colors.kioskProductTitleColor;
                 }
             }
 
@@ -198,7 +199,24 @@
                 return ret;
             }
             this.showPicture = showPicture;
-
+            var fadeAnimantion = function (element, bIn) {
+                Log.call(Log.l.trace, "Start.Controller.");
+                if (element && that.binding) {
+                    var fnAnimation = bIn ? WinJS.UI.Animation.fadeIn : WinJS.UI.Animation.fadeOut;
+                    fnAnimation(element).done(function () {
+                        if (!that.binding || !that.binding.showStart) {
+                            Log.print(Log.l.trace, "finished");
+                        } else {
+                            Log.print(Log.l.trace, "go on with animation");
+                            that.animationPromise = WinJS.Promise.timeout(1000).then(function () {
+                                that.fadeAnimantion(element, !bIn);
+                            });
+                        }
+                    });
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.fadeAnimantion = fadeAnimantion;
             var loadPicture = function (pictureId, element) {
                 Log.call(Log.l.trace, "LanguageList.Controller.", "pictureId=" + pictureId);
                 var ret = null;
@@ -367,6 +385,20 @@
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return that.loadData();
+            }).then(function () {
+                Colors.loadSVGImageElements(pageElement, "languagelist-navigate-image", 512, Colors.kioskProductTitleColor, "title", function (svgInfo) {
+                    if (svgInfo && svgInfo.element && svgInfo.element.title === "hand_touch") {
+                        that.fadeAnimantion(svgInfo.element.firstElementChild ||
+                            svgInfo.element.firstChild, true);
+                    }
+                });
+                Colors.loadSVGImageElements(pageElement, "languagelist-navigate-image-black", 512, "#000000", "title", function (svgInfo) {
+                });
+                Log.print(Log.l.trace, "Splash time over");
+                if (AppHeader.controller && AppHeader.controller.binding) {
+                    that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
+                }
+                return Application.pageframe.hideSplashScreen();
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");

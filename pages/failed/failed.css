@@ -10,4 +10,8 @@
 .failed-text {
     margin: 100px auto;
  }
+.failed .nx-title_black {
+    margin-top: 70px; 
+    font-size: 36px;
+}
 

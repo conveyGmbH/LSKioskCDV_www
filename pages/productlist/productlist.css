@@ -84,7 +84,9 @@
 }
 
 .productlist .nx-title_black {
-    margin-top: 70px; }
+    margin-top: 70px; 
+    font-size: 36px;
+}
 
 .productlist .nx-title_gray {
     margin-top: 30px; }

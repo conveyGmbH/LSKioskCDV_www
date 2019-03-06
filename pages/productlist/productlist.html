@@ -23,14 +23,7 @@
                                 onclick="AppBar.handleEvent('click', 'clickScan', event)">
                             <div id="portable_barcode_scanner" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'productlist.barcode'}"></span>
-                        </button>
-                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                onclick="AppBar.handleEvent('click', 'clickForward', event)">
-                            <div id="i_hand_touch" class="action-image"></div><br />
-                            <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
-                        </button>
-                        <!--
+                        </button> 
                         <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                 onclick="AppBar.handleEvent('click', 'clickCamera', event)">
@@ -38,8 +31,7 @@
                             <span data-win-res="{textContent: 'productlist.camera'}"></span>
                         </button>
                         <div class="nx-title_gray">
-                            <button class="win-button nx-cancel animationElement"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                            <button class="win-button nx-cancel animationElement" 
                                     onclick="AppBar.handleEvent('click', 'clickStart', event)">
                                 <div id="cross_new" class="navigate-image"></div>
                                 <span data-win-res="{textContent: 'general.cancel'}"></span>
@@ -51,13 +43,12 @@
                                 <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
                             </button>
                         </div>
-                        -->
                     </div>
                     <div class="products-group-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="products-group-item"
                              data-win-bind="style.backgroundColor: groupBkgColor">
                             <span class="nx-proitem__title nx-title--upper"
-                                  data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
+                                  data-win-bind="textContent: ProduktGruppeTitel; style.color: groupColor"></span>
                         </div>
                     </div>
                     <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
@@ -66,7 +57,7 @@
                                  data-win-bind="docId: DocID; style.width: StyleWidth; style.height: StyleHeight; style.paddingTop: StylePaddingY; style.paddingBottom: StylePaddingY">
                                 <div class="nx-proitem__preload-bg-color" data-win-bind="style.backgroundColor: color"></div>
                             </div>
-                            <div class="nx-proitem__title" data-win-bind="innerHTML: Name"></div>
+                            <div class="nx-proitem__title" data-win-bind="textContent: Name"></div>
                             <div class="nx-proitem__overlay">
                                 <div id="blcneggngbniolne" class="checkmark-image"></div>
                             </div>
@@ -79,7 +70,7 @@
                             <button class="win-button nx-button"
                                     onclick="AppBar.handleEvent('click', 'clickZoomOut', event)">
                                 <span class="nx-proitem__title nx-title--upper"
-                                      data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
+                                      data-win-bind="textContent: ProduktGruppeTitel; style.color: groupColor"></span>
                             </button>
                         </div>
                     </div>

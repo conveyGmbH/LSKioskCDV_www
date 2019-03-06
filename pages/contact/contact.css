@@ -31,3 +31,7 @@
 #InitLand {
     min-width: 100%;
 }
+.contact .nx-title_black {
+    margin-top: 70px; 
+    font-size: 36px;
+}
