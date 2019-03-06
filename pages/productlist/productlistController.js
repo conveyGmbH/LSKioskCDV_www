@@ -840,7 +840,7 @@
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.scrollIntoViewPromise = null;
                     if (listView && listView.winControl && that.products && that.products.length > 0) {
-                        if (that.indexOfFirstVisible < that.products.length - 3) {
+                        if (that.indexOfFirstVisible < that.products.length) {
                             Log.print(Log.l.trace, "set indexOfFirstVisible=" + that.indexOfFirstVisible + " current indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible + " products.length=" + that.products.length);
                             listView.winControl.indexOfFirstVisible = that.indexOfFirstVisible;
                             WinJS.Promise.timeout(50).then(function () {
@@ -866,27 +866,12 @@
                                 }
                             });
                         } else {
-                            var newindexOfFirstVisible = that.indexOfFirstVisible - 3;
-                            Log.print(Log.l.trace, "set indexOfFirstVisible=" + newindexOfFirstVisible + " current indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible + " products.length=" + that.products.length);
-                            listView.winControl.indexOfFirstVisible = newindexOfFirstVisible;
-                            WinJS.Promise.timeout(50).then(function () {
-                                Log.print(Log.l.trace, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible);
-                                if (listView && listView.winControl.indexOfFirstVisible === newindexOfFirstVisible) {
-                                    Log.print(Log.l.trace, "adjust group header");
-                                    if (listView && listView.winControl) {
-                                        var scrollPosition = listView.winControl.scrollPosition;
-                                        listView.winControl.scrollPosition = scrollPosition + 800;
-                                    }
-                                    that.indexOfFirstVisible = -1;
-                                } else {
-                                    Log.print(Log.l.trace, "try again");
-                                    if (listView && listView.winControl) {
-                                        var scrollPosition = listView.winControl.scrollPosition;
-                                        listView.winControl.scrollPosition = scrollPosition + 50;
-                                    }
-                                    that.scrollIntoView();
-                                }
-                            });
+                            Log.print(Log.l.trace, "try again");
+                            if (listView && listView.winControl) {
+                                var scrollPosition = listView.winControl.scrollPosition;
+                                listView.winControl.scrollPosition = scrollPosition + 50;
+                            }
+                            that.scrollIntoView();
                         }
                     }
                     Log.ret(Log.l.trace);
