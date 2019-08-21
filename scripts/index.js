@@ -41,9 +41,9 @@
             }
         },
         odata: {
-            https: true,
-            hostName: "leadsuccess.convey.de",
-            onlinePort: 443,
+            https: false,
+            hostName: "deimos.convey.de",
+            onlinePort: 8080,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
