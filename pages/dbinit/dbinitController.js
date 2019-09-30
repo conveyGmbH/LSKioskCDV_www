@@ -18,6 +18,12 @@
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "DBInit.Controller.");
             Application.Controller.apply(this, [pageElement, {
+                dataLogin: {
+                    Login: "",
+                    Password: "",
+                    privacyPolicyFlag: false,
+                    privacyPolicydisabled: false
+                },
                 progress: {
                     percent: 0,
                     text: "",
@@ -37,45 +43,82 @@
                 }
                 if (!userId || 
                     !that.binding.appSettings.odata.login ||
-                    !that.binding.appSettings.odata.password/* ||
-                    !that.binding.appSettings.odata.dbSiteId*/) {
+                    !that.binding.appSettings.odata.password ||
+                    !that.binding.appSettings.odata.dbSiteId) {
                     startPage = "login";
                 } else {
                     startPage = "start";
                 }
                 return startPage;
             }
+            this.getStartPage = getStartPage;
 
-            var resultConverter = function (item, index) {
-                var property = AppData.getPropertyFromInitoptionTypeID(item);
-                if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
-                    item.colorValue = "#" + item.LocalValue;
-                    AppData.applyColorSetting(property, item.colorValue);
-                }
-            }
-            this.resultConverter = resultConverter;
-
-            var openDb = function () {
+            var openDb = function (complete, error, doReloadDb) {
                 AppBar.busy = true;
 
                 var ret;
-                Log.call(Log.l.info, "Account.Controller.");
+                Log.call(Log.l.info, "DBInit.Controller.");
                 if (AppRepl.replicator &&
                     AppRepl.replicator.state === "running") {
                     Log.print(Log.l.info, "replicator still running - try later!");
                     ret = WinJS.Promise.timeout(500).then(function () {
-                        return that.openDb();
+                        return that.openDb(complete, error, doReloadDb);
                     });
                 } else {
-                    ret = AppData.openDB(function () {
+                    ret = AppData.openDB(function (json) {
                         AppBar.busy = false;
                         Log.print(Log.l.info, "openDB success!");
                         AppData._curGetUserDataId = 0;
                         AppData.getUserData();
+                        if (getStartPage() === "start" &&
+                            !AppData.appSettings.odata.serverFailure) {
+                            // load color settings
+                            DBInit.CR_VERANSTOPTION_ODataView.select(function (json) {
+                                function resultConverter(item, index) {
+                                    var property = AppData.getPropertyFromInitoptionTypeID(item);
+                                    if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                                        item.colorValue = "#" + item.LocalValue;
+                                        AppData.applyColorSetting(property, item.colorValue);
+                                    }
+                                }
+                                var results = json.d.results;
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
+                                // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+                                if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                    AppData._persistentStates.serverColors = false;
+                                    results.forEach(function (item, index) {
+                                        resultConverter(item, index);
+                                    });
+                                    Application.pageframe.savePersistentStates();
+                                }
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                // ignore error in app!
+                                // AppData.setErrorMsg(that.binding, errorResponse);
+                                if (typeof complete === "function") {
+                                    complete({});
+                                }
+                            }).then(function () {
+                                Colors.updateColors();
+                                if (typeof complete === "function") {
+                                    complete({});
+                                }
+                            });
+                        } else {
+                            if (typeof complete === "function") {
+                                complete({});
+                            }
+                        }
                     }, function (err) {
                         AppBar.busy = false;
                         Log.print(Log.l.error, "openDB error!");
                         AppData.setErrorMsg(that.binding, err);
+                        if (typeof error === "function") {
+                            error(err);
+                        }
                     }, function (res) {
                         if (res) {
                             that.binding.progress = {
@@ -84,58 +127,154 @@
                                 show: 1
                             }
                         }
-                    }).then(function () {
-                        if (getStartPage() === "start") {
-                            // load color settings
-                            return DBInit.CR_VERANSTOPTION_ODataView.select(function (json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "Account: success!");
-                                // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                                if (json && json.d && json.d.results && json.d.results.length > 0) {
-                                    var results = json.d.results;
-                                    results.forEach(function (item, index) {
-                                        that.resultConverter(item, index);
-                                    });
-                                } else {
-                                    AppData._persistentStates.individualColors = false;
-                                    AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                                    var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
-                                }
-                                Application.pageframe.savePersistentStates();
-                                if (AppHeader && AppHeader.controller) {
-                                    AppHeader.controller.loadData();
-                                }
-                                Log.print(Log.l.trace, "Appheader refresh complete");
-                            }, function (errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                // ignore error in app!
-                                // AppData.setErrorMsg(that.binding, errorResponse);
-                            }).then(function () {
-                                Colors.updateColors();
-                                return WinJS.Promise.as();
-                            });
-                        } else {
-                            return WinJS.Promise.as();
-                        }
-                    }).then(function () {
-                        WinJS.Promise.timeout(0).then(function () {
-                            // navigate async here to ensure load of navigation menu!
-                            Application.navigateById(getStartPage());
-                        });
-                    });
+                    }, doReloadDb);
                 }
                 Log.ret(Log.l.info);
                 return ret;
             };
             that.openDb = openDb;
 
+            var saveData = function (complete, error) {
+                var err = null;
+                Log.call(Log.l.trace, "DBInit.Controller.");
+                that.binding.messageText = null;
+                AppData.setErrorMsg(that.binding);
+                AppBar.busy = true;
+                that.binding.appSettings.odata.onlinePath = AppData._persistentStatesDefaults.odata.onlinePath;
+                that.binding.appSettings.odata.registerPath = AppData._persistentStatesDefaults.odata.registerPath;
+                var ret = DBInit.loginRequest.insert(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                    Log.call(Log.l.trace, "loginRequest: success!");
+                    // loginData returns object already parsed from json file in response
+                    if (json && json.d && json.d.ODataLocation) {
+                        if (json.d.InactiveFlag) {
+                            AppBar.busy = false;
+                            err = { status: 503, statusText: getResourceText("dbinit.inactive") };
+                            AppData.setErrorMsg(that.binding, err);
+                            error(err);
+                                } else {
+                            var location = json.d.ODataLocation;
+                            if (location !== that.binding.appSettings.odata.onlinePath) {
+                                that.binding.appSettings.odata.onlinePath = location + AppData._persistentStatesDefaults.odata.onlinePath;
+                                that.binding.appSettings.odata.registerPath = location + AppData._persistentStatesDefaults.odata.registerPath;
+                                }
+                                Application.pageframe.savePersistentStates();
+                                }
+                    } else {
+                        AppBar.busy = false;
+                        err = { status: 404, statusText: getResourceText("dbinit.unknown") };
+                        AppData.setErrorMsg(that.binding, err);
+                        error(err);
+                    }
+                    return WinJS.Promise.as();
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                    Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                    // ignore this error here for compatibility!
+                    return WinJS.Promise.as();
+                }, {
+                    LoginName: AppData._persistentStates.odata.login
+                            }).then(function () {
+                    if (!err) {
+                        var deviceID = "";
+                        if (window.device && window.device.uuid) {
+                            deviceID = "DeviceID=" + window.device.uuid;
+                        }
+                        var dataLogin = {
+                            Login: AppData._persistentStates.odata.login,
+                            Password: AppData._persistentStates.odata.password,
+                            LanguageID: AppData.getLanguageId(),
+                            Aktion: deviceID
+                        };
+                        return DBInit.loginView.insert(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.call(Log.l.trace, "loginData: success!");
+                            // loginData returns object already parsed from json file in response
+                            if (json && json.d) {
+                                dataLogin = json.d;
+                                if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
+                                    NavigationBar.enablePage("settings");
+                                    NavigationBar.enablePage("info");
+                                    NavigationBar.enablePage("search");
+                                    var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
+                                    var doReloadDb = false;
+                                    if (!AppData._persistentStates.odata.dbSiteId ||
+                                        prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                        AppData._persistentStates.odata.dbinitIncomplete) {
+                                        doReloadDb = true;
+                                    }
+                                    Log.print(Log.l.info, "loginData: doReloadDb=" + doReloadDb + " useOffline=" + that.binding.appSettings.odata.useOffline);
+                                    if (doReloadDb) {
+                                        AppData._persistentStates.allRestrictions = {};
+                                        AppData._persistentStates.allRecIds = {};
+                                        AppData._userData = {};
+                                        AppData._userRemoteData = {};
+                                        AppData._contactData = {};
+                                        AppData._photoData = null;
+                                        AppData._barcodeType = null;
+                                        AppData._barcodeRequest = null;
+                                        AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                    }
+                                    if (that.binding.appSettings.odata.useOffline) {
+                                        if (doReloadDb) {
+                                            AppData._persistentStates.odata.dbSiteId = dataLogin.Mitarbeiter_AnmeldungVIEWID;
+                                            Application.pageframe.savePersistentStates();
+                                        }
+                                        return that.openDb(complete, error, doReloadDb);
+                                    } else {
+                                        AppBar.busy = false;
+                                        AppData.generalData.setRecordId("Kontakt", dataLogin.KontaktID);
+                                        AppData._curGetUserDataId = 0;
+                                        AppData.getUserData();
+                                        complete(json);
+                                        return WinJS.Promise.as();
+                                    }
+                                } else {
+                                    AppBar.busy = false;
+                                    that.binding.messageText = dataLogin.MessageText;
+                                    err = { status: 401, statusText: dataLogin.MessageText };
+                                    AppData.setErrorMsg(that.binding, err);
+                                    error(err);
+                                    return WinJS.Promise.as();
+                                }
+                            } else {
+                                AppBar.busy = false;
+                                err = { status: 404, statusText: "no data found" };
+                                AppData.setErrorMsg(that.binding, err);
+                                error(err);
+                                return WinJS.Promise.as();
+                            }
+                        }, function (errorResponse) {
+                            AppBar.busy = false;
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                            error(errorResponse);
+                                return WinJS.Promise.as();
+                        }, dataLogin);
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                        });
+                Log.ret(Log.l.trace);
+                return ret;
+            };
+            this.saveData = saveData;
+
             that.processAll().then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 // now open the DB
-                return that.openDb();
+                return WinJS.Promise.timeout(0);
+            }).then(function () {
+                if (AppData._persistentStates.odata.dbinitIncomplete) {
+                    Log.print(Log.l.trace, "Appheader refresh complete");
+                    Application.pageframe.hideSplashScreen();
+                }
+                Application.navigateById(getStartPage(), null, true);
             });
             Log.ret(Log.l.trace);
         })

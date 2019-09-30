@@ -54,6 +54,23 @@
             }
             this.fadeAnimantion = fadeAnimantion;
             
+            var loadData = function () {
+                Log.call(Log.l.trace, "Start.Controller.");
+                AppData.setErrorMsg(that.binding);
+                var ret = new WinJS.Promise.as().then(function () {
+                    if (AppData._userRemoteDataPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._userRemoteDataPromise.cancel();
+                    }
+                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                        AppData._curGetUserRemoteDataId = 0;
+                        AppData.getUserRemoteData();
+                    });
+                });
+            }
+            this.loadData = loadData;
+
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 return WinJS.Promise.timeout(Application.pageframe.splashScreenDone ? 0 : 1000);
@@ -69,6 +86,8 @@
                 Log.print(Log.l.trace, "Splash time over");
                 return Application.pageframe.hideSplashScreen();
             }).then(function() {
+                that.loadData();
+            }).then(function () {
                 Log.print(Log.l.trace, "Splash screen vanished");
             });
             Log.ret(Log.l.trace);

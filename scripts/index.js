@@ -43,15 +43,15 @@
         odata: {
             https: false,
             hostName: "deimos.convey.de",
-            onlinePort: 8080,
+            onlinePort: 8090,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
             registerPath: "odata_register", // serviceRoot register requests
             registerLogin: "AppRegister",
             registerPassword: "6530bv6OIUed3",
-            useOffline: false,
-            replActive: false,
+            useOffline: true,
+            replActive: true,
             replInterval: 30
         }
     };
@@ -111,5 +111,24 @@
 
     // initiate the page frame class
     var pageframe = new Application.PageFrame("LeadSuccessKiosk");
+    pageframe.onOnlineHandler = function (eventInfo) {
+        Log.call(Log.l.trace, "Application.PageFrame.");
+        if (AppData._userRemoteDataPromise) {
+            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+            AppData._userRemoteDataPromise.cancel();
+        }
+        AppData._userRemoteDataPromise = WinJS.Promise.timeout(1000).then(function () {
+            Log.print(Log.l.info, "getUserRemoteData: Now, timeout=1s is over!");
+            AppData._curGetUserRemoteDataId = 0;
+            AppData.getUserRemoteData();
+        });
+        WinJS.Promise.timeout(50).then(function () {
+            if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                var numFastReqs = 1;
+                AppRepl.replicator.run(numFastReqs);
+            }
+        });
+        Log.ret(Log.l.trace);
+    };
 })();
 

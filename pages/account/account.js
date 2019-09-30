@@ -36,18 +36,37 @@
         canUnload: function(complete, error) {
             Log.call(Log.l.trace, pageName + ".");
             var ret;
+            var that = this;
             if (this.controller) {
-                ret = this.controller.saveData(function (response) {
+                if (this.controller.binding.doReloadDb) {
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    ret = confirm(confirmTitle,
+                        function (result) {
+                            return result;
+                        }).then(function(result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            if (result) {
+                                ret = that.controller.saveData(function (response) {
                     // called asynchronously if ok
-                    Application.pageframe.reCheckForLanguage(function() {
                         complete(response);
-                    }, function () {
-                        var errorResponse = "Error: failed to switch language!";
+                                },
+                                function (errorResponse) {
                         error(errorResponse);
                     });
-                }, function (errorResponse) {
+                            } else {
+                                Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                                error("canceled");
+                            }
+                        });
+                } else {
+                    ret = this.controller.saveData(function (response) {
+                        // called asynchronously if ok
+                        complete(response);
+                    },
+                    function (errorResponse) {
                     error(errorResponse);
                 });
+                }
             } else {
                 ret = WinJS.Promise.as().then(function () {
                     var err = { status: 500, statusText: "fatal: page already deleted!" };
