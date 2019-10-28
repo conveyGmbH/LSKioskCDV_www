@@ -1,3 +1,18 @@
 ﻿/*
     styles for page: login
 */
+.login .centerarea {
+    height: 450px;
+}
+
+.view-size-small .login .centerarea {
+    height: auto;
+}
+
+.login .button_line {
+    margin: 10px 0;
+}
+
+#privacyPolicyLink {
+    margin-left: 36px;
+}

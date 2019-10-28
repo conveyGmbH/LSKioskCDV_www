@@ -7,6 +7,32 @@
     "use strict";
 
     WinJS.Namespace.define("DBInit", {
+        _loginRequest: {
+            get: function () {
+                return AppData.getFormatView("LoginRequest", 0, false, true);
+            }
+        },
+        loginRequest: {
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "loginView.");
+                var ret = DBInit._loginRequest.insert(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _loginView: {
+            get: function () {
+                return AppData.getFormatView("Mitarbeiter_Anmeldung", 0, false, true);
+            }
+        },
+        loginView: {
+            insert: function (complete, error, viewResponse) {
+                Log.call(Log.l.trace, "loginView.");
+                var ret = DBInit._loginView.insert(complete, error, viewResponse);
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
         _CR_VERANSTOPTION_View: {
             get: function () {
                 return AppData.getFormatView("CR_VERANSTOPTION", 0, false);

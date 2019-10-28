@@ -20,10 +20,13 @@
         },
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Account.Controller.");
+            var bIgnoreDuplicate = false;
             Application.Controller.apply(this, [pageElement, {
                 dataLogin: {
                     Login: AppData._persistentStates.odata.login,
                     Password: AppData._persistentStates.odata.password,
+                    PrivacyPolicyFlag: true,
+                    PrivacyPolicydisabled: true,
                     INITSpracheID: 0,
                     LanguageID: null
                 },
@@ -36,24 +39,44 @@
                 }
             }, commandList]);
 
-            // select combo
-            var initSprache = pageElement.querySelector("#InitSprache");
-
             var prevLogin = AppData._persistentStates.odata.login;
             var prevPassword = AppData._persistentStates.odata.password;
             var prevHostName = AppData._persistentStates.odata.hostName;
             var prevOnlinePort = AppData._persistentStates.odata.onlinePort;
             var prevOnlinePath = AppData._persistentStates.odata.onlinePath;
             var prevUseOffline = AppData._persistentStates.odata.useOffline;
-            if (!prevLogin || !prevPassword || !prevHostName) {
+
+            var checkIPhoneBug = function () {
+                if (navigator.appVersion) {
+                    var testDevice = ["iPhone OS", "iPod OS"];
+                    for (var i = 0; i < testDevice.length; i++) {
+                        var iPhonePod = navigator.appVersion.indexOf(testDevice[i]);
+                        if (iPhonePod >= 0) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+            var isAppleDevice = checkIPhoneBug();
+
+            if (!prevLogin || !prevPassword || !prevHostName || !prevUseOffline) {
                 // enable edit per default on empty settings
                 this.binding.doEdit = true;
             }
             var portalLink = pageElement.querySelector("#portalLink");
+
             if (portalLink) {
                 var portalLinkUrl = (AppData._persistentStates.odata.https ? "https://" : "http://") +
-                    AppData._persistentStates.odata.hostName + getResourceText("account.portalPath");
+                        AppData._persistentStates.odata.hostName +
+                        getResourceText("account.portalPath");;
+                if (isAppleDevice) {
+                    portalLink.innerHTML = "<a href=\"#\" onclick=\"cordova.InAppBrowser.open('" + portalLinkUrl + "'" + ", '_system');\">" +
+                        portalLinkUrl + "</a>";
+                } else {
                 portalLink.innerHTML = "<a href=\"" + portalLinkUrl + "\">" + portalLinkUrl + "</a>";
+            }
+
             }
             var contentarea = pageElement.querySelector(".contentarea");
 
@@ -68,21 +91,49 @@
             }
             this.resultConverter = resultConverter;
 
+            var privacyPolicyLink = pageElement.querySelector("#privacyPolicyLink");
+            if (privacyPolicyLink) {
+                if (isAppleDevice) {
+                    privacyPolicyLink.innerHTML = "<a style=\"pointer-events: none; cursor: default;\" href=\"https://" +
+                        getResourceText("account.privacyPolicyLink") +
+                        "\">" +
+                        getResourceText("account.privacyPolicyLink") +
+                        "</a>";
+                } else {
+                    privacyPolicyLink.innerHTML = "<a href=\"https://" +
+                        getResourceText("account.privacyPolicyLink") +
+                        "\">" +
+                        getResourceText("account.privacyPolicyLink") +
+                        "</a>";
+                }
+            }
+
             // define handlers
             this.eventHandlers = {
                 clickOk: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    Application.navigateById("start", event);
+                    Application.navigateById("start", event, true);
                     Log.ret(Log.l.trace);
                 },
                 clickLogoff: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
+                    //that.binding.doEdit -> hat sich was geändert?
+                    var confirmTitle = getResourceText("account.confirmLogOff");
+                    confirm(confirmTitle, function (result) {
+                        if (result) {
+                            Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                            that.binding.doEdit = false;
                     Application.navigateById("login", event);
+                        } else {
+                            Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
+                        }
+                    });
                     Log.ret(Log.l.trace);
                 },
                 clickChangeUserState: function (event) {
                     Log.call(Log.l.trace, "Account.Controller.");
-                    Application.navigateById("userinfo", event);
+                    //ignore that here!
+                    //Application.navigateById("userinfo", event);
                     Log.ret(Log.l.trace);
                 },
                 clickDoEdit: function (event) {
@@ -125,6 +176,12 @@
                         }
                     }
                     Log.ret(Log.l.trace);
+                },
+                clickPrivacyPolicy: function (event) {
+                    Log.call(Log.l.trace, "Login.Controller.");
+                    that.binding.dataLogin.privacyPolicyFlag = event.currentTarget.checked;
+                    AppBar.triggerDisableHandlers();
+                    Log.ret(Log.l.trace);
                 }
             };
 
@@ -139,15 +196,27 @@
                         that.binding.appSettings.odata.onlinePort !== prevOnlinePort ||
                         that.binding.appSettings.odata.onlinePath !== prevOnlinePath ||
                         !prevUseOffline) {
+                        if (that.binding.appSettings.odata.hostName !== prevHostName) {
                         that.binding.doReloadDb = true;
+                        }
                         that.binding.doEdit = true;
                     }
-                    if (AppBar.busy) {
+                    if (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password) {
+                        that.binding.dataLogin.PrivacyPolicyFlag = false;
+                        that.binding.dataLogin.PrivacyPolicydisabled = false;
+                    }
+                    if (AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag)) {
                         NavigationBar.disablePage("start");
+                        NavigationBar.disablePage("search");
+                        NavigationBar.disablePage("settings");
+                        NavigationBar.disablePage("info");
                     } else {
                         NavigationBar.enablePage("start");
                     }
-                    return AppBar.busy;
+                    return AppBar.busy || (!that.binding.dataLogin.Login || !that.binding.dataLogin.Password || !that.binding.dataLogin.PrivacyPolicyFlag);
+                },
+                clickLogoff: function() {
+                    return false; //!that.binding.generalData.logOffOptionActive
                 }
             };
 
@@ -187,73 +256,6 @@
             };
             that.openDb = openDb;
 
-            var setLanguage = function (results) {
-                Log.call(Log.l.trace, "Account.Controller.");
-                if (initSprache && results) {
-                    for (var i = 0; i < results.length; i++) {
-                        var row = results[i];
-                        if (row.LanguageID === AppData.getLanguageId()) {
-                            Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
-                            that.binding.dataLogin.INITSpracheID = row.INITSpracheID;
-                            break;
-                        }
-                    }
-                }
-                Log.ret(Log.l.trace);
-            }
-            var getLanguage = function () {
-                var ret = null;
-                Log.call(Log.l.trace, "Account.Controller.");
-                var results = Account.initSpracheView.getResults();
-                var map = Account.initSpracheView.getMap();
-                if (map && results) {
-                    var curIndex = map[that.binding.dataLogin.INITSpracheID];
-                    if (typeof curIndex !== "undefined") {
-                        var row = results[curIndex];
-                        Log.print(Log.l.info, "found LanguageId=" + row.LanguageID);
-                        ret = row.LanguageID;
-                    }
-                }
-                Log.ret(Log.l.trace);
-                return ret;
-            }
-
-            var loadData = function () {
-                Log.call(Log.l.trace, "Account.Controller.");
-                AppData.setErrorMsg(that.binding);
-                var ret = new WinJS.Promise.as().then(function () {
-                    if (!Account.initSpracheView.getResults().length) {
-                        Log.print(Log.l.trace, "calling select initSpracheView...");
-                        //@nedra:25.09.2015: load the list of INITAnrede for Combobox
-                        return Account.initSpracheView.select(function (json) {
-                            Log.print(Log.l.trace, "initSpracheView: success!");
-                            if (json && json.d) {
-                                var results = json.d.results;
-                                // Now, we call WinJS.Binding.List to get the bindable list
-                                if (initSprache && initSprache.winControl) {
-                                    initSprache.winControl.data = new WinJS.Binding.List(results);
-                                    setLanguage(results);
-                                }
-                            }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        });
-                    } else {
-                        if (initSprache && initSprache.winControl) {
-                            var results = Account.initSpracheView.getResults();
-                            initSprache.winControl.data = new WinJS.Binding.List(results);
-                            setLanguage(results);
-                        }
-                        return WinJS.Promise.as();
-                    }
-                });
-                Log.ret(Log.l.trace);
-                return ret;
-            };
-            this.loadData = loadData;
-
             var saveData = function (complete, error) {
                 var err = null, ret;
                 Log.call(Log.l.trace, "Account.Controller.");
@@ -262,12 +264,7 @@
                 }
                 that.binding.messageText = null;
                 AppData.setErrorMsg(that.binding);
-                if (!that.binding.doEdit) {
-                    var newLanguageId = getLanguage();
-                    if (newLanguageId !== AppData._persistentStates.languageId) {
-                        AppData._persistentStates.languageId = newLanguageId;
-                        Application.pageframe.savePersistentStates();
-                    }
+                if (!that.binding.doEdit && !AppData._persistentStates.odata.dbinitIncomplete) {
                     ret = WinJS.Promise.as();
                     complete({});
                 } else {
@@ -278,7 +275,7 @@
                         // this callback will be called asynchronously
                         // when the response is available
                         Log.call(Log.l.trace, "loginRequest: success!");
-                        // loginData returns object already parsed from json data in response
+                        // loginData returns object already parsed from json file in response
                         if (json && json.d && json.d.ODataLocation) {
                             if (json.d.InactiveFlag) {
                                 AppBar.busy = false;
@@ -295,7 +292,7 @@
                             }
                         } else {
                             AppBar.busy = false;
-                            err = { status: 404, statusText: getResourceText("login.unknown") };
+                            err = { status: 404, statusText: getResourceText("account.unknown") };
                             AppData.setErrorMsg(that.binding, err);
                             error(err);
                         }
@@ -303,12 +300,16 @@
                     }, function(errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
-                        Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                        Log.print(Log.l.info, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse) + " ignored for compatibility!");
                         // ignore this error here for compatibility!
                         return WinJS.Promise.as();
                     }, {
                         LoginName: that.binding.dataLogin.Login
                     }).then(function () {
+                        var deviceID = "";
+                        if (window.device && window.device.uuid) {
+                            deviceID = bIgnoreDuplicate ? "DeviceID=" : "TestID=" + window.device.uuid;
+                        }
                         if (!err) {
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
@@ -320,7 +321,7 @@
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "loginData: success!");
-                                // loginData returns object already parsed from json data in response
+                                // loginData returns object already parsed from json file in response
                                 if (json && json.d) {
                                     dataLogin = json.d;
                                     if (dataLogin.OK_Flag === "X" && dataLogin.MitarbeiterID) {
@@ -328,9 +329,12 @@
                                         AppData._persistentStates.odata.password = that.binding.dataLogin.Password;
                                         NavigationBar.enablePage("settings");
                                         NavigationBar.enablePage("info");
-                                        var prevMitarbeiterId = AppData.getRecordId("Mitarbeiter");
+                                        NavigationBar.enablePage("search");
+                                        var prevMitarbeiterId = AppData.generalData.getRecordId("Mitarbeiter");
                                         var doReloadDb = false;
-                                        if (prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                        if (!AppData._persistentStates.odata.dbSiteId ||
+                                            prevMitarbeiterId !== dataLogin.MitarbeiterID ||
+                                            AppData._persistentStates.odata.dbinitIncomplete ||
                                             that.binding.doReloadDb) {
                                             doReloadDb = true;
                                         }
@@ -344,16 +348,17 @@
                                             AppData._photoData = null;
                                             AppData._barcodeType = null;
                                             AppData._barcodeRequest = null;
-                                            AppData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
+                                            AppData.generalData.setRecordId("Mitarbeiter", dataLogin.MitarbeiterID);
                                         }
-                                        AppData._persistentStates.languageId = dataLogin.LanguageID;
                                         if (that.binding.appSettings.odata.useOffline) {
                                             if (doReloadDb) {
+                                                if (!that.binding.doReloadDb) {
+                                                    that.binding.doReloadDb = true;
+                                                }
                                                 AppData._persistentStates.odata.dbSiteId = dataLogin.Mitarbeiter_AnmeldungVIEWID;
                                                 Application.pageframe.savePersistentStates();
                                                 return that.openDb(complete, error);
                                             } else {
-                                                Application.pageframe.savePersistentStates();
                                                 AppBar.busy = false;
                                                 AppData._curGetUserDataId = 0;
                                                 AppData.getUserData();
@@ -362,8 +367,7 @@
                                             }
                                         } else {
                                             AppBar.busy = false;
-                                            AppData.setRecordId("Kontakt", dataLogin.KontaktID);
-                                            Application.pageframe.savePersistentStates();
+                                            AppData.generalData.setRecordId("Kontakt", dataLogin.KontaktID);
                                             AppData._curGetUserDataId = 0;
                                             AppData.getUserData();
                                             complete(json);
@@ -371,11 +375,31 @@
                                         }
                                     } else {
                                         AppBar.busy = false;
+                                        var duplicate = false;
+                                        if (dataLogin.Aktion &&
+                                            dataLogin.Aktion.substr(0, 9).toUpperCase() === "DUPLICATE") {
+                                            var confirmTitle = dataLogin.MessageText;
+                                            return confirm(confirmTitle, function (result) {
+                                                if (result) {
+                                                    Log.print(Log.l.trace, "clickLogoff: user choice OK");
+                                                    bIgnoreDuplicate = true;
+                                                    return that.saveData(complete, error);
+                                                } else {
+                                                    Log.print(Log.l.trace, "clickLogoff: user choice CANCEL");
                                         that.binding.messageText = dataLogin.MessageText;
-                                        err = { status: 401, statusText: dataLogin.MessageText };
+                                                    err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
                                         AppData.setErrorMsg(that.binding, err);
                                         error(err);
                                         return WinJS.Promise.as();
+                                    }
+                                            });
+                                        } else {
+                                        that.binding.messageText = dataLogin.MessageText;
+                                            err = { status: 401, statusText: dataLogin.MessageText, duplicate: duplicate };
+                                        AppData.setErrorMsg(that.binding, err);
+                                        error(err);
+                                        return WinJS.Promise.as();
+                                    }
                                     }
                                 } else {
                                     AppBar.busy = false;
@@ -386,6 +410,7 @@
                                 }
                             }, function(errorResponse) {
                                 AppBar.busy = false;
+                                err = errorResponse;
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
@@ -396,24 +421,21 @@
                             return WinJS.Promise.as();
                         }
                     }).then(function () {
-                        if (!err) {
+                        if (!err && !AppData.appSettings.odata.serverFailure) {
                             // load color settings
                             return Account.CR_VERANSTOPTION_ODataView.select(function (json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
-                                Log.print(Log.l.trace, "Account: success!");
+                                Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                                 // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
                                 if (json && json.d && json.d.results && json.d.results.length > 0) {
                                     var results = json.d.results;
+                                    AppData._persistentStates.serverColors = false;
                                     results.forEach(function (item, index) {
                                         that.resultConverter(item, index);
                                     });
-                                } else {
-                                    AppData._persistentStates.individualColors = false;
-                                    AppData._persistentStates.colorSettings = copyByValue(AppData.persistentStatesDefaults.colorSettings);
-                                    var colors = new Colors.ColorsClass(AppData._persistentStates.colorSettings);
+                                    Application.pageframe.savePersistentStates();
                                 }
-                                Application.pageframe.savePersistentStates();
                             }, function (errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
@@ -434,9 +456,6 @@
 
             that.processAll().then(function() {
                 Log.print(Log.l.trace, "Binding wireup page complete");
-                return that.loadData();
-            }).then(function () {
-                Log.print(Log.l.trace, "Data loaded");
                 AppBar.notifyModified = true;
                 if (AppHeader && AppHeader.controller) {
                     return AppHeader.controller.loadData();

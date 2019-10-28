@@ -8,7 +8,7 @@
     <script type="text/javascript" src="account.js"></script>
 </head>
 <body class="win-type-body">
-    <div class="account">
+    <div class="account fragment">
         <div id="accountController" class="data-container">
             <section aria-label="Main content" role="main" class="animationElement">
                 <div class="contentarea win-type-body">
@@ -21,6 +21,11 @@
                                   data-win-res="{textContent: 'account.title'}"></span>
                             <span class="date-field"></span>
                         </div>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="field_line">
+                        <span class="large_field"
+                              data-win-res="{textContent: 'account.comment'}"></span>
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
@@ -61,18 +66,7 @@
                               data-win-bind="textContent: progress.text"></span>
                     </div>
                     <div class="line-separator"></div>
-                    <div class="field_line field_line_odd">
-                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'account.language'}"></span>
-                        <span class="label landscape_only" data-win-res="{textContent: 'account.language'}"></span>
-                        <select id="InitSprache"
-                                class="input_field win-dropdown"
-                                data-win-control="WinJS.UI.Repeater"
-                                data-win-bind="value: dataLogin.INITSpracheID Binding.Mode.twoway">
-                            <option data-win-bind="value: INITSpracheID; textContent: TITLE"></option>
-                        </select>
-                    </div>
-                    <div class="line-separator"></div>
-                    <div class="field_line field_line_odd">
+                    <div class="field_line field_line_odd"> <!--data-win-bind="style.display: generalData.logOffOptionActive Binding.Converter.toDisplay"-->
                         <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.doEdit'}"></span>
                         <span class="label landscape_only"
@@ -85,8 +79,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="field_line field_line_even"
+                         data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'account.doReloadDb'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'account.doReloadDb'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="doReloadDb" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: doReloadDb; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickDoReloadDb', event)">
+                            </div>
+                        </div>
+                    </div>
                     <div class="line-separator"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay"></div>
+                    <div class="field_line">
+                        <label class="checkbox large_field">
+                            <input type="checkbox" class="win-checkbox checkbox"
+                                   data-win-bind="checked: dataLogin.PrivacyPolicyFlag Binding.Mode.twoway; disabled: dataLogin.PrivacyPolicydisabled"
+                                   onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" />
+                            <span class="checkbox" 
+                                  data-win-res="{textContent: 'account.privacyPolicy'}"></span>
+                        </label>
+                        <span class="large_field"
+                              id="privacyPolicyLink"></span>
+                    </div>
                     <div class="field_line field_line_odd"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"
@@ -115,6 +134,22 @@
                     <div class="field_line field_line_odd"
                          data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only"
+                              data-win-res="{textContent: 'account.useOffline'}"></span>
+                        <span class="label landscape_only"
+                              data-win-res="{textContent: 'account.useOffline'}"></span>
+                        <div class="input_field toggle-switch-parent">
+                            <div id="useOffline" class="input_field"
+                                 data-win-control="WinJS.UI.ToggleSwitch"
+                                 data-win-bind="winControl.checked: appSettings.odata.useOffline; winControl.labelOn: generalData.on; winControl.labelOff: generalData.off"
+                                 onchange="AppBar.handleEvent('change', 'clickUseOffline', event)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line-separator"
+                         data-win-bind="style.display: doEdit Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd"
+                         data-win-bind="style.display: doEdit Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only"
                               data-win-res="{textContent: 'account.onlinePort'}"></span>
                         <span class="label landscape_only"
                               data-win-res="{textContent: 'account.onlinePort'}"></span>
@@ -132,9 +167,25 @@
                         <input class="input_field win-textbox" type="text"
                                data-win-bind="value: appSettings.odata.onlinePath Binding.Mode.twoway" />
                     </div>
+                    <div class="header-separator float-left"></div>
+                    <div class="content-header float-left">
+                        <div class="half-circle half-circle-textcolor">&nbsp;</div>
+                        <div class="idAndDate win-type-caption">
+                            <span class="id-field"></span>
+                            <span class="caption-field" data-win-res="{textContent: 'account.portal'}"></span>
+                            <span class="date-field"></span>
+                        </div>
+                    </div>
+                    <div class="field_line field_line_full">
+                        <span class="large_field"
+                              data-win-res="{textContent: 'account.portalInfo'}"></span>
+                        <span class="large_field"
+                              id="portalLink"></span>
+                    </div>
+                    <div class="line-separator"></div>
+                </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
-                </div>
             </section>
         </div>
     </div>

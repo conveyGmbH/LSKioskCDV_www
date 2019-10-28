@@ -21,6 +21,7 @@
                                 <span class="date-field"></span>
                             </div>
                         </div>
+                    <div class="centerarea">
                         <div class="line-separator"></div>
                         <div class="field_line">
                             <span class="large_field"
@@ -61,10 +62,33 @@
                             <span class="large_field"
                                   data-win-bind="textContent: progress.text"></span>
                         </div>
-                        <div class="line-separator"></div>
+                    <div class="field_line">
+                            <label class="checkbox large_field">
+                                <input type="checkbox" class="win-checkbox checkbox"
+                                       data-win-bind="checked: dataLogin.privacyPolicyFlag"
+                                       onclick="AppBar.handleEvent('click', 'clickPrivacyPolicy', event)" />
+                                <span class="checkbox"
+                                      data-win-res="{textContent: 'login.privacyPolicyAggreement'}"></span>
+                            </label>
+                        <span class="large_field"
+                              id="privacyPolicyLink"></span>
+                    </div>
+                        <div class="field_line field_line_full">
+                            <div class="button_line">
+                                <div class="button-element">
+                                    <button id="loginButton"
+                                            class="text-lightcolor titlearea-bkg win-button"
+                                            onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                        <span class="win-type-title"
+                                              data-win-res="{textContent: 'label.login'}"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     <div class="error-message"
                          data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
-                </div>
             </section>
         </div>
     </div>
