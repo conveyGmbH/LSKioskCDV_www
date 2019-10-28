@@ -37,7 +37,8 @@
                 Log.call(Log.l.trace, "ProductList.");
                 var ret = ProductList._productView.select(complete, error, {
                     // select restriction
-                    LanguageSpecID: AppData.getLanguageId()
+                    LanguageSpecID: AppData.getLanguageId(),
+                    KontaktID: AppData.getRecordId("Kontakt")
                 }, {
                     // select options
                     ordered: true,
