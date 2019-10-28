@@ -22,7 +22,7 @@
             // add page specific commands to AppBar
             var commandList = [
                 { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter },
-                { id: 'clickLogoff', label: getResourceText('account.logoff'), tooltip: getResourceText('account.logoff'), section: 'secondary' }
+                { id: 'clickLogoff', label: getResourceText('command.logoff'), tooltip: getResourceText('tooltip.logoff'), section: 'secondary' }
             ];
 
             this.controller = new Account.Controller(element, commandList);

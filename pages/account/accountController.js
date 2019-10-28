@@ -314,7 +314,7 @@
                             var dataLogin = {
                                 Login: that.binding.dataLogin.Login,
                                 Password: that.binding.dataLogin.Password,
-                                LanguageID: getLanguage(),
+                                LanguageID: AppData.getLanguageId(),
                                 Aktion: "Kiosk"
                             };
                             return Account.loginView.insert(function(json) {
