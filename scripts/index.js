@@ -52,7 +52,8 @@
             registerPassword: "6530bv6OIUed3",
             useOffline: true,
             replActive: true,
-            replInterval: 30
+            replInterval: 30,
+            callerAddress: "Kiosk"
         }
     };
 
