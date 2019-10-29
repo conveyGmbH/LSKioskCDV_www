@@ -239,21 +239,25 @@
             AppData.setErrorMsg(that.binding);
             var takePhoto = function() {
                 Log.call(Log.l.trace, "Camera.Controller.");
-                if (that.binding.generalData.useClippingCamera) {
-                    var appBarText = getResourceText("camera.appbartext");
-                    if (navigator.clippingCamera &&
-                        typeof navigator.clippingCamera.getPicture === "function") {
-                        navigator.clippingCamera.getPicture(onPhotoDataSuccess, onPhotoDataFail, {
-                            quality: AppData.generalData.cameraQuality,
-                            convertToGrayscale: AppData.generalData.cameraUseGrayscale,
-                            maxResolution: 3000000,
-                            //aspectRatio: "1600/896",
-                            autoShutter: that.binding.generalData.autoShutterTime,
-                            rotationDegree: that.binding.generalData.videoRotation,
-                            appBarSize: 96,
-                            appBarText: appBarText
-                        });
+                if (that.binding.generalData.useClippingCamera &&
+                    scan &&
+                    typeof scan.scanDoc === "function") {
+                    var autoShutterTime = 0;
+                    if (typeof that.binding.generalData.autoShutterTime === "string") {
+                        autoShutterTime = parseInt(that.binding.generalData.autoShutterTime);
+                    } else if (typeof that.binding.generalData.autoShutterTime === "number") {
+                        autoShutterTime = that.binding.generalData.autoShutterTime;
                     }
+                    AppBar.busy = true;
+                    scan.scanDoc(onPhotoDataSuccess, onPhotoDataFail, {
+                        sourceType : 1,
+                        returnBase64 : true,
+                        fileName : "photo",
+                        quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
+                        convertToGrayscale: AppData.generalData.cameraUseGrayscale,
+                        maxResolution: AppData.generalData.cameraMegapixel * 1000000,
+                        autoShutter: autoShutterTime
+                    });
                 } else {
                     if (navigator.camera &&
                         typeof navigator.camera.getPicture === "function") {

@@ -110,6 +110,14 @@
         return id;
     };
 
+    Application.refreshAfterFetchOverride = function() {
+        Log.call(Log.l.trace, "Application.");
+        AppData.getUserData();
+        AppData.getUserRemoteData();
+        AppData.getContactData();
+        Log.ret(Log.l.trace);
+    };
+
     // initiate the page frame class
     var pageframe = new Application.PageFrame("LeadSuccessKiosk");
     pageframe.onOnlineHandler = function (eventInfo) {

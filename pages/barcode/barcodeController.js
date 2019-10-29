@@ -392,6 +392,11 @@
                                 AppData.generalData.setRecordId("IMPORT_CARDSCAN", json.d.IMPORT_CARDSCANVIEWID);
                                 AppData._barcodeType = "vcard";
                                 AppData._barcodeRequest = barcode;
+                                // accelarate replication
+                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                    var numFastReqs = 10;
+                                    AppRepl.replicator.run(numFastReqs);
+                                }
                                 that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                     that.loadData();
                                 });
@@ -421,6 +426,11 @@
                                 AppData.generalData.setRecordId("ImportBarcodeScan", json.d.ImportBarcodeScanVIEWID);
                                 AppData._barcodeType = "barcode";
                                 AppData._barcodeRequest = barcode;
+                                // accelarate replication
+                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                    var numFastReqs = 10;
+                                    AppRepl.replicator.run(numFastReqs);
+                                }
                                 that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                     that.loadData();
                                 });

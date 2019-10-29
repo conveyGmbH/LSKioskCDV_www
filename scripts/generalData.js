@@ -15,13 +15,37 @@
     var nav = WinJS.Navigation;
 
     WinJS.Namespace.define("AppData", {
+        __generalUserRemoteView: null,
+        _generalUserRemoteView: {
+            get: function() {
+                if (!AppData.__generalUserRemoteView) {
+                    // create remote view here always!
+                    AppData.__generalUserRemoteView = new AppData.formatViewData("Mitarbeiter", 20431, false);
+                }
+                return AppData.__generalUserRemoteView;
+            }
+        },
+        generalUserRemoteView: {
+            select: function(complete, error, recordId) {
+                Log.call(Log.l.trace, "AppData.generalUserRemoteView.", "recordId=" + recordId);
+                var ret = AppData._generalUserRemoteView.selectById(complete, error, recordId);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            isLocal: {
+                get: function() {
+                    return AppData._generalUserRemoteView.isLocal;
+                }
+            }
+        },
         _generalUserView: {
-            get: function () {
+            get: function() {
                 return AppData.getFormatView("Mitarbeiter", 20431);
             }
         },
         generalUserView: {
-            select: function (complete, error, recordId) {
+            select: function(complete, error, recordId) {
                 Log.call(Log.l.trace, "AppData.generalUserView.", "recordId=" + recordId);
                 var ret = AppData._generalUserView.selectById(complete, error, recordId);
                 // this will return a promise to controller
@@ -29,7 +53,7 @@
                 return ret;
             },
             isLocal: {
-                get: function () {
+                get: function() {
                     return AppData._generalUserView.isLocal;
                 }
             }
@@ -178,7 +202,7 @@
             return ret;
         },
         getUserRemoteData: function () {
-            var ret;
+            var ret = WinJS.Promise.as();
             Log.call(Log.l.trace, "AppData.");
             if (AppData._userRemoteDataPromise) {
                 Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
@@ -188,143 +212,288 @@
                 !AppData.appSettings.odata.password ||
                 !AppData.appSettings.odata.dbSiteId) {
                 Log.print(Log.l.trace, "getUserRemoteData: no logon information provided!");
-                ret = WinJS.Promise.as();
             } else if (AppData.generalUserView.isLocal) {
                 var userId = AppData.getRecordId("Mitarbeiter");
                 if (userId && userId !== AppData._curGetUserRemoteDataId) {
                     if (AppData._persistentStates.odata.useOffline && (!AppData._db || !AppData._dbInit)) {
                         Log.print(Log.l.trace, "getUserRemoteData: local db not yet initialized!");
-                        ret = WinJS.Promise.as();
                     } else {
                         var dateLocal = new Date();
                         var millisecondsLocal = dateLocal.getTime();
                         AppData._curGetUserRemoteDataId = userId;
-                        ret = new WinJS.Promise.as().then(function () {
-                            Log.print(Log.l.trace, "calling select generalUserRemoteView...");
-                            return AppData.generalUserRemoteView.select(function (json) {
-                                var doUpdate = false;
-                                if (AppData.appSettings.odata.serverFailure) {
-                                    AppData.appSettings.odata.serverFailure = false;
-                                    NavigationBar.enablePage("listRemote");
-                                    NavigationBar.enablePage("search");
-                                    doUpdate = true;
-                                }
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "generalUserRemoteView: success!");
-                                // startContact returns object already parsed from json file in response
-                                if (json && json.d) {
-                                    var prevUserRemoteData = AppData._userRemoteData;
-                                    AppData._userRemoteData = json.d;
-                                    AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment || 0;
-                                    if (AppData._userRemoteData.CurrentTS) {
-                                        var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
-                                        var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
-                                        AppData.appSettings.odata.timeZoneRemoteDiffMs = millisecondsLocal - millisecondsRemote;
-                                        if (!AppData.appSettings.odata.replPrevSelectMs) {
-                                            var now = new Date();
-                                            AppData.appSettings.odata.replPrevSelectMs = now.getTime() - AppData.appSettings.odata.timeZoneRemoteDiffMs;
-                                        }
-                                    }
-                                    Log.print(Log.l.info, "timeZoneRemoteAdjustment=" + AppData.appSettings.odata.timeZoneRemoteAdjustment +
-                                        " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs);
-                                    if (AppBar.scope && AppData._userRemoteData.Message) {
-                                        Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
-                                        AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
-                                    }
-                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
-                                        (!prevUserRemoteData ||
-                                         prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //
+                        ret = new WinJS.Promise.as().then(function() {
+                            if (AppData._prcUserRemoteCallSucceeded || !AppData._prcUserRemoteCallFailed) {
+                                Log.print(Log.l.trace, "calling select PRC_MitarbeiterAppDaten...");
+                                return AppData.call("PRC_MitarbeiterAppDaten", {
+                                    pCreatorSiteID: AppData._persistentStates.odata.dbSiteId,
+                                    pNavigationLocation: 0
+                                }, function (json) {
+                                    Log.print(Log.l.info, "call success! json=" + json);
+                                    AppData._prcUserRemoteCallSucceeded = true;
+                                    var doUpdate = false;
+                                    if (AppData.appSettings.odata.serverFailure) {
+                                        AppData.appSettings.odata.serverFailure = false;
+                                        NavigationBar.enablePage("listRemote");
+                                        NavigationBar.enablePage("search");
                                         doUpdate = true;
                                     }
-                                }
-                                if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
-                                    AppBar.scope.updateActions();
-                                }
-                                var timeout = AppData._persistentStates.odata.replInterval || 30;
-                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
-                                if (AppData._userRemoteDataPromise) {
-                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                    AppData._userRemoteDataPromise.cancel();
-                                }
-                                AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
-                                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
-                                    AppData._curGetUserRemoteDataId = 0;
-                                    AppData.getUserRemoteData();
-                                });
-                            }, function (errorResponse) {
-                                var err = "";
-                                if (!AppData.appSettings.odata.serverFailure) {
-                                    AppData.appSettings.odata.serverFailure = true;
-                                    NavigationBar.disablePage("listRemote");
-                                    NavigationBar.disablePage("search");
-                                    if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
-                                        AppBar.scope.checkListButtonStates();
-                                    }
-                                    if (AppRepl.replicator &&
-                                        AppRepl.replicator.networkState !== "Offline" &&
-                                        AppRepl.replicator.networkState !== "Unknown" &&
-                                        DBInit && DBInit.loginRequest) {
-                                        DBInit.loginRequest.insert(function (json) {
-                                            // this callback will be called asynchronously
-                                            // when the response is available
-                                            Log.call(Log.l.trace, "loginRequest: success!");
-                                            // loginData returns object already parsed from json file in response
-                                            if (json && json.d && json.d.ODataLocation) {
-                                                if (json.d.InactiveFlag) {
-                                                    if (AppBar.scope) {
-                                                        err = { status: 503, statusText: getResourceText("login.inactive") };
-                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                    }
-                                                } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
-                                                    if (AppBar.scope) {
-                                                        err = { status: 404, statusText: getResourceText("login.modified") };
-                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                    }
-                                                }
-                                            } else {
-                                                if (AppBar.scope) {
-                                                    err = { status: 404, statusText: getResourceText("login.unknown") };
-                                                    AppData.setErrorMsg(AppBar.scope.binding, err);
-                                                }
+                                    if (json && json.d && json.d.results.length === 1) {
+                                        var prevUserRemoteData = AppData._userRemoteData;
+                                        AppData._userRemoteData = json.d.results[0];
+                                        AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment || 0;
+                                        if (AppData._userRemoteData.CurrentTS) {
+                                            var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
+                                            var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
+                                            AppData.appSettings.odata.timeZoneRemoteDiffMs = millisecondsLocal - millisecondsRemote;
+                                            if (!AppData.appSettings.odata.replPrevSelectMs) {
+                                                var now = new Date();
+                                                AppData.appSettings.odata.replPrevSelectMs = now.getTime() - AppData.appSettings.odata.timeZoneRemoteDiffMs;
                                             }
-                                        },
-                                            function (errorResponse) {
+                                        }
+                                        Log.print(Log.l.info, "timeZoneRemoteAdjustment=" + AppData.appSettings.odata.timeZoneRemoteAdjustment +
+                                            " timeZoneRemoteDiffMs=" + AppData.appSettings.odata.timeZoneRemoteDiffMs);
+                                        if (AppBar.scope && AppData._userRemoteData.Message) {
+                                            Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
+                                            AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
+                                        }
+                                        if (AppBar.scope && typeof AppBar.scope.updateActions === "function" &&
+                                            (!prevUserRemoteData ||
+                                             prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //
+                                            doUpdate = true;
+                                        }
+                                    }
+                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
+                                        AppBar.scope.updateActions();
+                                    }
+                                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                    Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                    if (AppData._userRemoteDataPromise) {
+                                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                        AppData._userRemoteDataPromise.cancel();
+                                    }
+                                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                        AppData._curGetUserRemoteDataId = 0;
+                                        AppData.getUserRemoteData();
+                                    });
+                                }, function (errorResponse) {
+                                    Log.print(Log.l.error, "call error=" + errorResponse + 
+                                        " prcUserRemoteCallSucceeded=" + AppData._prcUserRemoteCallSucceeded + 
+                                        " prcUserRemoteCallFailed" + AppData._prcUserRemoteCallFailed);
+                                    if (AppData._prcUserRemoteCallSucceeded) {
+                                        var err = "";
+                                        if (!AppData.appSettings.odata.serverFailure) {
+                                            AppData.appSettings.odata.serverFailure = true;
+                                            NavigationBar.disablePage("listRemote");
+                                            NavigationBar.disablePage("search");
+                                            if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                                AppBar.scope.checkListButtonStates();
+                                            }
+                                            if (AppRepl.replicator &&
+                                                AppRepl.replicator.networkState !== "Offline" &&
+                                                AppRepl.replicator.networkState !== "Unknown" &&
+                                                DBInit &&
+                                                DBInit.loginRequest) {
+                                                DBInit.loginRequest.insert(function(json) {
+                                                    // this callback will be called asynchronously
+                                                    // when the response is available
+                                                    Log.print(Log.l.trace, "loginRequest: success!");
+                                                    // loginData returns object already parsed from json file in response
+                                                    if (json && json.d && json.d.ODataLocation) {
+                                                        if (json.d.InactiveFlag) {
+                                                            if (AppBar.scope) {
+                                                                err = { status: 503, statusText: getResourceText("login.inactive") };
+                                                                AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                            }
+                                                        } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
+                                                            if (AppBar.scope) {
+                                                                err = { status: 404, statusText: getResourceText("login.modified") };
+                                                                AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (AppBar.scope) {
+                                                            err = { status: 404, statusText: getResourceText("login.unknown") };
+                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                        }
+                                                    }
+                                                }, function(errorResponse) {
+                                                    // called asynchronously if an error occurs
+                                                    // or server returns response with an error status.
+                                                    Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
+                                                    // ignore this error here for compatibility!
+                                                }, {
+                                                    LoginName: AppData._persistentStates.odata.login
+                                                });
+                                            }
+                                        }
+                                        // called asynchronously if an error occurs
+                                        // or server returns response with an error status.
+                                        Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
+                                        if (AppBar.scope && errorResponse.statusText === "") {
+                                            //err = { status: 404, statusText: getResourceText("login.unknown") };
+                                            AppData.setErrorMsg(AppBar.scope.binding,
+                                                { status: 404, statusText: getResourceText("general.internet") });
+                                        } else {
+                                            AppData.setErrorMsg(AppBar.scope.binding,
+                                                { status: 404, statusText: errorResponse.statusText });
+                                        }
+                                        var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                        if (AppData._userRemoteDataPromise) {
+                                            Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                            AppData._userRemoteDataPromise.cancel();
+                                        }
+                                    } else if (AppRepl.replicator &&
+                                        AppRepl.replicator.networkState !== "Offline" &&
+                                        AppRepl.replicator.networkState !== "Unknown") {
+                                        AppData._prcUserRemoteCallFailed = true;
+                                    } else {
+                                        if (!AppData.appSettings.odata.serverFailure) {
+                                            AppData.appSettings.odata.serverFailure = true;
+                                            NavigationBar.disablePage("listRemote");
+                                            NavigationBar.disablePage("search");
+                                            if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                                AppBar.scope.checkListButtonStates();
+                                            }
+                                        }
+                                    }
+                                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function() {
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                        AppData._curGetUserRemoteDataId = 0;
+                                        AppData.getUserRemoteData();
+                                    });
+                                });
+                            } else {
+                                Log.print(Log.l.trace, "calling select generalUserRemoteView...");
+                                return AppData.generalUserRemoteView.select(function(json) {
+                                    var doUpdate = false;
+                                    if (AppData.appSettings.odata.serverFailure) {
+                                        AppData.appSettings.odata.serverFailure = false;
+                                        NavigationBar.enablePage("listRemote");
+                                        NavigationBar.enablePage("search");
+                                        doUpdate = true;
+                                    }
+                                    // this callback will be called asynchronously
+                                    // when the response is available
+                                    Log.print(Log.l.trace, "generalUserRemoteView: success!");
+                                    // startContact returns object already parsed from json file in response
+                                    if (json && json.d) {
+                                        var prevUserRemoteData = AppData._userRemoteData;
+                                        AppData._userRemoteData = json.d;
+                                        AppData.appSettings.odata.timeZoneRemoteAdjustment = AppData._userRemoteData.TimeZoneAdjustment || 0;
+                                        if (AppData._userRemoteData.CurrentTS) {
+                                            var msString = AppData._userRemoteData.CurrentTS.replace("\/Date(", "").replace(")\/", "");
+                                            var millisecondsRemote = parseInt(msString) - AppData.appSettings.odata.timeZoneRemoteAdjustment * 60000;
+                                            AppData.appSettings.odata.timeZoneRemoteDiffMs = millisecondsLocal - millisecondsRemote;
+                                            if (!AppData.appSettings.odata.replPrevSelectMs) {
+                                                var now = new Date();
+                                                AppData.appSettings.odata.replPrevSelectMs = now.getTime() - AppData.appSettings.odata.timeZoneRemoteDiffMs;
+                                            }
+                                        }
+                                        Log.print(Log.l.info,
+                                            "timeZoneRemoteAdjustment=" +
+                                            AppData.appSettings.odata.timeZoneRemoteAdjustment +
+                                            " timeZoneRemoteDiffMs=" +
+                                            AppData.appSettings.odata.timeZoneRemoteDiffMs);
+                                        if (AppBar.scope && AppData._userRemoteData.Message) {
+                                            Log.print(Log.l.error, "Message=" + AppData._userRemoteData.Message);
+                                            AppData.setErrorMsg(AppBar.scope.binding, AppData._userRemoteData.Message);
+                                        }
+                                        if (AppBar.scope &&
+                                            typeof AppBar.scope.updateActions === "function" &&
+                                            (!prevUserRemoteData ||
+                                                prevUserRemoteData.AnzVersendeteKontakte !== AppData._userRemoteData.AnzVersendeteKontakte)) { //
+                                            doUpdate = true;
+                                        }
+                                    }
+                                    if (AppBar.scope && typeof AppBar.scope.updateActions === "function" && doUpdate) {
+                                        AppBar.scope.updateActions();
+                                    }
+                                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                    Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                    if (AppData._userRemoteDataPromise) {
+                                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                        AppData._userRemoteDataPromise.cancel();
+                                    }
+                                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function() {
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                        AppData._curGetUserRemoteDataId = 0;
+                                        AppData.getUserRemoteData();
+                                    });
+                                }, function(errorResponse) {
+                                    var err = "";
+                                    if (!AppData.appSettings.odata.serverFailure) {
+                                        AppData.appSettings.odata.serverFailure = true;
+                                        NavigationBar.disablePage("listRemote");
+                                        NavigationBar.disablePage("search");
+                                        if (AppBar.scope && typeof AppBar.scope.checkListButtonStates === "function") {
+                                            AppBar.scope.checkListButtonStates();
+                                        }
+                                        if (AppRepl.replicator &&
+                                            AppRepl.replicator.networkState !== "Offline" &&
+                                            AppRepl.replicator.networkState !== "Unknown" &&
+                                            DBInit &&
+                                            DBInit.loginRequest) {
+                                            DBInit.loginRequest.insert(function(json) {
+                                                // this callback will be called asynchronously
+                                                // when the response is available
+                                                Log.print(Log.l.trace, "loginRequest: success!");
+                                                // loginData returns object already parsed from json file in response
+                                                if (json && json.d && json.d.ODataLocation) {
+                                                    if (json.d.InactiveFlag) {
+                                                        if (AppBar.scope) {
+                                                            err = { status: 503, statusText: getResourceText("login.inactive") };
+                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                        }
+                                                    } else if (json.d.ODataLocation !== AppData._persistentStates.odata.onlinePath) {
+                                                        if (AppBar.scope) {
+                                                            err = { status: 404, statusText: getResourceText("login.modified") };
+                                                            AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (AppBar.scope) {
+                                                        err = { status: 404, statusText: getResourceText("login.unknown") };
+                                                        AppData.setErrorMsg(AppBar.scope.binding, err);
+                                                    }
+                                                }
+                                            }, function(errorResponse) {
                                                 // called asynchronously if an error occurs
                                                 // or server returns response with an error status.
                                                 Log.print(Log.l.error, "loginRequest error: " + AppData.getErrorMsgFromResponse(errorResponse));
                                                 // ignore this error here for compatibility!
-                                            },
-                                            {
+                                            }, {
                                                 LoginName: AppData._persistentStates.odata.login
                                             });
+                                        }
                                     }
-                                }
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
-                                if (AppBar.scope && errorResponse.statusText === "") {
-                                    //err = { status: 404, statusText: getResourceText("login.unknown") };
-                                    AppData.setErrorMsg(AppBar.scope.binding,
-                                        { status: 404, statusText: getResourceText("general.internet") });
-                                } else {
-                                    AppData.setErrorMsg(AppBar.scope.binding,
-                                        { status: 404, statusText: errorResponse.statusText });
-                                }
-                                var timeout = AppData._persistentStates.odata.replInterval || 30;
-                                Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
-                                if (AppData._userRemoteDataPromise) {
-                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
-                                    AppData._userRemoteDataPromise.cancel();
-                                }
-                                AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
-                                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
-                                    AppData._curGetUserRemoteDataId = 0;
-                                    AppData.getUserRemoteData();
-                                });
-                            }, userId);
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                    Log.print(Log.l.error, "error in select generalUserRemoteView statusText=" + errorResponse.statusText);
+                                    if (AppBar.scope && errorResponse.statusText === "") {
+                                        //err = { status: 404, statusText: getResourceText("login.unknown") };
+                                        AppData.setErrorMsg(AppBar.scope.binding,
+                                            { status: 404, statusText: getResourceText("general.internet") });
+                                    } else {
+                                        AppData.setErrorMsg(AppBar.scope.binding,
+                                            { status: 404, statusText: errorResponse.statusText });
+                                    }
+                                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                                    Log.print(Log.l.info, "getUserRemoteData: Now, wait for timeout=" + timeout + "s");
+                                    if (AppData._userRemoteDataPromise) {
+                                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                        AppData._userRemoteDataPromise.cancel();
+                                    }
+                                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(timeout * 1000).then(function() {
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + timeout + "s is over!");
+                                        AppData._curGetUserRemoteDataId = 0;
+                                        AppData.getUserRemoteData();
+                                    });
+                                },
+                                userId);
+                            }
                         });
-
                     }
                 } else {
                     ret = WinJS.Promise.as();

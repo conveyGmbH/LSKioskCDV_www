@@ -310,6 +310,17 @@
                             if (json && json.d && json.d.KontaktVIEWID) {
                                 contactId = json.d.KontaktVIEWID;
                                 AppData.setRecordId("Kontakt", contactId);
+                                if (AppData._userRemoteDataPromise) {
+                                    Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                    AppData._userRemoteDataPromise.cancel();
+                                }
+                                AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                                    Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                                    AppData._curGetUserRemoteDataId = 0;
+                                    AppData.getUserRemoteData();
+                                    //Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                                    //AppData.getCRVeranstOption();
+                                });
                             } else {
                                 AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                             }
