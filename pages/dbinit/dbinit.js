@@ -24,7 +24,9 @@
                 NavigationBar.disablePage("info");
             }
             // add page specific commands to AppBar
-            var commandList = [];
+            var commandList = [
+                { id: 'clickLogoff', label: getResourceText('account.logoff'), tooltip: getResourceText('account.logoff'), section: 'primary', svg: "keys" }
+            ];
 
             this.controller = new DBInit.Controller(element, commandList);
             Log.ret(Log.l.trace);

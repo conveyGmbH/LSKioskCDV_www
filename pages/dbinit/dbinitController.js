@@ -53,6 +53,18 @@
             }
             this.getStartPage = getStartPage;
 
+            // define handlers
+            this.eventHandlers = {
+                clickLogoff: function (event) {
+                    Log.call(Log.l.trace, "DBInit.Controller.");
+                    Application.navigateById("login", event);
+                    Log.ret(Log.l.trace);
+                }
+            };
+
+            this.disableHandlers = {
+            }
+
             var openDb = function (complete, error, doReloadDb) {
                 AppBar.busy = true;
 
@@ -70,10 +82,6 @@
                         Log.print(Log.l.info, "openDB success!");
                         AppData._curGetUserDataId = 0;
                         AppData.getUserData();
-                        if (getStartPage() === "start" &&
-                            !AppData.appSettings.odata.serverFailure) {
-                            // load color settings
-                            DBInit.CR_VERANSTOPTION_ODataView.select(function (json) {
                                 function resultConverter(item, index) {
                                     var property = AppData.getPropertyFromInitoptionTypeID(item);
                                     if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
@@ -81,37 +89,18 @@
                                         AppData.applyColorSetting(property, item.colorValue);
                                     }
                                 }
-                                var results = json.d.results;
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
-                                // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                                if (json && json.d && json.d.results && json.d.results.length > 0) {
+                        var results = AppData._persistentStates.veranstoption;
+                        if (results && results.length > 0) {
                                     AppData._persistentStates.serverColors = false;
                                     results.forEach(function (item, index) {
                                         resultConverter(item, index);
                                     });
                                     Application.pageframe.savePersistentStates();
                                 }
-                            }, function (errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                // ignore error in app!
-                                // AppData.setErrorMsg(that.binding, errorResponse);
-                                if (typeof complete === "function") {
-                                    complete({});
-                                }
-                            }).then(function () {
                                 Colors.updateColors();
                                 if (typeof complete === "function") {
                                     complete({});
                                 }
-                            });
-                        } else {
-                            if (typeof complete === "function") {
-                                complete({});
-                            }
-                        }
                     }, function (err) {
                         AppBar.busy = false;
                         Log.print(Log.l.error, "openDB error!");
@@ -211,6 +200,7 @@
                                         AppData._persistentStates.allRestrictions = {};
                                         AppData._persistentStates.allRecIds = {};
                                         AppData._userData = {};
+                                        AppData._persistentStates.veranstoption = {};
                                         AppData._userRemoteData = {};
                                         AppData._contactData = {};
                                         AppData._photoData = null;

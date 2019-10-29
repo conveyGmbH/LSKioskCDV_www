@@ -58,6 +58,26 @@
                 }
             }
         },
+        _CR_VERANSTOPTION_View: {
+            get: function () {
+                return AppData.getFormatView("CR_VERANSTOPTION", 0, false);
+            }
+        },
+        CR_VERANSTOPTION_ODataView: {
+            select: function (complete, error, restriction) {
+                Log.call(Log.l.trace, "CR_VERANSTOPTION_ODataView.");
+                var ret = DBInit._CR_VERANSTOPTION_View.select(complete,
+                    error,
+                    restriction,
+                    {
+                        ordered: true,
+                        orderAttribute: "INITOptionTypeID"
+                    });
+                Log.ret(Log.l.trace);
+                return ret;
+
+            }
+        },
         _generalContactView: {
             get: function () {
                 return AppData.getFormatView("Kontakt", 20434);
@@ -73,6 +93,7 @@
             }
         },
         _prefetchedProductView: null,
+        _veranstOptionPromise: null,
         _curGetUserDataId: 0,
         _curGetContactDataId: 0,
         _contactData: {},
@@ -198,6 +219,72 @@
             } else {
                 ret = WinJS.Promise.as();
             }
+            Log.ret(Log.l.trace);
+            return ret;
+        },
+        getCRVeranstOption: function () {
+            Log.call(Log.l.trace, "AppData.");
+            if (typeof AppData._persistentStates.veranstoption === "undefined") {
+                AppData._persistentStates.veranstoption = {};
+            }
+            var ret = new WinJS.Promise.as().then(function () {
+                Log.print(Log.l.trace, "calling select generalContactView...");
+                return AppData.CR_VERANSTOPTION_ODataView.select(function (json) {
+                    function resultConverter(item, index) {
+                        var property = AppData.getPropertyFromInitoptionTypeID(item);
+                        if (property && property !== "individualColors" && (!item.pageProperty) && item.LocalValue) {
+                            item.colorValue = "#" + item.LocalValue;
+                            AppData.applyColorSetting(property, item.colorValue);
+                        }
+                    }
+                    var results = json.d.results;
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
+                    // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
+                    if (json && json.d && json.d.results) {
+                        if (equals(json.d.results, AppData._persistentStates.veranstoption)) {
+                            Log.print(Log.l.trace, "CR_VERANSTOPTION: extra ignored!");
+                        } else {
+                            Log.print(Log.l.trace, "CR_VERANSTOPTION: values changed!");
+                            AppData._persistentStates.veranstoption = copyByValue(results);
+                        AppData._persistentStates.serverColors = false;
+                            if (json.d.results.length > 0) {
+                        results.forEach(function (item, index) {
+                            resultConverter(item, index);
+                        });
+                            }
+                        Application.pageframe.savePersistentStates();
+                        Colors.updateColors();
+                    }
+                    }
+                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
+                    if (AppData._veranstOptionPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._veranstOptionPromise.cancel();
+                    }
+                    AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + timeout + "s is over!");
+                        AppData.getCRVeranstOption();
+                    });
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    // ignore error in app!
+                    // AppData.setErrorMsg(that.binding, errorResponse);
+                    var timeout = AppData._persistentStates.odata.replInterval || 30;
+                    Log.print(Log.l.info, "getCRVeranstOption: Now, wait for timeout=" + timeout + "s");
+                    if (AppData._veranstOptionPromise) {
+                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                        AppData._veranstOptionPromise.cancel();
+                    }
+                    AppData._veranstOptionPromise = WinJS.Promise.timeout(timeout * 1000).then(function () {
+                        Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + timeout + "s is over!");
+                        AppData.getCRVeranstOption();
+                    });
+                });
+            });
             Log.ret(Log.l.trace);
             return ret;
         },
@@ -665,12 +752,13 @@
                     property = "individualColors";
                     if (item.LocalValue === "1") {
                         AppData._persistentStates.individualColors = true;
+                        AppData._persistentStates.serverColors = true;
                     } else {
-                        AppData._persistentStates.individualColors = false;
+                        AppData._persistentStates.serverColors = false;
                     }
                     break;
                 case 11:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "accentColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -679,7 +767,7 @@
                     }
                     break;
                 case 12:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "backgroundColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -688,7 +776,7 @@
                     }
                     break;
                 case 13:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "navigationColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -697,7 +785,7 @@
                     }
                     break;
                 case 14:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "textColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -706,7 +794,7 @@
                     }
                     break;
                 case 15:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "labelColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -715,7 +803,7 @@
                     }
                     break;
                 case 16:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "tileTextColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];
@@ -724,7 +812,7 @@
                     }
                     break;
                 case 17:
-                    if (AppData._persistentStates.individualColors) {
+                    if (AppData._persistentStates.serverColors) {
                         property = "tileBackgroundColor";
                         if (!item.LocalValue && AppData.persistentStatesDefaults.colorSettings) {
                             color = AppData.persistentStatesDefaults.colorSettings[property];

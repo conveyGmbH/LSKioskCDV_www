@@ -22,6 +22,7 @@
             AppData._persistentStates.odata.login = null;
             AppData._persistentStates.odata.password = null;
             AppData._persistentStates.odata.dbSiteId = 0;
+            AppData._persistentStates.veranstoption = {};
             AppData._persistentStates.allRestrictions = {};
             AppData._persistentStates.allRecIds = {};
             AppData._userData = {};
@@ -249,6 +250,7 @@
                                         AppData._persistentStates.allRestrictions = {};
                                         AppData._persistentStates.allRecIds = {};
                                         AppData._userData = {};
+                                        AppData._persistentStates.veranstoption = {};
                                         AppData._userRemoteData = {};
                                         AppData._contactData = {};
                                         AppData._photoData = null;
@@ -324,6 +326,7 @@
                         return WinJS.Promise.as();
                     }
                 }).then(function () {
+                    Log.print(Log.l.trace, "veranstoption=" + AppData._persistentStates.veranstoption);
                     if (!err && !AppData.appSettings.odata.serverFailure) {
                         // load color settings
                         return Login.CR_VERANSTOPTION_ODataView.select(function (json) {
@@ -331,12 +334,15 @@
                             // when the response is available
                             Log.print(Log.l.trace, "CR_VERANSTOPTION: success!");
                             // CR_VERANSTOPTION_ODataView returns object already parsed from json file in response
-                            if (json && json.d && json.d.results && json.d.results.length > 1) {
+                            if (json && json.d && json.d.results) {
                                 var results = json.d.results;
+                                AppData._persistentStates.veranstoption = copyByValue(results);
                                 AppData._persistentStates.serverColors = false;
+                                if (json.d.results.length > 1) {
                                 results.forEach(function (item, index) {
                                     that.resultConverter(item, index);
                                 });
+                                }
                                 Application.pageframe.savePersistentStates();
                             }
                         }, function (errorResponse) {
