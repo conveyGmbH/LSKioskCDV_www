@@ -747,7 +747,7 @@
                                 for (i = indexOfFirstVisible; i <= maxIndex; i++) {
                                     var element = listView.winControl.elementFromIndex(i);
                                     if (element) {
-                                        var size = itemInfo(i);
+                                        /*var size = itemInfo(i);
                                         var itemBox = element.parentElement;
                                         if (itemBox && itemBox.style) {
                                             var winContainer = itemBox.parentElement;
@@ -775,7 +775,7 @@
                                                     }
                                                 }
                                             }
-                                        }
+                                        }*/
                                         if (element.firstElementChild) {
                                             if (element.firstElementChild.disabled) {
                                                 if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
@@ -1226,7 +1226,7 @@
                     WinJS.Promise.timeout(10).then(function() {
                         handleProductViewResult(AppData._prefetchedProductView);
                         AppData._prefetchedProductView = null;
-                        return selectMainGroups();
+                        //return selectMainGroups();
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
                         AppBar.notifyModified = true;
@@ -1363,13 +1363,13 @@
                                 that.waitForIdleAction();
                             });
                         }
-                    }).then(function () {
+                    /*}).then(function () {
                         if (!contactId) {
                             // error message already returned
                             return WinJS.Promise.as();
                         } else {
                             return selectMainGroups();
-                        }
+                        }*/
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
                         AppBar.notifyModified = true;
