@@ -54,7 +54,9 @@
                         <input id="cameraQuality" class="input_field win-range"
                                type="range" min="0" max="100" step="1"
                                data-win-bind="value: generalData.cameraQuality"
-                               onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)"
+                               oninput="AppBar.handleEvent('change', 'changedCameraQuality', event)"
+                               />
                     </div>
                     <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
@@ -86,7 +88,9 @@
                         <input id="autoShutterTime" class="input_field win-range"
                                type="range" min="0" max="10000" step="100"
                                data-win-bind="value: generalData.autoShutterTime"
-                               onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedAutoShutterTime', event)" 
+                               oninput="AppBar.handleEvent('change', 'changedAutoShutterTime', event)"
+                               />
                     </div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.videoRotation'}"></span>
@@ -95,7 +99,9 @@
                         <input id="videoRotation" class="input_field win-range"
                                type="range" min="0" max="270" step="90"
                                data-win-bind="value: generalData.videoRotation"
-                               onchange="AppBar.handleEvent('change', 'changedVideoRotation', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedVideoRotation', event)" 
+                               oninput="AppBar.handleEvent('change', 'changedVideoRotation', event)"
+                        />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd">
@@ -140,7 +146,9 @@
                         <input id="logLevel" class="input_field win-range"
                                type="range" min="1" max="6" step="1"
                                data-win-bind="value: generalData.logLevel"
-                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)" />
+                               onchange="AppBar.handleEvent('change', 'changedLogLevel', event)"
+                               oninput="AppBar.handleEvent('change', 'changedLogLevel', event)"
+                               />
                     </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: generalData.logEnabled Binding.Converter.toDisplay">

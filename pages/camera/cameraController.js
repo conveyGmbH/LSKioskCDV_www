@@ -256,7 +256,8 @@
                         quality: (1.0 - AppData.generalData.cameraQuality / 100.0) * 4.0 + 1.0,
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         maxResolution: AppData.generalData.cameraMegapixel * 1000000,
-                        autoShutter: autoShutterTime
+                        autoShutter: autoShutterTime,
+                        rotationDegree: that.binding.generalData.videoRotation
                     });
                 } else {
                     if (navigator.camera &&
