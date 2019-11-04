@@ -19,7 +19,8 @@
                 var ret = LanguageList._languageView.select(complete, error, {
                     // select restriction
                     LanguageSpecID: AppData.getLanguageId(),
-                    LanguageID: [1031,1033]
+                    LanguageID: [1031, 1033],
+                    Taste:[1, 2]
                 }, {
                     // select options
                     ordered: true,

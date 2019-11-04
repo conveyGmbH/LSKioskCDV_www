@@ -55,7 +55,7 @@
                         <div class="products-group-item"
                              data-win-bind="style.backgroundColor: groupBkgColor">
                             <span class="nx-proitem__title nx-title--upper"
-                                  data-win-bind="textContent: ProduktGruppeTitel; style.color: groupColor"></span>
+                                  data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
                         </div>
                     </div>
                     <div class="products-template" data-win-control="WinJS.Binding.Template" style="display: none">
@@ -64,7 +64,7 @@
                                  data-win-bind="docId: DocID; style.width: StyleWidth; style.height: StyleHeight; style.paddingTop: StylePaddingY; style.paddingBottom: StylePaddingY">
                                 <div class="nx-proitem__preload-bg-color" data-win-bind="style.backgroundColor: color"></div>
                             </div>
-                            <div class="nx-proitem__title" data-win-bind="textContent: Name"></div>
+                            <div class="nx-proitem__title" data-win-bind="innerHTML: Name"></div>
                             <div class="nx-proitem__overlay">
                                 <div id="blcneggngbniolne" class="checkmark-image"></div>
                             </div>
@@ -77,7 +77,7 @@
                             <button class="win-button nx-button"
                                     onclick="AppBar.handleEvent('click', 'clickZoomOut', event)">
                                 <span class="nx-proitem__title nx-title--upper"
-                                      data-win-bind="textContent: ProduktGruppeTitel; style.color: groupColor"></span>
+                                      data-win-bind="innerHTML: ProduktGruppeTitel; style.color: groupColor"></span>
                             </button>
                         </div>
                     </div>

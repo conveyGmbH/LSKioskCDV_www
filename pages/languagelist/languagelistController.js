@@ -33,7 +33,7 @@
             if (continueButton && continueButton.style) {
                 continueButton.style.backgroundColor = "transparent !important";
                 if (continueButton.firstElementChild && continueButton.firstElementChild.style) {
-                    continueButton.firstElementChild.style.color = Colors.kioskProductTitleColor;
+                    continueButton.firstElementChild.style.color = Colors.kioskButtonBackgroundColor;
                 }
             }
 

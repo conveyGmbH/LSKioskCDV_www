@@ -24,6 +24,48 @@
     height: auto;
 }
 
+.languagelist .nx-title {
+    margin-top: 320px;
+}
+.languagelist .list-header .nx-title_color {
+    color: white;
+    text-align: left;
+    padding-left: 80px;
+    font-size: 120px;
+}
+.languagelist .list-header .nx-title_black {
+    /*
+    color: white;
+    */
+    position: absolute;
+    left: 0;
+    top: 35px;
+    text-align: right;
+    width: calc(100% - 680px);
+}
+
+.languagelist .list-header .nx-button--centered {
+    /*
+    margin: 40px auto !important;
+    */
+    position: absolute;
+    top: 0;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+}
+
+.action-continue {
+    font-family: "Segoe UI Symbol";
+    font-size: 80px;
+}
+.action-continue::before {
+    content: "\E0AC";
+}
+.action-continue:hover::before {
+    content: "\E0AF";
+}
+
 .languagelist-button {
     width: 500px;
     height: 500px;
@@ -97,8 +139,8 @@
 
 #languagelist.listview {
     position: absolute !important;
-    right: 0px;
-    top: 10px;
+    right: 250px;
+    top: 40px;
     width: 420px;
     height: 140px;
     /*
