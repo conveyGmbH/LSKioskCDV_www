@@ -41,9 +41,9 @@
             }
         },
         odata: {
-            https: false,
-            hostName: "deimos.convey.de",
-            onlinePort: 8090,
+            https: true,
+            hostName: "leadsuccess.convey.de",
+            onlinePort: 443,
             onlinePath: "odata_online", // serviceRoot online requests
             login: "",
             password: "",
@@ -53,7 +53,8 @@
             useOffline: true,
             replActive: true,
             replInterval: 30,
-            callerAddress: "Kiosk"
+            callerAddress: "Kiosk",
+            serverSiteId: 1
         }
     };
 
