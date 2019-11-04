@@ -24,6 +24,10 @@
             }]);
             this.languages = null;
 
+            // idle wait Promise and wait time:
+            this.restartPromise = null;
+            this.idleWaitTimeMs = 120000;
+
             var that = this;
 
             // ListView control
@@ -46,6 +50,42 @@
                     that.languages = null;
                 }
             }
+
+            var cancelPromises = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                if (that.restartPromise) {
+                    Log.print(Log.l.trace, "cancel previous restart Promise");
+                    that.restartPromise.cancel();
+                    that.restartPromise = null;
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.cancelPromises = cancelPromises;
+
+            var waitForIdleAction = function () {
+                Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
+                that.cancelPromises();
+                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
+                    Log.print(Log.l.trace, "timeout occurred, check for selection");
+                    // Don't delete empty contacts now
+                    var contactId = AppData.getRecordId("Kontakt");
+                    Log.print(Log.l.trace, "contactId=" + contactId);
+                    if (contactId && !that.binding.clickOkDisabled) {
+                        Log.print(Log.l.trace, "ignore unfinished selection!");
+                        if (Application.navigateByIdOverride("start") === "productlist") {
+                            AppData.setRecordId("Kontakt", null);
+                            that.loadData();
+                        } else {
+                            Application.navigateById("start", event);
+                        }
+                    } else if (that.hasSelLimit) {
+                        Log.print(Log.l.trace, "releoad due to selLimit");
+                        that.loadData();
+                    }
+                });
+                Log.ret(Log.l.trace);
+            };
+            this.waitForIdleAction = waitForIdleAction;
 
             var layout = null;
 
@@ -78,6 +118,7 @@
                 },
                 onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "LanguageList.Controller.");
+                    that.waitForIdleAction();
                     if (listView && listView.winControl) {
                         var listControl = listView.winControl;
                         if (listControl.selection) {
@@ -265,11 +306,14 @@
                                     that.showPicture(element, picture, true);
                                 }
                             }
+                        } else {
+                            that.waitForIdleAction();
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
+                        that.waitForIdleAction();
                     }, pictureId);
                 }
                 Log.ret(Log.l.trace);
@@ -343,11 +387,14 @@
                             // productView returns object already parsed from json data in response
                             if (json && json.d) {
                                 AppData._prefetchedProductView = json;
+                            } else {
+                                that.waitForIdleAction();
                             }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
+                            that.waitForIdleAction();
                         });
                     }
                 });
@@ -378,6 +425,8 @@
                                     listView.winControl.itemDataSource = that.languages.dataSource;
                                 }
                             }
+                        } else {
+                            that.waitForIdleAction();
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
