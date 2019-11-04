@@ -78,9 +78,6 @@
                         } else {
                             Application.navigateById("start", event);
                         }
-                    } else if (that.hasSelLimit) {
-                        Log.print(Log.l.trace, "releoad due to selLimit");
-                        that.loadData();
                     }
                 });
                 Log.ret(Log.l.trace);
