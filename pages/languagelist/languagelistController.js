@@ -303,14 +303,11 @@
                                     that.showPicture(element, picture, true);
                                 }
                             }
-                        } else {
-                            that.waitForIdleAction();
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
                         // or server returns response with an error status.
                         AppData.setErrorMsg(that.binding, errorResponse);
-                        that.waitForIdleAction();
                     }, pictureId);
                 }
                 Log.ret(Log.l.trace);
@@ -384,14 +381,11 @@
                             // productView returns object already parsed from json data in response
                             if (json && json.d) {
                                 AppData._prefetchedProductView = json;
-                            } else {
-                                that.waitForIdleAction();
                             }
                         }, function (errorResponse) {
                             // called asynchronously if an error occurs
                             // or server returns response with an error status.
                             AppData.setErrorMsg(that.binding, errorResponse);
-                            that.waitForIdleAction();
                         });
                     }
                 });
@@ -422,8 +416,6 @@
                                     listView.winControl.itemDataSource = that.languages.dataSource;
                                 }
                             }
-                        } else {
-                            that.waitForIdleAction();
                         }
                     }, function (errorResponse) {
                         // called asynchronously if an error occurs
@@ -432,6 +424,8 @@
                     });
                 }).then(function () {
                     that.prefetchProductView();
+                }).then(function () {
+                    that.waitForIdleAction();
                 });
                 Log.ret(Log.l.trace);
                 return ret;
