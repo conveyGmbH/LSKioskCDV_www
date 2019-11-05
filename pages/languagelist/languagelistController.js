@@ -41,6 +41,7 @@
             }
 
             this.dispose = function () {
+                that.cancelPromises();
                 if (listView && listView.winControl) {
                     // remove ListView dataSource
                     listView.winControl.itemDataSource = null;
