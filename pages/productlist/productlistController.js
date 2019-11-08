@@ -49,7 +49,7 @@
             this.scrollIntoViewDelay = 50;
             this.scrollIntoViewPromise = null;
 
-            this.hasSelLimit = false;
+           // this.hasSelLimit = false;
 
             var that = this;
 
@@ -142,10 +142,10 @@
                         } else {
                             Application.navigateById("start", event);
                         }
-                    } else if (that.hasSelLimit) {
+                    } /*else if (that.hasSelLimit) {
                         Log.print(Log.l.trace, "releoad due to selLimit");
                         that.loadData();
-                    }
+                    }*/
                 });
                 Log.ret(Log.l.trace);
             };
@@ -224,14 +224,14 @@
                         }
                     }
                 }
-                if (item.SelLimit) {
+                /*if (item.SelLimit) {
                     Log.print(Log.l.u1, "SelLimit=" + item.SelLimit + " SelCount=" + item.SelCount);
                     that.hasSelLimit = true;
                     if (item.SelCount >= item.SelLimit) {
                         Log.print(Log.l.u1, "limit exceeded!");
                         item.disabled = true;
                     }
-                }
+                }*/
                 if (item.Width) {
                     item.StyleWidth = item.Width + "px";
                 } else {
@@ -358,8 +358,9 @@
                             if (selGroup && selGroup.indexes) {
                                 for (var ei = 0; ei < selGroup.indexes.length; ei++) {
                                     var item = that.products.getAt(selGroup.indexes[ei]);
-                                    if (item && (!item.SelLimit || item.SelCount < item.SelLimit)) {
-                                        Log.print(Log.l.trace, "only " + item.SelCount + " of limit " + item.SelLimit + " in group selected!");
+                                    if (item) { /* && (!item.SelLimit || item.SelCount < item.SelLimit)*/
+                                        //Log.print(Log.l.trace, "only " + item.SelCount + " of limit " + item.SelLimit + " in group selected!");
+                                        Log.print(Log.l.trace, "item in group selected!");
                                         item.disabled = false;
                                         that.products.setAt(selGroup.indexes[ei], item);
                                     }
