@@ -257,7 +257,9 @@
                         convertToGrayscale: AppData.generalData.cameraUseGrayscale,
                         maxResolution: AppData.generalData.cameraMegapixel * 1000000,
                         autoShutter: autoShutterTime,
-                        rotationDegree: that.binding.generalData.videoRotation
+                        rotationDegree: that.binding.generalData.videoRotation,
+                        brightnessValue: that.binding.generalData.brightnessValue,
+                        focusValue: that.binding.generalData.focusValue
                     });
                 } else {
                     if (navigator.camera &&

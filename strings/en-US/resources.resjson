@@ -312,6 +312,8 @@
     "info.nolicenceemployee"        : "The following user has already been used on multiple devices. Only the device where it was last used will work!",
     "info.turnThumbsLeft"   : "Turn thumbs left",
     "info.videoRotation"    : "Rotation angle [°]",
+    "info.brightnessValue"  : "Brightness [%]",
+    "info.focusValue"       : "Focus [%]",
 
 	"infodesk.employee"		: "Employee",
 	"infodesk.title"		: "Infodesk",

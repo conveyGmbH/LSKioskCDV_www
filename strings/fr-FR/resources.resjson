@@ -311,6 +311,8 @@
     "info.useAudioNote"     : "Enregistrement audio",
     "info.autoShutterTime"  : "Temps de déclenchement [ms]",
     "info.videoRotation"    : "Angles de rotation [°]",
+    "info.brightnessValue"  : "Brightness [%]",
+    "info.focusValue"       : "Focus [%]",
 
 	"infodesk.employee"		: "Personnel",
 	"infodesk.title"		: "Infodesk",

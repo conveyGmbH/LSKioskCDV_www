@@ -109,6 +109,26 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                changedBrightnessValue: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            that.binding.generalData.brightnessValue = range.value;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                changedFocusValue: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            that.binding.generalData.focusValue = range.value;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedVideoRotation: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
