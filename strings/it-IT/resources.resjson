@@ -313,6 +313,7 @@
     "info.nolicenceemployee"        : "Il seguente utente é stato giá utilizzato su piú di un telefono. Solo l´ultimo su cui é stato utilizzato funzionerá!",
     "info.turnThumbsLeft"   : "Girare l'anteprima a sinistra",
     "info.videoRotation"    : "Angoli di rotazione [°]",
+    "info.contrastValue"    : "Contrast",
     "info.brightnessValue"  : "Brightness [%]",
     "info.focusValue"       : "Focus [%]",
 

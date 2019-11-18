@@ -109,6 +109,16 @@
                     }
                     Log.ret(Log.l.trace);
                 },
+                changedContrastValue: function (event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var range = event.currentTarget;
+                        if (range) {
+                            that.binding.generalData.contrastValue = range.value;
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 changedBrightnessValue: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
@@ -139,7 +149,7 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-                                clickCameraUseGrayscale: function (event) {
+                clickCameraUseGrayscale: function (event) {
                     Log.call(Log.l.trace, "info.Controller.");
                     if (event.currentTarget && AppBar.notifyModified) {
                         var toggle = event.currentTarget.winControl;

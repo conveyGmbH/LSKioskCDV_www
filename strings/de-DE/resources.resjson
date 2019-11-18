@@ -314,6 +314,7 @@
     "info.nolicenceemployee"        : "Folgender Zugang würde bereits auf einem/mehreren Geräten benutzt. Nur das zuletzt angemeldete Gerät wird funktionieren!",
 	"info.turnThumbsLeft"   : "Vorschaubilder nach links drehen",
     "info.videoRotation"    : "Rotationswinkel [°]",
+    "info.contrastValue"    : "Kontrast",
     "info.brightnessValue"  : "Helligkeit [%]",
     "info.focusValue"       : "Fokusweite [%]",
 

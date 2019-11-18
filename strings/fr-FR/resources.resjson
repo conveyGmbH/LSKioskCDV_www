@@ -311,6 +311,7 @@
     "info.useAudioNote"     : "Enregistrement audio",
     "info.autoShutterTime"  : "Temps de déclenchement [ms]",
     "info.videoRotation"    : "Angles de rotation [°]",
+    "info.contrastValue"    : "Contrast",
     "info.brightnessValue"  : "Brightness [%]",
     "info.focusValue"       : "Focus [%]",
 

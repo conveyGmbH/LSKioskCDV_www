@@ -259,7 +259,8 @@
                         autoShutter: autoShutterTime,
                         rotationDegree: that.binding.generalData.videoRotation,
                         brightnessValue: that.binding.generalData.brightnessValue,
-                        focusValue: that.binding.generalData.focusValue
+                        focusValue: that.binding.generalData.focusValue,
+                        contrastValue: that.binding.generalData.contrastValue
                     });
                 } else {
                     if (navigator.camera &&

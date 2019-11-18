@@ -47,7 +47,7 @@
                             <span class="date-field"></span>
                         </div>
                     </div>
-                    <div class="field_line field_line_even">
+                    <div class="field_line field_line_odd">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraQuality'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.cameraQuality'}"></span>
                         <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.cameraQuality"></span>
@@ -57,7 +57,7 @@
                                onchange="AppBar.handleEvent('change', 'changedCameraQuality', event)"
                                oninput="AppBar.handleEvent('change', 'changedCameraQuality', event)" />
                     </div>
-                    <div class="field_line field_line_odd">
+                    <div class="field_line field_line_even">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.cameraUseGrayscale'}"></span>
                         <div class="input_field toggle-switch-parent">
@@ -80,7 +80,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
+                    <div class="line-separator" data-win-bind="style.display: useClippingCamera Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
                         <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.autoShutterTime'}"></span>
                         <span class="label landscape_only" data-win-res="{textContent: 'info.autoShutterTime'}"></span>
                         <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.autoShutterTime"></span>
@@ -100,6 +101,16 @@
                                data-win-bind="value: generalData.videoRotation"
                                onchange="AppBar.handleEvent('change', 'changedVideoRotation', event)"
                                oninput="AppBar.handleEvent('change', 'changedVideoRotation', event)" />
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.contrastValue'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.contrastValue'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.contrastValue"></span>
+                        <input id="contrastValue" class="input_field win-range"
+                               type="range" min="0.0" max="5.0" step="0.1"
+                               data-win-bind="value: generalData.contrastValue"
+                               onchange="AppBar.handleEvent('change', 'changedContrastValue', event)"
+                               oninput="AppBar.handleEvent('change', 'changedContrastValue', event)" />
                     </div>
                     <div class="line-separator" data-win-bind="style.display: useClippingCamera Binding.Converter.toDisplay"></div>
                     <div class="field_line field_line_odd" data-win-bind="style.display: generalData.useClippingCamera Binding.Converter.toDisplay">
