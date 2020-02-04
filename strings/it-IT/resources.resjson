@@ -117,9 +117,9 @@
     "photo.title"           : "Biglietto da visita",
     "photo.comment"         : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 
-    "confirm.title"         : "Datenschutz",
-    "confirm.subtitle"      : "Ich habe die Bestimmungen zum Datenschutz zur Kenntnis genommen!",
-    "confirm.forward"       : "Zustimmen",
+    "confirm.title"         : "I DECLARE TO STMICROELECTRONICS THAT IN RELATION TO THE DUAL-USE BOARDS LISTED HERE:",
+    "confirm.subtitle"      : "<ol><li>these items will only be used for civil end-uses and will not be used in the development, production or use of nuclear, biological or chemical weapons or missiles capable of delivering these weapons;</li><li>these items will not be delivered to any party or person(s), entity or country that is sanctioned or restricted under the applicable export control laws and regulations or International Sanction Programs, nor to any party or person(s) known to be acting on their behalf or in conjunction with;</li><li>these items will not be delivered to any party who is involved directly or indirectly in the development, production or use of nuclear, biological or chemical weapons, or missiles capable of delivering these weapons;</li><li>the End-User is responsible for complying with all relevant export control laws and regulations for the relocation or re-exports of these items.</li></ol>",
+    "confirm.forward"       : "Confirm",
 
     "questionnaire.title"   : "Questionario",
     "questionnaire.comment" : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
