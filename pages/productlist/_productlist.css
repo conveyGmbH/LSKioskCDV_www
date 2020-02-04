@@ -1,0 +1,126 @@
+﻿/*
+    styles for productlist page
+*/
+#listLocalController .list-header {
+    height: 220px;
+    overflow: hidden; }
+
+#productlist .win-itemscontainer {
+    padding-left: 30px; }
+
+#productlist * {
+    border: none !important; }
+#productlist *:after, #productlist *:before {
+    border: none !important; }
+
+#productlist .win-selectioncheckmark {
+    display: none;
+    background: transparent;
+    visibility: hidden; }
+
+#productlist .win-selectionbackground {
+    display: none;
+    background: transparent;
+    visibility: hidden; }
+
+#productlist .win-selectioncheckmarkbackground {
+    display: none;
+    background: transparent;
+    visibility: hidden; }
+
+#productlist .win-container {
+    padding: 0;
+    margin: 0; }
+
+#productlist .win-surface {
+    margin-left: 0; }
+
+#productlist .win-itembox:after {
+    display: none;
+    visibility: hidden; }
+
+#productlist .win-listview .win-itembox {
+    background-color: transparent; }
+
+#productlist .win-itemcontainer .win-itembox {
+    background-color: transparent; }
+
+#productlist .nx-header .nx-header__content .nx-header__title_black {
+    font-size: 50px;
+    font-weight: 300;
+    margin-bottom: 40px; }
+
+#productlist .list-header {
+    position: fixed;
+    top: 111px;
+    left: 0;
+    width: 100%;
+    right: 0;
+    z-index: 100;
+    height: 209px;
+    background: #ffffff; }
+
+#productlist .nx-button {
+    margin-top: 30px; }
+
+#productlist .nx-title_black {
+    margin-top: 50px; }
+
+#productlist .nx-title_gray {
+    margin-top: 35px; }
+
+.nx-proitem {
+    position: relative;
+    margin: 10px 10px;
+    width: 445px; }
+.nx-proitem .nx-proitem__img-container {
+    width: 445px;
+    height: 250px;
+    position: relative;
+    overflow: hidden; }
+.nx-proitem .nx-proitem__img-container .nx-proitem__preload-bg-color {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #767676 !important; }
+.nx-proitem .nx-proitem__img-container img {
+    width: 100%; }
+.nx-proitem .nx-proitem__title {
+    color: #00417f;
+    text-align: center;
+    padding: 20px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 25px;
+    line-height: 1.44; }
+.nx-proitem .nx-proitem__overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: #00417f;
+    transition: opacity 200ms; }
+.nx-proitem .nx-proitem__overlay svg {
+    position: absolute;
+    width: 136px;
+    height: 136px;
+    object-fit: contain;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    fill: #ffffff;
+    color: #ffffff; }
+
+.win-selected .nx-proitem .nx-proitem__overlay {
+    opacity: 0.6; }

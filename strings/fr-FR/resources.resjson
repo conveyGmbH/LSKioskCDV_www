@@ -117,6 +117,10 @@
     "photo.title"           : "Carte de visite",
     "photo.comment"         : "Utilisez le bouton Retour sur cette page pour y retourner!",
 
+    "confirm.title"         : "Datenschutz",
+    "confirm.subtitle"      : "Ich habe die Bestimmungen zum Datenschutz zur Kenntnis genommen!",
+    "confirm.forward"       : "Zustimmen",
+
     "questionnaire.title"   : "Questionnaire",
     "questionnaire.comment" : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "questionnaire.textarea": "S'il vous plaît entrer votre commentaire ici",

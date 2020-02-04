@@ -1,3 +1,59 @@
 ﻿/*
     styles for start page
 */
+.start-button {
+    width: 500px;
+    height: 500px;
+    background-color: transparent !important;
+    margin-left: calc(50% - 250px);
+    margin-top: 250px;
+}
+    
+
+.start-navigate {
+    display: block;
+    position: relative;
+}
+.start-navigate-text-container {
+    top: 330px;
+}
+.start-navigate-text {
+    font-size: 48px;
+    transition: color 100ms;
+    color: #00417F;
+}
+.start-navigate-image-container {
+    left: -80px;
+    top: -80px;
+}
+.start-navigate-image {
+    margin-left: 16px;
+    margin-top: 110px;
+}
+
+.start-navigate-image-black-container {
+    left: -64px;
+    top: -604px;
+    width: 400px;
+    height: 308px;
+    overflow: hidden;
+}
+.start-navigate-image-black {
+    opacity: 0.1;
+    transition: opacity 200ms;
+}
+.nx-button:active .start-navigate-image-black {
+    opacity: 1;
+}
+
+.start-navigate-image-color-container {
+    left: -64px;
+    top: -802px;
+}
+.start-navigate-image-color {
+}
+
+.start-image {
+    display: block;
+    margin: 20px auto;
+}

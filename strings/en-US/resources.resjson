@@ -117,6 +117,10 @@
     "photo.title"           : "Business card",
     "photo.comment"         : "On this page, use the Back button to go back!",
 
+    "confirm.title"         : "Datenschutz",
+    "confirm.subtitle"      : "Ich habe die Bestimmungen zum Datenschutz zur Kenntnis genommen!",
+    "confirm.forward"       : "Zustimmen",
+
     "questionnaire.title"   : "Questionnaire",
     "questionnaire.comment" : "On this page, use the Back button to go back!",
     "questionnaire.textarea": "Please enter you notes here ",

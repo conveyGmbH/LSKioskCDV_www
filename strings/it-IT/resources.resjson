@@ -117,6 +117,10 @@
     "photo.title"           : "Biglietto da visita",
     "photo.comment"         : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
 
+    "confirm.title"         : "Datenschutz",
+    "confirm.subtitle"      : "Ich habe die Bestimmungen zum Datenschutz zur Kenntnis genommen!",
+    "confirm.forward"       : "Zustimmen",
+
     "questionnaire.title"   : "Questionario",
     "questionnaire.comment" : "Utilizzate il pulsante \"indietro\" su questa pagina per tornare alla pagina precedente!",
     "questionnaire.textarea": "Inserite eventuali commenti in questo spazio",

@@ -1,0 +1,3 @@
+
+	"productlist.title"     : "Choose products to get<br>more information",
+	

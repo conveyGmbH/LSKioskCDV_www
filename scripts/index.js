@@ -67,6 +67,7 @@
         { id: "start", group: -1, disabled: false },
         { id: "languagelist", group: -1, disabled: false },
         { id: "productlist", group: -1, disabled: false },
+        { id: "confirm", group: -1, disabled: false },
         { id: "barcode", group: -1, disabled: false },
         { id: "finished", group: -1, disabled: false },
         { id: "failure", group: -1, disabled: false },
@@ -97,13 +98,12 @@
                 Barcode && !Barcode.listening) {
                 Barcode.startListenDelayed(250);
             }
-            // clear contactId 
+            // clear contactId
             AppData.setRecordId("Kontakt", null);
+            //id = "languagelist";
+        } else if (id === "newlanguagelist" || id === "languagelist") {
             // re-route directly to productlist page
             id = "productlist";
-            //id = "languagelist";
-        } else if (id === "newlanguagelist") {
-            id = "languagelist";
         }
         Log.ret(Log.l.trace);
         return id;

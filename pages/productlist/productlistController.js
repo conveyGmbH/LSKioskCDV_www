@@ -116,29 +116,15 @@
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, check for selectionCount!");
                     // Don't delete empty contacts now
+                    /*
                     var contactId = AppData.getRecordId("Kontakt");
                     Log.print(Log.l.trace, "contactId=" + contactId);
                     if (contactId && !that.binding.clickOkDisabled) {
                         AppData.setRecordId("Kontakt", null);
                     }
                     that.loadData();
-                    /*
-                    var contactId = AppData.getRecordId("Kontakt");
-                    Log.print(Log.l.trace, "contactId=" + contactId);
-                    if (contactId && !that.binding.clickOkDisabled) {
-                        Log.print(Log.l.trace, "delete existing contactID=" + contactId);
-                        ProductList.contactView.deleteRecord(function (json) {
-                            // this callback will be called asynchronously
-                            Log.print(Log.l.trace, "contactView: deleteRecord success!");
-                            AppData.setRecordId("Kontakt", null);
-                            that.loadData();
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        }, contactId);
-                    }
                      */
+                    Application.navigateById("start", event);
                 });
                 Log.ret(Log.l.trace);
             };
@@ -185,7 +171,7 @@
                 Log.ret(Log.l.u1);
             }
             this.resultConverter = resultConverter;
-            
+
             var setSelectionGroupIndex = function(selGroup, index) {
                 Log.call(Log.l.trace, "ProductList.Controller.");
                 if (selGroup) {
@@ -286,7 +272,7 @@
                     if (hasSerialDevice) {
                         Barcode.dontScan = true;
                     }
-                    Application.navigateById("barcode", event);
+                    Application.navigateById("confirm", event);
                     Log.ret(Log.l.trace);
                 },
                 onSelectionChanged: function (eventInfo) {
@@ -768,7 +754,7 @@
                 return ret;
             }
             this.deleteData = deleteData;
-            
+
             var insertData = function (productId) {
                 var ret;
                 Log.call(Log.l.trace, "ProductList.Controller.", "ProduktID=" + productId);
@@ -815,7 +801,7 @@
                 return ret;
             }
             this.insertData = insertData;
-            
+
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, "#00417F");

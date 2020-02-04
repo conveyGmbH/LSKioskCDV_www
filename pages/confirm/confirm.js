@@ -6,12 +6,12 @@
 /// <reference path="~/www/lib/convey/scripts/logging.js" />
 /// <reference path="~/www/lib/convey/scripts/navigator.js" />
 /// <reference path="~/www/lib/convey/scripts/appbar.js" />
-/// <reference path="~/www/pages/start/startController.js" />
+/// <reference path="~/www/pages/confirm/confirmController.js" />
 
 (function () {
     "use strict";
 
-    var pageName = Application.getPagePath("start");
+    var pageName = Application.getPagePath("confirm");
 
     WinJS.UI.Pages.define(pageName, {
         // This function is called whenever a user navigates to this page. It
@@ -29,9 +29,9 @@
             options.showHalfCircle = true;
 
             AppBar.commandList = [
-               // { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
+                // { id: "clickOk", label: getResourceText("command.ok"), tooltip: getResourceText("tooltip.ok"), section: "primary", svg: "navigate_check", key: WinJS.Utilities.Key.enter }
             ];
-            this.controller = new Start.Controller(element);
+            this.controller = new Confirm.Controller(element);
             Log.ret(Log.l.trace);
         },
 

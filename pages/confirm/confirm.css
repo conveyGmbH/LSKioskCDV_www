@@ -1,0 +1,56 @@
+﻿/*
+    styles for confirm page
+*/
+.confirm-button {
+    margin-top: 250px;
+    display: inline-block;
+}
+
+.confirm-navigate {
+    display: block;
+    position: relative;
+}
+.confirm-navigate-text-container {
+}
+.confirm-navigate-text {
+    font-size: 48px;
+    transition: color 100ms;
+}
+.nx-button:active .confirm-navigate-text {
+    color: #ffffff;
+}
+.confirm-navigate-image-container {
+    left: -80px;
+    top: -80px;
+}
+.confirm-navigate-image {
+    margin-left: 16px;
+    margin-top: 110px;
+}
+
+.confirm-navigate-image-black-container {
+    left: -64px;
+    top: -604px;
+    width: 400px;
+    height: 308px;
+    overflow: hidden;
+}
+.confirm-navigate-image-black {
+    opacity: 0.1;
+    transition: opacity 200ms;
+}
+.nx-button:active .confirm-navigate-image-black {
+    opacity: 1;
+}
+
+.confirm-navigate-image-color-container {
+    left: -64px;
+    top: -802px;
+}
+.confirm-navigate-image-color {
+}
+
+.confirm-image {
+    display: block;
+    margin: 20px auto;
+}

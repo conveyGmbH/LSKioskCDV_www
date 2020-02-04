@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link href="confirm.css" rel="stylesheet" />
+    <script type="text/javascript" src="confirmService.js"></script>
+    <script type="text/javascript" src="confirmController.js"></script>
+    <script type="text/javascript" src="confirm.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="confirm">
+        <div id="confirmController" class="data-container">
+            <section aria-label="Main content" role="main">
+                <div class="contentarea nx-body">
+                    <div class="list-header nx-title">
+                        <div class="nx-title_black animationElement">
+                            <span data-win-res="{innerHTML: 'confirm.title'}"></span><br />
+                            <span class="nx-subtitle" data-win-res="{innerHTML: 'confirm.subtitle'}"></span>
+                        </div>
+                    </div>
+                    <div class="nx-title animationElement">
+                        <button class="win-button nx-button nx-button--centered nx-button--gray confirm-button"
+                                onclick="AppBar.handleEvent('click', 'clickBack', event)">
+                            <div class="confirm-navigate confirm-navigate-text-container">
+                                <span class="nx-title--bold confirm-navigate-text"
+                                      data-win-res="{innerHTML: 'general.cancel'}"></span>
+                            </div>
+                        </button>
+                        <button class="win-button nx-button nx-button--centered confirm-button"
+                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <div class="confirm-navigate confirm-navigate-text-container">
+                                <span class="nx-title--bold confirm-navigate-text"
+                                      data-win-res="{innerHTML: 'confirm.forward'}"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

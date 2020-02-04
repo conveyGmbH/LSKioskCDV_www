@@ -118,6 +118,10 @@
     "photo.title"           : "Visitenkarte",
     "photo.comment"         : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
 
+    "confirm.title"         : "Datenschutz",
+    "confirm.subtitle"      : "Ich habe die Bestimmungen zum Datenschutz zur Kenntnis genommen!",
+    "confirm.forward"       : "Zustimmen",
+
     "questionnaire.title"   : "Fragebogen",
     "questionnaire.comment" : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "questionnaire.textarea": "Bitte geben Sie hier Ihren Kommentar ein ",

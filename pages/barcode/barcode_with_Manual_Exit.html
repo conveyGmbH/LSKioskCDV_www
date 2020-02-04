@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="barcode.css" rel="stylesheet" />
+    <script type="text/javascript" src="barcodeService.js"></script>
+    <script type="text/javascript" src="barcodeController.js"></script>
+    <script type="text/javascript" src="barcode.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="barcode">
+        <div id="barcodeController" class="data-container">
+            <section aria-label="Main content" role="main">
+                <div class="contentarea nx-body" id="barcodeScreen">
+                    <div class="list-header nx-title">
+                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickScan', event)">
+                            <div id="portable_barcode_scanner" class="action-image"></div><br />
+                            <span data-win-res="{textContent: 'barcode.scanagain'}"></span>
+                        </button>
+                        <div class="nx-title_gray">
+                            <button class="win-button nx-cancel animationElement"
+                                    onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                                <div id="cross_new" class="navigate-image"></div>
+                                <span data-win-res="{textContent: 'general.cancel'}"></span>
+                            </button>
+                            <button class="win-button nx-forward animationElement"
+                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                    onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                                <div id="i_hand_touch" class="navigate-image"></div>
+                                <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="nx-title animationElement">
+                        <span class="nx-title_black" data-win-res="{textContent: 'barcode.title'}"></span>
+                        <div id="guest-with-qr" class="barcode-image"></div>
+                        <div class="nx-subtitle barcode-text">
+                            <span data-win-res="{innerHTML: 'barcode.description'}"></span>
+                        </div>
+                        <div data-win-bind="style.display: showProgress Binding.Converter.toDisplayNone">
+                            <div id="big_navigate_down" class="scanning-image barcode-arrow-image"></div>
+                        </div>
+                    </div>
+                    <div data-win-bind="style.display: showProgress Binding.Converter.toDisplay">
+                        <progress class="win-progress-bar progress"></progress>
+                    </div>
+                    <div class="progress-status"
+                         data-win-bind="style.display: showProgress Binding.Converter.toDisplay">
+                        <span class="status-field" data-win-bind="textContent: dataContact.CreatorRecID"></span>
+                        <span class="status-field" data-win-bind="textContent: dataContact.Request_Barcode"></span>
+                        <span class="status-field" data-win-bind="textContent: dataContact.Flag_NoEdit"></span>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

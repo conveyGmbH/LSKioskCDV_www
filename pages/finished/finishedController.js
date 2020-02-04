@@ -43,25 +43,26 @@
                 that.cancelPromises();
                 that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
                     Log.print(Log.l.trace, "timeout occurred, navigate back to start page!");
-                    Application.navigateById("start");
+                    // Application.navigateById("start");
                 });
                 Log.ret(Log.l.trace);
             };
             this.waitForIdleAction = waitForIdleAction;
-
-            // define handlers
+            
+            // define handlers 
             this.eventHandlers = {
                 clickBack: function (event) {
                     Log.call(Log.l.trace, "Finished.Controller.");
                     that.cancelPromises();
                     Application.navigateById("start", event);
+      
                     //if (WinJS.Navigation.canGoBack === true) {
                     //    that.cancelPromises();
-                    //    WinJS.Navigation.back(1).done( /* Your success and error handlers */);
+                    //    WinJS.Navigation.back(1).done( /* Your success and error handlers */); 
                     //}
-                    Log.ret(Log.l.trace);
+                   Log.ret(Log.l.trace);
                 },
-                clickStart: function (event) {
+                clickOk: function (event) {
                     Log.call(Log.l.trace, "Finished.Controller.");
                     that.cancelPromises();
                     Application.navigateById("start", event);
