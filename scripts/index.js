@@ -69,6 +69,7 @@
         { id: "productlist", group: -1, disabled: false },
         { id: "confirm", group: -1, disabled: false },
         { id: "barcode", group: -1, disabled: false },
+        { id: "contact", group: -1, disabled: false },
         { id: "finished", group: -1, disabled: false },
         { id: "failure", group: -1, disabled: false },
         { id: "info", group: 3, disabled: false },

@@ -115,6 +115,17 @@
                     //}
                     Log.ret(Log.l.trace);
                 },
+                clickForward: function (event) {
+                    Log.call(Log.l.trace, "Barcode.Controller.");
+                    if (that.refreshPromise) {
+                        Log.print(Log.l.trace, "cancel previous refresh Promise");
+                        that.refreshPromise.cancel();
+                        that.refreshPromise = null;
+                    }
+                    that.cancelPromises();
+                    Application.navigateById("contact", event);
+                    Log.ret(Log.l.trace);
+                },
                 /*
                 // only for navigation tests:
                 clickFinished: function (event) {

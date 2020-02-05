@@ -14,6 +14,17 @@
                 <div class="contentarea nx-body" id="barcodeScreen">
                     <div class="list-header nx-title">
                         <div class="nx-title_gray">
+                            <button class="win-button nx-cancel animationElement"
+                                    onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                                <div id="cross_new" class="navigate-image"></div>
+                                <span data-win-res="{textContent: 'general.cancel'}"></span>
+                            </button>
+                            <button class="win-button nx-forward animationElement"
+                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                    onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                                <div id="i_hand_touch" class="navigate-image"></div>
+                                <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="nx-title animationElement">

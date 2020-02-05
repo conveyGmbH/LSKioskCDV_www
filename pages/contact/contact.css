@@ -1,0 +1,37 @@
+﻿.contact-form {
+    width: calc(100% - 100px);
+    margin-left: 50px;
+}
+
+.contact-line {
+    margin: 20px 0;
+    border: none;
+}
+
+.contact-line .input_small_left {
+    width: 250px;
+}
+.contact-line .input_small_right {
+    width: calc(100% - 258px);
+}
+
+.contact-label {
+    width: 100%;
+    float: left;
+    text-align: left;
+}
+
+.contact-input {
+    width: 100%;
+    float: left;
+    height: 60px;
+    font-size: 32px;
+}
+
+#InitLand {
+    min-width: 100%;
+}
+.contact .nx-title_black {
+    margin-top: 70px; 
+    font-size: 36px;
+}
