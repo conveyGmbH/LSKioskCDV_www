@@ -24,7 +24,7 @@
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
-            this.idleWaitTimeMs = 30000;
+            this.idleWaitTimeMs = 120000;
 
             var cancelPromises = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");

@@ -145,9 +145,15 @@ p {
 }
 
 .nx-subtitle {
-    font-size: 36px;
+    font-size: 30px;
 }
-
+.nx-subtitle--left {
+    text-align: left;
+}
+.nx-subtitle ol {
+    margin-left: 25px;
+    margin-right: 25px;
+}
 .nx-title--bold {
     /*font-family: "Arial Black", "Arial" !important;*/
     font-family: "Segoe WP Black", "Arial" !important;
