@@ -139,8 +139,9 @@ p {
     text-align: center; }
 
 .nx-title--left {
-    font-size: 40px;
+    font-size: 30px;
     text-align:left;
+    margin-left:10px;
 }
 
 .nx-title--bottom {
@@ -156,7 +157,7 @@ p {
     text-align: left;
 }
 .nx-subtitle ol {
-    margin-left: 25px;
+    margin-left: 20px;
     margin-right: 25px;
 }
 .nx-title--bold {

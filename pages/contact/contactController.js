@@ -47,8 +47,8 @@
                     that.binding.dataContact.INITLandID &&
                     that.binding.dataContact.INITAnredeID &&
                     that.binding.dataContact.Vorname &&
-                    that.binding.dataContact.Name &&
-                    that.binding.dataContact.Firmenname
+                    that.binding.dataContact.Name /* &&
+                    that.binding.dataContact.Firmenname */
                     ) {
                     that.binding.clickOkDisabled = false;
                 } else {
@@ -112,8 +112,8 @@
                         that.binding.dataContact.INITLandID &&
                         that.binding.dataContact.INITAnredeID &&
                         that.binding.dataContact.Vorname &&
-                        that.binding.dataContact.Name &&
-                        that.binding.dataContact.Firmenname) {
+                        that.binding.dataContact.Name /* &&
+                        that.binding.dataContact.Firmenname */) {
                         that.binding.clickOkDisabled = false;
                     } else {
                         that.binding.clickOkDisabled = true;

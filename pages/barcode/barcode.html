@@ -14,12 +14,7 @@
                 <div class="contentarea nx-body" id="barcodeScreen">
                     <div class="list-header nx-title">
                         <div class="nx-title_gray">
-                            <button class="win-button nx-cancel animationElement"
-                                    onclick="AppBar.handleEvent('click', 'clickStart', event)">
-                                <div id="cross_new" class="navigate-image"></div>
-                                <span data-win-res="{textContent: 'general.cancel'}"></span>
-                            </button>
-                            <button class="win-button nx-forward animationElement"
+                            <button class="nx-button nx-button--centered animationElement"
                                     data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
                                     onclick="AppBar.handleEvent('click', 'clickForward', event)">
                                 <div id="i_hand_touch" class="navigate-image"></div>
@@ -39,6 +34,12 @@
                     </div>
                     <div data-win-bind="style.display: showProgress Binding.Converter.toDisplay">
                         <progress class="win-progress-bar progress"></progress>
+                    </div>
+                    <div class="nx-cancel"
+                         data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                         onclick="AppBar.handleEvent('click', 'clickBack', event)">
+                        <div id="cross_new" class="navigate-image cancel-image"></div>
+                        <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
                     </div>
                     <div class="progress-status"
                          data-win-bind="style.display: showProgress Binding.Converter.toDisplay">

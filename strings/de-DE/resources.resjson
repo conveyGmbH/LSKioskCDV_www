@@ -433,7 +433,7 @@
 	"mailing.contactinfo"	: "Wenn Sie ein Mailing wünschen, rufen Sie bitte die +49(0) 8954 34 49 30 an oder schreiben Sie uns einfach eine ",
 	
     "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 ST25 board)",
+    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 out of 2 ST25 board)",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
     "productlist.count"     : "Anzahl",

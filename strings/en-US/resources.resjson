@@ -50,7 +50,7 @@
     "tooltip.publish"       : "Publish questionnaire",
     "tooltip.photo"         : "Capture photo",
 
-    "start.title"           : "Start Page",
+    "start.title"           : "Start",
     "start.comment"         : "On this page, use the buttons to go to additional pages!",
     "start.buttonContact"   : "recent contact",
     "start.buttonListLocal" : "local",
@@ -429,7 +429,7 @@
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
     "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 ST25 board)",
+    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 out of 2 ST25 board)",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",

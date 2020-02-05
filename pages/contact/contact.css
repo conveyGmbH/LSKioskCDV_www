@@ -1,4 +1,8 @@
-﻿.contact-form {
+﻿.contact-button {
+    margin-top: 150px;
+    display: inline-block;
+}
+.contact-form {
     width: calc(100% - 100px);
     margin-left: 50px;
 }

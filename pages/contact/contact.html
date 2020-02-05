@@ -12,21 +12,26 @@
         <div id="contactController" class="data-container">
             <section aria-label="Main content" role="main">
                 <div class="contentarea nx-body" id="contactScreen">
-                    <div class="nx-title">
-                        <span class="nx-title_black animationElement" data-win-res="{textContent: 'contact.title'}"></span>
-                        <div class="nx-subtitle contact-text animationElement">
-                            <span data-win-res="{innerHTML: 'contact.description'}"></span>
+                    <div class="list-header nx-title">
+                        <div class="nx-title_black animationElement">
+                            <span data-win-res="{innerHTML: 'contact.title'}"></span><br />
+                            <span class="nx-subtitle nx-subtitle--left" 
+                                  data-win-res="{innerHTML: 'contact.description'}"></span>
                         </div>
-                        <div class="nx-subtitle contact-text">
-                            <div id="user" class="contact-image animationElement"
-                                 data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplay"></div>
-                            <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
-                                    onclick="AppBar.handleEvent('click', 'clickForward', event)">
-                                <span data-win-res="{textContent: 'contact.continue'}"></span>
-                            </button>
+                    </div>
+                    <div class="nx-title animationElement">
+                        <div class="nx-subtitle contact-button"
+                             data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplay">
+                            <div id="user" class="contact-image animationElement"></div>
                         </div>
-                        <div class="line-separator"></div>
+                        <button class="win-button nx-button nx-button--centered contact-button"
+                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickForward', event)">
+                            <span data-win-res="{textContent: 'contact.continue'}"></span>
+                        </button>
+                    </div>
+                    <div class="line-separator"></div>
+                    <div class="nx-title animationElement">
                         <div class="nx-subtitle contact-text animationElement">
                             <div class="contact-form">
                                 <div class="field_line field_line_odd contact-line">
@@ -70,19 +75,23 @@
                                     <span class="contact-label" data-win-res="{textContent: 'contact.company'}"></span>
                                     <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Firmenname Binding.Mode.twoway" />
                                 </div>
-                                <div class="field_line field_line_even contact-line">
+                                <!-- 
+                                    <div class="field_line field_line_even contact-line">
                                     <span class="contact-label" data-win-res="{textContent: 'contact.position'}"></span>
                                     <input class="win-textbox contact-input" type="text" data-win-bind="value: dataContact.Position Binding.Mode.twoway" />
                                 </div>
+                                -->
                             </div>
                         </div>
                     </div>
-                    <button class="win-button nx-cancel animationElement" onclick="AppBar.handleEvent('click', 'clickStart', event)">
-                        <div id="cross_new" class="navigate-image"></div>
-                        <span data-win-res="{textContent: 'general.cancel'}"></span>
-                    </button>
+                    <div class="nx-cancel"
+                            data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                            onclick="AppBar.handleEvent('click', 'clickBack', event)">
+                        <div id="cross_new" class="navigate-image cancel-image"></div>
+                        <!--<span data-win-res="{textContent: 'general.cancel'}"></span>-->
+                    </div>
                     <div class="error-message"
-                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                            data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
                 </div>
             </section>
         </div>
