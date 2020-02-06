@@ -21,8 +21,13 @@
                     </div>
                     <div class="nx-subtitle failed-text" 
                          data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplay">
-                        <span data-win-bind="textContent: dataContact.EMail"></span><span data-win-res="{textContent: 'failed.alreadyRegistred'}"></span><br />
+                        <span data-win-bind="textContent: dataContact.EMail"></span>
+                        <span data-win-res="{textContent: 'failed.alreadyRegistred'}"></span><br />
                         <span data-win-bind="textContent: dataContact.ContactProductMailTS Binding.Converter.toRemoteDateString"></span>
+                    </div>
+                    <div class="nx-subtitle failed-text"
+                         data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplay">
+                        <span data-win-res="{textContent: 'failed.alreadyRegistred1'}"></span><br />
                     </div>
                     <button class="nx-button nx-button--centered"
                             onclick="AppBar.handleEvent('click', 'clickScan', event)">

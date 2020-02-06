@@ -428,8 +428,8 @@
 	"mailing.title"			: "Mailing",
 	"mailing.contactinfo"	: "If you would like a mailing, please call +49 (0) 8954 34 49 30 or write us an ",
 	
-    "productlist.title"     : "STM32 & ST25 boards registration",
-    "productlist.subtitle"  : "Select any available board (1 out of 5 MCU boards) + optional (1 out of 2 ST25 board)",
+    "productlist.title"     : "Registration for STM32 boards & X-Nucleo boards with NFC active tags or EEPROM products ",
+    "productlist.subtitle"  : "Select any available board(s) with given rules: 1 out of 5 STM32 boards and/or 1 out of 2 X-Nucleo boards",
     "productlist.selected"  : "Selection completed?",
     "productlist.comment"   : "On this page, use the Back button to go back!",
     "productlist.count"     : "Count",
@@ -449,5 +449,6 @@
     "failed.scanagain"      : "Scan again",
     "failed.description"    : "Scanning your badge wasn't successful<br>Please try again",
     "failed.alreadyRegistred"    : " already registered ",
+	"failed.alreadyRegistred1"    : " Only one registration per day is allowed. ",
     "failed.comment"        : "On this page, use the Back button to go back!"
 }
