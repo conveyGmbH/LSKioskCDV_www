@@ -12,11 +12,36 @@
         <div id="confirmController" class="data-container">
             <section aria-label="Main content" role="main">
                 <div class="contentarea nx-body">
-                    <div class="nx-title--left">
-                        <div class="nx-title_black animationElement">
-                            <span data-win-res="{innerHTML: 'confirm.title'}"></span><br />
-                            <span class="nx-subtitle nx-subtitle--left" data-win-res="{innerHTML: 'confirm.subtitle'}"></span>
-                        </div>
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check1 Binding.Mode.twoway"/>
+                            <span data-win-res="{innerHTML: 'confirm.title'}"></span><br/>
+                            <span class="nx-subtitle nx-subtitle--left confirm-subtitle" data-win-res="{innerHTML: 'confirm.subtitle'}"></span>
+                        </label>
+                    </div>
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check2 Binding.Mode.twoway" />
+                            <span data-win-res="{innerHTML: 'confirm.title2'}"></span><br />
+                            <div class="nx-subtitle nx-subtitle--left confirm-subtitle confirm-small">
+                                <div id="confirm.termsurl" class="confirm-qrcode-container"></div>
+                                <span class="win-type-caption" data-win-res="{innerHTML: 'confirm.subtitle2a'}"></span>
+                            </div>
+                            <div class="nx-subtitle nx-subtitle--left confirm-subtitle confirm-small">
+                                <div id="confirm.privacyurl" class="confirm-qrcode-container"></div>
+                                <span class="win-type-caption" data-win-res="{innerHTML: 'confirm.subtitle2b'}"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check3 Binding.Mode.twoway" />
+                            <span data-win-res="{innerHTML: 'confirm.title3'}"></span><br />
+                            <span class="nx-subtitle nx-subtitle--left confirm-subtitle" data-win-res="{innerHTML: 'confirm.subtitle3'}"></span>
+                        </label>
                     </div>
                     <div class="nx-title animationElement">
                         <button class="win-button nx-button nx-button--centered nx-button--gray confirm-button"
@@ -27,6 +52,7 @@
                             </div>
                         </button>
                         <button class="win-button nx-button nx-button--centered confirm-button"
+                                data-win-bind="disabled: incomplete" 
                                 onclick="AppBar.handleEvent('click', 'clickOk', event)">
                             <div class="confirm-navigate confirm-navigate-text-container">
                                 <span class="confirm-navigate-text"

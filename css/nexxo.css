@@ -76,6 +76,8 @@ p {
     margin: 8px auto; }
 .nx-button--gray {
     background-color: #767676 !important; }
+.nx-button:disabled {
+    background-color: #c8c8c8 !important; }
 
 .nx-header {
     left: 0;
@@ -151,15 +153,12 @@ p {
 }
 
 .nx-subtitle {
-    font-size: 25px;
+    font-size: 24px;
 }
 .nx-subtitle--left {
     text-align: left;
 }
-.nx-subtitle ol {
-    margin-left: 20px;
-    margin-right: 25px;
-}
+
 .nx-title--bold {
     /*font-family: "Arial Black", "Arial" !important;*/
     font-family: "Segoe WP Black", "Arial" !important;

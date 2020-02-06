@@ -2,10 +2,13 @@
     styles for confirm page
 */
 .confirm-button {
-    margin-top: 250px;
+    margin-top: 150px;
     display: inline-block;
 }
-
+.confirm-checkbox {
+    width: 50px;
+    transform: scale(2.0);
+}
 .confirm-navigate {
     display: block;
     position: relative;
@@ -49,8 +52,27 @@
 }
 .confirm-navigate-image-color {
 }
-
-.confirm-image {
-    display: block;
-    margin: 20px auto;
+.confirm-subtitle {
+    margin-left: 70px;
+    margin-right: 25px;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 1.2;
+}
+.confirm-small {
+    width: 100px;
+}
+.confirm-qrcode-container {
+    display: inline-block;
+}
+.confirm-qrcode {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+}
+.confirm-qrcode-caption {
+    display: inline-block;
+    font-size: 15px;
+    float: left;
 }
