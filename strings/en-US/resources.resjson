@@ -449,6 +449,7 @@
 	
     "failed.title"          : "An error occured",
     "failed.scanagain"      : "Scan again",
+    "failed.start"          : "Start",
     "failed.description"    : "Scanning your badge wasn't successful<br>Please try again",
     "failed.alreadyRegistred"    : " already registered ",
 	"failed.alreadyRegistred1"    : " Only one registration per day is allowed. ",

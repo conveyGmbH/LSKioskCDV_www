@@ -30,8 +30,14 @@
                         <span data-win-res="{textContent: 'failed.alreadyRegistred1'}"></span><br />
                     </div>
                     <button class="nx-button nx-button--centered"
+                            data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplayNone"
                             onclick="AppBar.handleEvent('click', 'clickScan', event)">
                         <span data-win-res="{textContent: 'failed.scanagain'}"></span>
+                    </button>
+                    <button class="nx-button nx-button--centered"
+                            data-win-bind="style.display: dataContact.ContactProductMailTS Binding.Converter.toDisplay"
+                            onclick="AppBar.handleEvent('click', 'clickStart', event)">
+                        <span data-win-res="{textContent: 'failed.start'}"></span>
                     </button>
                 </div>
                 <div class="nx-cancel" onclick="AppBar.handleEvent('click', 'clickStart', event)">

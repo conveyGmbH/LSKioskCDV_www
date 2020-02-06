@@ -446,6 +446,7 @@
 	
     "failed.title"          : "An error occured",
     "failed.scanagain"      : "Scan again",
+    "failed.start"          : "Start",
     "failed.description"    : "Scanning your badge wasn't successful<br>Please try again",
     "failed.alreadyRegistred"    : " already registered ",
     "failed.comment"        : "Utilisez le bouton Retour sur cette page pour y retourner!"
