@@ -2,12 +2,13 @@
     styles for confirm page
 */
 .confirm-button {
-    margin-top: 150px;
+    margin-top: 120px;
     display: inline-block;
 }
 .confirm-checkbox {
     width: 50px;
     transform: scale(2.0);
+    vertical-align: top;
 }
 .confirm-navigate {
     display: block;
@@ -51,6 +52,10 @@
     top: -802px;
 }
 .confirm-navigate-image-color {
+}
+.confirm-title {
+    display: inline-block;
+    width: calc(100% - 120px);
 }
 .confirm-subtitle {
     margin-left: 70px;
