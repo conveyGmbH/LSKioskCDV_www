@@ -14,6 +14,8 @@
     "general.october"       : "Okt",
     "general.november"      : "Nov",
     "general.december"      : "Dez",  
+    "general.yes"           : "Yes",
+    "general.no"            : "No",
     "general.cancel"        : "Cancel",
 
     "command.backward"      : "Zurück",
@@ -117,6 +119,9 @@
 
     "photo.title"           : "Visitenkarte",
     "photo.comment"         : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
+
+    "exportcontrol.title"  : "Is your company established in any of EU members countries or (if you are an individual) are you an European citizen?",
+    "exportcontrol.title2" : "Sorry but for export control reasons we cannot provide you by hand the boards.",
 
     "confirm.title"         : "END-USER STATEMENT<br>WE DECLARE TO STMICROELECTRONICS THAT IN RELATION TO FOLLOWING LIST OF NUCLEO OR DISCOVERY KITS:<br>NUCLEO-H755ZI-Q/NUCLEO-WB35CE/P-NUCLEO-WB55/STM32H7B3I-DK/STM32L562E-DK/STM32MP157C-DK2",
     "confirm.subtitle"      : "1. these items will only be used for civil end-uses and will not be used in the development, production or use of nuclear, biological or chemical weapons or missiles capable of delivering these weapons;<br>2. these items will not be delivered to any party or person(s), entity or country that is sanctioned or restricted under the applicable export control laws and regulations or International Sanction Programs, nor to any party or person(s) known to be acting on their behalf or in conjunction with;<br>3. these items will not be delivered to any party who is involved directly or indirectly in the development, production or use of nuclear, biological or chemical weapons, or missiles capable of delivering these weapons;<br>4. the End-User is responsible for complying with all relevant export control laws and regulations for the relocation or re-exports of these items.",

@@ -1,0 +1,85 @@
+﻿/*
+    styles for exportcontrol page
+*/
+.exportcontrol-button {
+    margin-top: 120px;
+    display: inline-block;
+}
+.exportcontrol-checkbox {
+    width: 50px;
+    transform: scale(2.0);
+    vertical-align: top;
+}
+.exportcontrol-navigate {
+    display: block;
+    position: relative;
+}
+.exportcontrol-navigate-text-container {
+}
+.exportcontrol-navigate-text {
+    font-size: 48px;
+    transition: color 100ms;
+}
+.nx-button:active .exportcontrol-navigate-text {
+    color: #ffffff;
+}
+.exportcontrol-navigate-image-container {
+    left: -80px;
+    top: -80px;
+}
+.exportcontrol-navigate-image {
+    margin-left: 16px;
+    margin-top: 110px;
+}
+
+.exportcontrol-navigate-image-black-container {
+    left: -64px;
+    top: -604px;
+    width: 400px;
+    height: 308px;
+    overflow: hidden;
+}
+.exportcontrol-navigate-image-black {
+    opacity: 0.1;
+    transition: opacity 200ms;
+}
+.nx-button:active .exportcontrol-navigate-image-black {
+    opacity: 1;
+}
+
+.exportcontrol-navigate-image-color-container {
+    left: -64px;
+    top: -802px;
+}
+.exportcontrol-navigate-image-color {
+}
+.exportcontrol-title {
+    display: inline-block;
+    width: calc(100% - 120px);
+    margin-top: 150px;
+    margin-left: 80px;
+}
+.exportcontrol-subtitle {
+    margin-left: 70px;
+    margin-right: 25px;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 1.2;
+}
+.exportcontrol-small {
+    width: 100px;
+}
+.exportcontrol-qrcode-container {
+    display: inline-block;
+}
+.exportcontrol-qrcode {
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    padding: 0;
+}
+.exportcontrol-qrcode-caption {
+    display: inline-block;
+    font-size: 15px;
+    float: left;
+}

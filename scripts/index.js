@@ -65,6 +65,7 @@
     // static array of pages for the navigation bar
     Application.navigationBarPages = [
         { id: "start", group: -1, disabled: false },
+        { id: "exportcontrol", group: -1, disabled: false },
         { id: "languagelist", group: -1, disabled: false },
         { id: "productlist", group: -1, disabled: false },
         { id: "confirm", group: -1, disabled: false },
@@ -104,7 +105,8 @@
             //id = "languagelist";
         } else if (id === "newlanguagelist" || id === "languagelist") {
             // re-route directly to productlist page
-            id = "productlist";
+            //id = "productlist";
+            id = "exportcontrol";
         }
         Log.ret(Log.l.trace);
         return id;
