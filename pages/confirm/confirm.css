@@ -64,6 +64,10 @@
     display: inline-block;
     line-height: 1.2;
 }
+.confirm-medium {
+    margin-left: 0;
+    font-size: 26px;
+}
 .confirm-small {
     width: 100px;
 }
