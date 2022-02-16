@@ -189,7 +189,7 @@ html, body { font-family: "Segoe UI", "Arial"; }
 .nx-title--bold {
     /*font-family: "Arial Black", "Arial" !important;*/
     font-family: "Segoe WP Black", "Arial" !important;
-    font-weight: bold;
+    font-weight: bold !important;
     /*
     font-weight: 900 !important;
     */

@@ -12,28 +12,44 @@
         <div id="languagelistController" class="data-container">
             <section aria-label="Main content" role="main">
                 <div class="contentarea win-type-body">
-                    <img class="organizer-image animationElement" 
-                         data-win-bind="src: organizerLogoSrc">
+                    <img class="organizer-image animationElement"
+                         data-win-bind="src: organizerLogoSrc; style.display: organizerLogoSrc Binding.Converter.toDisplay">
                     <div class="list-header animationElement">
                         <div class="nx-title">
-                            <div class="nx-title_color nx-title--upper nx-title--bold">
-                                <span data-win-res="{innerHTML: 'languagelist.title'}"
+                            <div class="nx-title_black nx-title--upper nx-title--bold">
+                                <span data-win-res="{innerHTML: 'start.comment'}"
                                       onclick="AppBar.handleEvent('click', 'clickOk', event)"></span>
                             </div>
-                            <div class="nx-title_black">
-                                <span class="nx-subtitle"
-                                      data-win-res="{innerHTML: 'languagelist.comment'}"></span>
-                            </div>
+                            <!--
                             <div class="nx-button nx-button--centered nx-title--bold languagelist-button"
                                  onclick="AppBar.handleEvent('click', 'clickOk', event)">
                                 <span class="action-continue"></span>
                             </div>
-                            <!--
                             <button class="win-button nx-button nx-button--centered nx-title--bold"
                                     onclick="AppBar.handleEvent('click', 'clickOk', event)">
                                 <span data-win-res="{textContent: 'languagelist.continue'}"></span>
                             </button>
                             -->
+                            <button class="win-button nx-button nx-button--centered languagelist-center-button"
+                                    onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                                <div class="languagelist-navigate languagelist-navigate-text-container">
+                                    <span class="nx-title--bold languagelist-navigate-text"
+                                          data-win-res="{innerHTML: 'start.title'}"></span>
+                                </div>
+                                <div class="languagelist-navigate languagelist-navigate-image-container">
+                                    <div title="hand_touch" class="languagelist-navigate-image"></div>
+                                </div>
+                                <div class="languagelist-navigate languagelist-navigate-image-black-container">
+                                    <div title="hand_touch" class="languagelist-navigate-image-black"></div>
+                                </div>
+                                <div class="languagelist-navigate languagelist-navigate-image-color-container">
+                                    <div title="hand_point_up" class="languagelist-navigate-image"></div>
+                                </div>
+                            </button>
+                            <div class="nx-title_black nx-title--upper nx-title--bold">
+                                <span data-win-res="{innerHTML: 'start.commentBottom'}"
+                                      onclick="AppBar.handleEvent('click', 'clickOk', event)"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="languages-template"

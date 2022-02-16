@@ -11,7 +11,7 @@
         Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
         For details, see http://go.microsoft.com/fwlink/?LinkID=617521
     -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src 'self' data: *; connect-src blob: *">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' *; style-src 'self' 'unsafe-inline'; media-src 'self' data: *; connect-src blob: *">
 
     <!-- platform overrides -->
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
@@ -73,6 +73,7 @@
 
     <!-- Convey references -->
     <script type="text/javascript" src="lib/convey/scripts/logging.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/winjs-es6promise.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/strings.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/sqlite.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/appSettings.js"></script>
@@ -85,6 +86,7 @@
     <script type="text/javascript" src="lib/convey/scripts/pageFrame.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/pageController.js"></script>
     <script type="text/javascript" src="lib/convey/scripts/fragmentController.js"></script>
+    <script type="text/javascript" src="lib/convey/scripts/inertia.js"></script>
 
     <!-- project scripts -->
     <script type="text/javascript" src="scripts/generalData.js"></script>

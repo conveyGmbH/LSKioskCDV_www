@@ -46,16 +46,16 @@
 
 
 #sezoom {
-    width: 1920px;
-    height: 862px;
+    width: 100%;
+    height: calc(100% - 218px);
 }
 #productlist .listview {
-    width: 1920px;
-    height: 862px;
+    width: 100%;
+    height: calc(100% - 218px);
 }
 #productgroups .listview {
-    width: 1920px;
-    height: 862px;
+    width: 100%;
+    height: calc(100% - 218px);
 }
 
 #productlist .win-itemscontainer {

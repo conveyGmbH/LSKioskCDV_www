@@ -1,12 +1,20 @@
 ﻿/*
     styles for languagelist page
 */
+.languagelist .contentarea {
+    background: #ffffff !important;
+}
+
 .languagelist .organizer-image {
     position: absolute;
+    /*
     left: 0;
     top: 178px;
     width: 100%;
     height: auto;
+    */
+    left: 50px;
+    top: 50px;
 }
 
 .languagelist .list-header {
@@ -16,43 +24,47 @@
     width: 100%;
     height: 100%;
 }
-.languagelist .organizer-image {
-    position: absolute;
-    left: 0;
-    top: 178px;
-    width: 100%;
-    height: auto;
-}
 
 .languagelist .nx-title {
-    margin-top: 320px;
 }
-.languagelist .list-header .nx-title_color {
-    color: white;
-    text-align: left;
-    padding-left: 80px;
-    font-size: 120px;
-}
-.languagelist .list-header .nx-title_black {
+.languagelist .list-header {
     /*
     color: white;
+    text-align: right;
     */
+    display: block;
     position: absolute;
     left: 0;
-    top: 35px;
-    text-align: right;
-    width: calc(100% - 680px);
+    top: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.languagelist .list-header .nx-title_black {
+    margin-top: 48px;
+    font-size: 100px;
+}
+
+.languagelist .list-header .nx-title_color {
+    /*
+color: white;
+*/
+    margin-top: 320px;
+    text-align: left;
+    padding-left: 140px;
+    font-size: 120px;
+    display: block;
+    position: absolute;
 }
 
 .languagelist .list-header .nx-button--centered {
     /*
-    margin: 40px auto !important;
-    */
     position: absolute;
     top: 0;
     right: 20px;
     width: 120px;
     height: 120px;
+    */
 }
 
 .action-continue {
@@ -66,10 +78,20 @@
     content: "\E0AF";
 }
 
+
 .languagelist-button {
     background-color: transparent !important;
 }
-.languagelist-navigate-container{
+
+.languagelist-center-button {
+    width: 500px;
+    height: 500px;
+    background-color: transparent !important;
+    border-color: transparent !important;
+    overflow: hidden;
+}
+
+.languagelist-navigate-container {
     margin-top: 30px;
 }
 .languagelist-navigate {
@@ -77,6 +99,7 @@
     position: relative;
 }
 .languagelist-navigate-text-container {
+    left: 30px;
     top: 330px;
 }
 .languagelist-navigate-text {
@@ -112,7 +135,7 @@
 
 .languagelist-navigate-image-color-container {
     left: -64px;
-    top: -802px;
+    top: -800px;
 }
 .languagelist-navigate-image-color {
 }
@@ -137,7 +160,7 @@
 
 #languagelist.listview {
     position: absolute !important;
-    right: 250px;
+    right: 40px;
     top: 40px;
     width: 420px;
     height: 140px;

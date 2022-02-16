@@ -68,7 +68,9 @@
                 var ret = LanguageList._productView.select(complete, error, {
                     // select restriction
                     LanguageSpecID: AppData.getLanguageId(),
-                    KontaktID: AppData.getRecordId("Kontakt")
+                    KontaktID: AppData.getRecordId("Kontakt"),
+                    INITFragengruppeID: AppData.mainGroupId,
+                    bExact: true
                 }, {
                     // select options
                     ordered: true,

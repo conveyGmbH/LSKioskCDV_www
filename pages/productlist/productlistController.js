@@ -26,8 +26,7 @@
                 version: Application.version,
                 isGrouped: false,
                 continueText: AppData._persistentStates.kioskUsesCamera ? getResourceText("productlist.camera") : getResourceText("productlist.barcode"),
-                zoomedOut: true,
-                mainGroupId: 0
+                zoomedOut: true
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -315,7 +314,7 @@
                             width: item.Width, 
                             height: height, 
                             showGroup: item.showGroup, 
-                            showItem: !item.IsHidden && item.INITFragengruppeID === that.binding.mainGroupId
+                            showItem: !item.IsHidden && item.INITFragengruppeID === AppData.mainGroupId
                         };
                     }
                 }
@@ -488,7 +487,7 @@
                 },
                 onZoomChanged: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.", "zoomedOut=" + (eventInfo && eventInfo.detail));
-                    if (sezoom && sezoom.winControl) {
+                    /*if (sezoom && sezoom.winControl) {
                         that.binding.zoomedOut = sezoom.winControl.zoomedOut;
                         if (!sezoom.winControl.zoomedOut && 
                             productMainGroups && productMainGroups.winControl) {
@@ -500,7 +499,7 @@
                                 });
                             }
                         }
-                    }
+                    }*/
                     if (eventInfo && !eventInfo.detail) {
                         that.scrollIntoView();
                     }
@@ -644,12 +643,13 @@
                                 // sync other list
                                 var item = that.mainGroups.getAt(curIndex);
                                 if (item) {
-                                    if (that.binding.mainGroupId !== item.INITFragengruppeID) {
-                                        that.binding.mainGroupId = item.INITFragengruppeID;
+                                    if (AppData.mainGroupId !== item.INITFragengruppeID) {
+                                        AppData.mainGroupId = item.INITFragengruppeID;
                                         WinJS.Promise.timeout(0).then(function() {
-                                            if (listView && listView.winControl) {
+                                            /*if (listView && listView.winControl) {
                                                 listView.winControl.forceLayout();
-                                            }
+                                            }*/
+                                            that.selectProductView();
                                         });
                                     }
                                 }
@@ -748,7 +748,7 @@
                                 for (i = indexOfFirstVisible; i <= maxIndex; i++) {
                                     var element = listView.winControl.elementFromIndex(i);
                                     if (element) {
-                                        /*var size = itemInfo(i);
+                                        var size = itemInfo(i);
                                         var itemBox = element.parentElement;
                                         if (itemBox && itemBox.style) {
                                             var winContainer = itemBox.parentElement;
@@ -776,7 +776,7 @@
                                                     }
                                                 }
                                             }
-                                        }*/
+                                        }
                                         if (element.firstElementChild) {
                                             if (element.firstElementChild.disabled) {
                                                 if (!WinJS.Utilities.hasClass(element, "win-nonselectable")) {
@@ -1104,101 +1104,181 @@
             if (productMainGroups) {
                 this.addRemovableEventListener(productMainGroups, "selectionchanged", this.eventHandlers.onMainGroupsSelectionChanged.bind(this));
             }
+            var selectMainGroups = function() {
+                return ProductList.productMainGroupView.select(function(json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "ProductList.productView: select success!");
+                    // productView returns object already parsed from json data in response
+                    if (json && json.d && json.d.results && json.d.results.length > 0) {
+                        var results = json.d.results;
+                        /*[ {
+                            CR_V_FragengruppeVIEWID: 0,
+                            VeranstaltungID: json.d.results[0].VeranstaltungID,
+                            INITFragengruppeID: "NOT NULL",
+                            TITLE: getResourceText("productlist.products"),
+                            LanguageSpecID: AppData.getLanguageId()
+                        }].concat(json.d.results);*/
+                        var selIndex = 0;
+                        if (!that.mainGroups) {
+                            results.forEach(function(item, index) {
+                                if (item.INITFragengruppeID === AppData.mainGroupId) {
+                                    selIndex = index;
+                                }
+                                that.mainGroupsResultConverter(item, index);
+                            });
+                            that.mainGroups = new WinJS.Binding.List(results);
+                        } else {
+                            that.mainGroups.length = 0;
+                            results.forEach(function(item, index) {
+                                if (item.INITFragengruppeID === AppData.mainGroupId) {
+                                    selIndex = index;
+                                }
+                                that.mainGroupsResultConverter(item, index);
+                                that.mainGroups.push(item);
+                            });
+                        }
+                        if (productMainGroups && productMainGroups.winControl) {
+                            productMainGroups.winControl.itemDataSource = that.mainGroups.dataSource;
+                            if (productMainGroups.winControl.selection) {
+                                productMainGroups.winControl.selection.set(selIndex);
+                            }
+                            
+                        }
+                    } else if (that.mainGroups) {
+                        that.mainGroups.length = 0;
+                    }
+                },
+                function(errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                });
+            };
+            that.selectMainGroups = selectMainGroups;
+
+            var selectProductView = function() {
+                return ProductList.productView.select(function (json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "ProductList.productView: select success!");
+                    // productView returns object already parsed from json data in response
+                    if (json && json.d) {
+                        that.handleProductViewResult(json);
+                    } else {
+                        that.binding.count = 0;
+                        that.nextUrl = null;
+                        if (listView) {
+                            progress = listView.querySelector(".list-footer .progress");
+                            counter = listView.querySelector(".list-footer .counter");
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                        }
+                        if (groupView) {
+                            progress = groupView.querySelector(".group-footer .progress");
+                            counter = groupView.querySelector(".group-footer .counter");
+                            if (progress && progress.style) {
+                                progress.style.display = "none";
+                            }
+                            if (counter && counter.style) {
+                                counter.style.display = "inline";
+                            }
+                        }
+                        that.waitForIdleAction();
+                    }
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                    if (listView) {
+                        progress = listView.querySelector(".list-footer .progress");
+                        counter = listView.querySelector(".list-footer .counter");
+                        if (progress && progress.style) {
+                            progress.style.display = "none";
+                        }
+                        if (counter && counter.style) {
+                            counter.style.display = "inline";
+                        }
+                    }
+                    if (groupView) {
+                        progress = groupView.querySelector(".group-footer .progress");
+                        counter = groupView.querySelector(".group-footer .counter");
+                        if (progress && progress.style) {
+                            progress.style.display = "none";
+                        }
+                        if (counter && counter.style) {
+                            counter.style.display = "inline";
+                        }
+                    }
+                    that.loading = false;
+                    that.groupLoading = false;
+                    that.waitForIdleAction();
+                });
+            }
+            that.selectProductView = selectProductView;
+
+            var handleProductViewResult = function(json) {
+                that.nextUrl = ProductList.productView.getNextUrl(json);
+                var results = json.d.results;
+                var prevIsGrouped = that.binding.isGrouped;
+                var newIsGrouped = false;
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i] && results[i].ProduktGruppeIndex) {
+                        newIsGrouped = true;
+                        break;
+                    }
+                }
+                Log.print(Log.l.trace, "newIsGrouped=" + newIsGrouped + " (prev isGrouped=" + that.binding.isGrouped + ")");
+                that.binding.isGrouped = newIsGrouped;
+                if (that.binding.isGrouped !== prevIsGrouped) {
+                    // free products list on grouped change!
+                    that.products = null;
+                }
+                if (!that.products) {
+                    Log.print(Log.l.trace, "create new Binding.List of length=" + results.length);
+                    results.forEach(function(item, index) {
+                        that.resultConverter(item, index);
+                    });
+                    // Now, we call WinJS.Binding.List to get the bindable list
+                    var products = new WinJS.Binding.List(results);
+                    that.products = products.createGrouped(groupKey, groupData, groupSorter);
+                    if (sezoom && sezoom.winControl) {
+                        sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
+                        sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
+                    }
+                    if (listView && listView.winControl) {
+                        // multi list selection
+                        listView.winControl.selectionMode = WinJS.UI.SelectionMode.multi;
+
+                        // direct selection on each tap
+                        listView.winControl.tapBehavior = WinJS.UI.TapBehavior.toggleSelect;
+
+                        // add ListView dataSource
+                        listView.winControl.itemDataSource = that.products.dataSource;
+                        listView.winControl.groupDataSource = that.products.groups.dataSource;
+                        if (groupView && groupView.winControl) {
+                            groupView.winControl.itemDataSource = that.products.groups.dataSource;
+                        }
+                    }
+                } else {
+                    that.products.length = 0;
+                    results.forEach(function(item, index) {
+                        that.resultConverter(item, index);
+                        that.products.push(item);
+                    });
+                }
+                that.binding.count = that.products.length;
+                that.addSelection(results);
+            };
+            that.handleProductViewResult = handleProductViewResult;
+
             var loadData = function () {
                 var ret;
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                var selectMainGroups = function() {
-                    return ProductList.productMainGroupView.select(function(json) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        Log.print(Log.l.trace, "ProductList.productView: select success!");
-                        // productView returns object already parsed from json data in response
-                        if (json && json.d && json.d.results && json.d.results.length > 0) {
-                            var results = [ {
-                                CR_V_FragengruppeVIEWID: 0,
-                                VeranstaltungID: json.d.results[0].VeranstaltungID,
-                                INITFragengruppeID: 0,
-                                TITLE: getResourceText("productlist.products"),
-                                LanguageSpecID: AppData.getLanguageId()
-                            }].concat(json.d.results);
-                            if (!that.mainGroups) {
-                                results.forEach(function(item, index) {
-                                    that.mainGroupsResultConverter(item, index);
-                                });
-                                that.mainGroups = new WinJS.Binding.List(results);
-                            } else {
-                                that.mainGroups.length = 0;
-                                results.forEach(function(item, index) {
-                                    that.mainGroupsResultConverter(item, index);
-                                    that.mainGroups.push(item);
-                                });
-                            }
-                            if (productMainGroups && productMainGroups.winControl) {
-                                productMainGroups.winControl.itemDataSource = that.mainGroups.dataSource;
-                            }
-                        } else if (that.mainGroups) {
-                            that.mainGroups.length = 0;
-                        }
-                    },
-                    function(errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                    });
-                };
-                var handleProductViewResult = function(json) {
-                    that.nextUrl = ProductList.productView.getNextUrl(json);
-                    var results = json.d.results;
-                    var prevIsGrouped = that.binding.isGrouped;
-                    var newIsGrouped = false;
-                    for (var i = 0; i < results.length; i++) {
-                        if (results[i] && results[i].ProduktGruppeIndex) {
-                            newIsGrouped = true;
-                            break;
-                        }
-                    }
-                    Log.print(Log.l.trace, "newIsGrouped=" + newIsGrouped + " (prev isGrouped=" + that.binding.isGrouped + ")");
-                    that.binding.isGrouped = newIsGrouped;
-                    if (that.binding.isGrouped !== prevIsGrouped) {
-                        // free products list on grouped change!
-                        that.products = null;
-                    }
-                    if (!that.products) {
-                        Log.print(Log.l.trace, "create new Binding.List of length=" + results.length);
-                        results.forEach(function(item, index) {
-                            that.resultConverter(item, index);
-                        });
-                        // Now, we call WinJS.Binding.List to get the bindable list
-                        var products = new WinJS.Binding.List(results);
-                        that.products = products.createGrouped(groupKey, groupData, groupSorter);
-                        if (sezoom && sezoom.winControl) {
-                            sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
-                            sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
-                        }
-                        if (listView && listView.winControl) {
-                            // multi list selection
-                            listView.winControl.selectionMode = WinJS.UI.SelectionMode.multi;
-
-                            // direct selection on each tap
-                            listView.winControl.tapBehavior = WinJS.UI.TapBehavior.toggleSelect;
-
-                            // add ListView dataSource
-                            listView.winControl.itemDataSource = that.products.dataSource;
-                            listView.winControl.groupDataSource = that.products.groups.dataSource;
-                            if (groupView && groupView.winControl) {
-                                groupView.winControl.itemDataSource = that.products.groups.dataSource;
-                            }
-                        }
-                    } else {
-                        that.products.length = 0;
-                        results.forEach(function(item, index) {
-                            that.resultConverter(item, index);
-                            that.products.push(item);
-                        });
-                    }
-                    that.binding.count = that.products.length;
-                    that.addSelection(results);
-                };
                 AppBar.notifyModified = false;
                 that.loading = true;
                 that.groupLoading = true;
@@ -1225,9 +1305,9 @@
                 if (AppData._prefetchedProductView && groupView && groupView.style) {
                     //groupView.style.visibility = "hidden";
                     WinJS.Promise.timeout(10).then(function() {
-                        handleProductViewResult(AppData._prefetchedProductView);
+                        that.handleProductViewResult(AppData._prefetchedProductView);
                         AppData._prefetchedProductView = null;
-                        //return selectMainGroups();
+                        return that.selectMainGroups();
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
                         AppBar.notifyModified = true;
@@ -1303,74 +1383,15 @@
                             // error message already returned
                             return WinJS.Promise.as();
                         } else {
-                            return ProductList.productView.select(function (json) {
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                Log.print(Log.l.trace, "ProductList.productView: select success!");
-                                // productView returns object already parsed from json data in response
-                                if (json && json.d) {
-                                    handleProductViewResult(json);
-                                } else {
-                                    that.binding.count = 0;
-                                    that.nextUrl = null;
-                                    if (listView) {
-                                        progress = listView.querySelector(".list-footer .progress");
-                                        counter = listView.querySelector(".list-footer .counter");
-                                        if (progress && progress.style) {
-                                            progress.style.display = "none";
-                                        }
-                                        if (counter && counter.style) {
-                                            counter.style.display = "inline";
-                                        }
-                                    }
-                                    if (groupView) {
-                                        progress = groupView.querySelector(".group-footer .progress");
-                                        counter = groupView.querySelector(".group-footer .counter");
-                                        if (progress && progress.style) {
-                                            progress.style.display = "none";
-                                        }
-                                        if (counter && counter.style) {
-                                            counter.style.display = "inline";
-                                        }
-                                    }
-                                    that.waitForIdleAction();
-                                }
-                            }, function (errorResponse) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                                AppData.setErrorMsg(that.binding, errorResponse);
-                                if (listView) {
-                                    progress = listView.querySelector(".list-footer .progress");
-                                    counter = listView.querySelector(".list-footer .counter");
-                                    if (progress && progress.style) {
-                                        progress.style.display = "none";
-                                    }
-                                    if (counter && counter.style) {
-                                        counter.style.display = "inline";
-                                    }
-                                }
-                                if (groupView) {
-                                    progress = groupView.querySelector(".group-footer .progress");
-                                    counter = groupView.querySelector(".group-footer .counter");
-                                    if (progress && progress.style) {
-                                        progress.style.display = "none";
-                                    }
-                                    if (counter && counter.style) {
-                                        counter.style.display = "inline";
-                                    }
-                                }
-                                that.loading = false;
-                                that.groupLoading = false;
-                                that.waitForIdleAction();
-                            });
+                            that.selectProductView();
                         }
-                    /*}).then(function () {
+                    }).then(function () {
                         if (!contactId) {
                             // error message already returned
                             return WinJS.Promise.as();
                         } else {
-                            return selectMainGroups();
-                        }*/
+                            return that.selectMainGroups();
+                        }
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
                         AppBar.notifyModified = true;

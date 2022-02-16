@@ -36,7 +36,7 @@
             var continueButton = pageElement.querySelector(".languagelist .list-header .nx-button--centered");
             if (continueButton && continueButton.style) {
                 if (continueButton.firstElementChild && continueButton.firstElementChild.style) {
-                    continueButton.firstElementChild.style.color = Colors.kioskButtonBackgroundColor;
+                    continueButton.firstElementChild.style.color = Colors.kioskProductTitleColor;
                 }
             }
 
@@ -238,7 +238,7 @@
             }
             this.showPicture = showPicture;
             var fadeAnimantion = function (element, bIn) {
-                Log.call(Log.l.trace, "Start.Controller.");
+                Log.call(Log.l.trace, "LanguageList.Controller.");
                 if (element && that.binding) {
                     var fnAnimation = bIn ? WinJS.UI.Animation.fadeIn : WinJS.UI.Animation.fadeOut;
                     fnAnimation(element).done(function () {
@@ -255,6 +255,7 @@
                 Log.ret(Log.l.trace);
             }
             this.fadeAnimantion = fadeAnimantion;
+
             var loadPicture = function (pictureId, element) {
                 Log.call(Log.l.trace, "LanguageList.Controller.", "pictureId=" + pictureId);
                 var ret = null;
@@ -453,9 +454,6 @@
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
-                if (AppHeader.controller && AppHeader.controller.binding) {
-                    that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
-                }
             });
             Log.ret(Log.l.trace);
         })
