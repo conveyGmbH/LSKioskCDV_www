@@ -65,13 +65,19 @@
         productView: {
             select: function (complete, error) {
                 Log.call(Log.l.trace, "ProductList.");
-                var ret = LanguageList._productView.select(complete, error, {
+                var restriction = {
                     // select restriction
                     LanguageSpecID: AppData.getLanguageId(),
                     KontaktID: AppData.getRecordId("Kontakt"),
-                    INITFragengruppeID: AppData.mainGroupId,
                     bExact: true
-                }, {
+                };
+                if (AppData.mainGroupId !== null) {
+                    restriction.INITFragengruppeID1 = AppData.mainGroupId;
+                }
+                if (AppData.subGroupId !== null) {
+                    restriction.INITFragengruppeID = AppData.subGroupId;
+                }
+                var ret = LanguageList._productView.select(complete, error, restriction, {
                     // select options
                     ordered: true,
                     orderAttribute: "Sortierung"

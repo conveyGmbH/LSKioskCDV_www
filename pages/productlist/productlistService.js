@@ -35,13 +35,19 @@
         productView: {
             select: function (complete, error) {
                 Log.call(Log.l.trace, "ProductList.");
-                var ret = ProductList._productView.select(complete, error, {
+                var restriction = {
                     // select restriction
                     LanguageSpecID: AppData.getLanguageId(),
                     KontaktID: AppData.getRecordId("Kontakt"),
-                    INITFragengruppeID: AppData.mainGroupId,
                     bExact: true
-                }, {
+                };
+                if (AppData.mainGroupId !== null) {
+                    restriction.INITFragengruppeID1 = AppData.mainGroupId;
+                }
+                if (AppData.subGroupId !== null) {
+                    restriction.INITFragengruppeID = AppData.subGroupId;
+                }
+                var ret = ProductList._productView.select(complete, error, restriction, {
                     // select options
                     ordered: true,
                     orderAttribute: "Sortierung"
@@ -104,13 +110,33 @@
         },
         _productMainGroupView: {
             get: function () {
-                return AppData.getFormatView("CR_V_Fragengruppe", 20577);
+                return AppData.getFormatView("CR_V_Fragengruppe", 20659);
             }
         },
         productMainGroupView: {
             select: function (complete, error) {
                 Log.call(Log.l.trace, "ProductList.");
                 var ret = ProductList._productMainGroupView.select(complete, error, {
+                    // select restriction
+                    LanguageSpecID: AppData.getLanguageId()
+                }, {
+                    // select options
+                    ordered: true
+                });
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+        },
+        _productSubGroupView: {
+            get: function () {
+                return AppData.getFormatView("CR_V_Fragengruppe", 20577);
+            }
+        },
+        productSubGroupView: {
+            select: function (complete, error) {
+                Log.call(Log.l.trace, "ProductList.");
+                var ret = ProductList._productSubGroupView.select(complete, error, {
                     // select restriction
                     LanguageSpecID: AppData.getLanguageId()
                 }, {

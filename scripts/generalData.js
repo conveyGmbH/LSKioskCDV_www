@@ -15,7 +15,8 @@
     var nav = WinJS.Navigation;
 
     WinJS.Namespace.define("AppData", {
-        mainGroupId: 0,
+        mainGroupId: null,
+        subGroupId: null,
         __generalUserRemoteView: null,
         _generalUserRemoteView: {
             get: function() {

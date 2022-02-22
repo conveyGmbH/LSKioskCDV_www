@@ -26,7 +26,9 @@
                 version: Application.version,
                 isGrouped: false,
                 continueText: AppData._persistentStates.kioskUsesCamera ? getResourceText("productlist.camera") : getResourceText("productlist.barcode"),
-                zoomedOut: true
+                zoomedOut: true,
+                showMainGroups: false,
+                showSubGroups: false
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -37,6 +39,7 @@
             this.prevSelectionIndices = [];
             this.productSelectionGroup = {};
             this.mainGroups = null;
+            this.subGroups = null;
 
             // idle wait Promise and wait time:
             this.restartPromise = null;
@@ -54,6 +57,8 @@
 
             // MainGroups ListView control
             var productMainGroups = pageElement.querySelector("#productmaingroups.listview");
+            // SubGroups ListView control
+            var productSubGroups = pageElement.querySelector("#productsubgroups.listview");
 
             // ListView control
             var listView = pageElement.querySelector("#productlist.listview");
@@ -65,6 +70,10 @@
                 if (productMainGroups && productMainGroups.winControl) {
                     // remove ListView dataSource
                     productMainGroups.winControl.itemDataSource = null;
+                }
+                if (productSubGroups && productSubGroups.winControl) {
+                    // remove ListView dataSource
+                    productSubGroups.winControl.itemDataSource = null;
                 }
                 if (groupView && groupView.winControl) {
                     // remove ListView dataSource
@@ -251,11 +260,6 @@
                 } else {
                     item.DocID = null;
                 }
-                if (!item.Sortierung) {
-                    item.IsHidden = true;
-                } else {
-                    item.IsHidden = false;
-                }
                 item.preload = 1;
                 item.groupBkgColor = Colors.kioskProductBackgroundColor;
                 var rgb = Colors.hex2rgb(item.groupBkgColor);
@@ -312,9 +316,7 @@
                         // Get the size based on the item type
                         size = { 
                             width: item.Width, 
-                            height: height, 
-                            showGroup: item.showGroup, 
-                            showItem: !item.IsHidden && item.INITFragengruppeID === AppData.mainGroupId
+                            height: height
                         };
                     }
                 }
@@ -487,19 +489,25 @@
                 },
                 onZoomChanged: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.", "zoomedOut=" + (eventInfo && eventInfo.detail));
-                    /*if (sezoom && sezoom.winControl) {
+                    if (sezoom && sezoom.winControl) {
                         that.binding.zoomedOut = sezoom.winControl.zoomedOut;
-                        if (!sezoom.winControl.zoomedOut && 
-                            productMainGroups && productMainGroups.winControl) {
-                            productMainGroups.winControl.selection.clear();
-                            if (productMainGroups.winControl.itemDataSource) {
-                                productMainGroups.winControl.itemDataSource.itemFromIndex(0).done(function(curItem) {
-                                    Log.print(Log.l.trace, "calling add selection");
-                                    productMainGroups.winControl.selection.add(curItem);
-                                });
+                        if (sezoom.winControl.zoomedOut) {
+                            that.binding.showSubGroups = false;
+                            that.binding.showMainGroups = that.mainGroups && that.mainGroups.length > 0;
+                        } else {
+                            that.binding.showMainGroups = false;
+                            that.binding.showSubGroups = that.subGroups && that.subGroups.length > 0;
+                            if (productSubGroups && productSubGroups.winControl) {
+                                productSubGroups.winControl.selection.clear();
+                                if (productSubGroups.winControl.itemDataSource) {
+                                    productSubGroups.winControl.itemDataSource.itemFromIndex(0).done(function(curItem) {
+                                        Log.print(Log.l.trace, "calling add selection");
+                                        productSubGroups.winControl.selection.add(curItem);
+                                    });
+                                }
                             }
                         }
-                    }*/
+                    }
                     if (eventInfo && !eventInfo.detail) {
                         that.scrollIntoView();
                     }
@@ -630,7 +638,6 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-
                 onMainGroupsSelectionChanged: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     var listControl = productMainGroups.winControl;
@@ -646,9 +653,6 @@
                                     if (AppData.mainGroupId !== item.INITFragengruppeID) {
                                         AppData.mainGroupId = item.INITFragengruppeID;
                                         WinJS.Promise.timeout(0).then(function() {
-                                            /*if (listView && listView.winControl) {
-                                                listView.winControl.forceLayout();
-                                            }*/
                                             that.selectProductView();
                                         });
                                     }
@@ -658,7 +662,30 @@
                     }
                     Log.ret(Log.l.trace);
                 },
-
+                onSubGroupsSelectionChanged: function(eventInfo) {
+                    Log.call(Log.l.trace, "ProductList.Controller.");
+                    var listControl = productSubGroups.winControl;
+                    if (listControl && listControl.selection && that.subGroups) {
+                        var selectionCount = listControl.selection.count();
+                        if (selectionCount === 1) {
+                            // Only one item is selected, show the page
+                            listControl.selection.getItems().done(function (items) {
+                                var curIndex = items[0].index;
+                                // sync other list
+                                var item = that.subGroups.getAt(curIndex);
+                                if (item) {
+                                    if (AppData.subGroupId !== item.INITFragengruppeID) {
+                                        AppData.subGroupId = item.INITFragengruppeID;
+                                        WinJS.Promise.timeout(0).then(function() {
+                                            that.selectProductView();
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
                 onSelectionChanged: function (eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
                     that.waitForIdleAction();
@@ -752,28 +779,22 @@
                                         var itemBox = element.parentElement;
                                         if (itemBox && itemBox.style) {
                                             var winContainer = itemBox.parentElement;
-                                            if (!size.showItem) {
-                                                if (winContainer && winContainer.style) {
-                                                    winContainer.style.display = "none";
+                                            if (size.width && winContainer) {
+                                                if (winContainer.style) {
+                                                    winContainer.style.display = "";
                                                 }
-                                            } else {
-                                                if (size.width && winContainer) {
-                                                    if (winContainer.style) {
-                                                        winContainer.style.display = "";
-                                                    }
-                                                    var w = size.width + 20;
-                                                    if (itemBox.clientWidth !== w) {
-                                                        itemBox.style.width = w.toString() + "px";
-                                                    }
-                                                    if (winContainer.style && winContainer.clientWidth !== w) {
-                                                        winContainer.style.width = w.toString() + "px";
-                                                    }
+                                                var w = size.width + 20;
+                                                if (itemBox.clientWidth !== w) {
+                                                    itemBox.style.width = w.toString() + "px";
                                                 }
-                                                if (size.height > 1 && winContainer) {
-                                                    var h = size.height + 120;
-                                                    if (itemBox.clientHeight !== h) {
-                                                        itemBox.style.height = h.toString() + "px";
-                                                    }
+                                                if (winContainer.style && winContainer.clientWidth !== w) {
+                                                    winContainer.style.width = w.toString() + "px";
+                                                }
+                                            }
+                                            if (size.height > 1 && winContainer) {
+                                                var h = size.height + 120;
+                                                if (itemBox.clientHeight !== h) {
+                                                    itemBox.style.height = h.toString() + "px";
                                                 }
                                             }
                                         }
@@ -1104,6 +1125,9 @@
             if (productMainGroups) {
                 this.addRemovableEventListener(productMainGroups, "selectionchanged", this.eventHandlers.onMainGroupsSelectionChanged.bind(this));
             }
+            if (productSubGroups) {
+                this.addRemovableEventListener(productSubGroups, "selectionchanged", this.eventHandlers.onSubGroupsSelectionChanged.bind(this));
+            }
             var selectMainGroups = function() {
                 return ProductList.productMainGroupView.select(function(json) {
                     // this callback will be called asynchronously
@@ -1148,6 +1172,13 @@
                     } else if (that.mainGroups) {
                         that.mainGroups.length = 0;
                     }
+                    if (that.binding.zoomedOut) {
+                        that.binding.showSubGroups = false;
+                        that.binding.showMainGroups = that.mainGroups && that.mainGroups.length > 0;
+                    } else {
+                        that.binding.showMainGroups = false;
+                        that.binding.showSubGroups = that.subGroups && that.subGroups.length > 0;
+                    }
                 },
                 function(errorResponse) {
                     // called asynchronously if an error occurs
@@ -1156,6 +1187,65 @@
                 });
             };
             that.selectMainGroups = selectMainGroups;
+
+            var selectSubGroups = function() {
+                return ProductList.productSubGroupView.select(function(json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "ProductList.productView: select success!");
+                    // productView returns object already parsed from json data in response
+                    if (json && json.d && json.d.results && json.d.results.length > 0) {
+                        var results = [ {
+                            CR_V_FragengruppeVIEWID: 0,
+                            VeranstaltungID: json.d.results[0].VeranstaltungID,
+                            INITFragengruppeID: null,
+                            TITLE: getResourceText("productlist.products"),
+                            LanguageSpecID: AppData.getLanguageId()
+                        }].concat(json.d.results);
+                        var selIndex = 0;
+                        if (!that.subGroups) {
+                            results.forEach(function(item, index) {
+                                if (item.INITFragengruppeID === AppData.subGroupId) {
+                                    selIndex = index;
+                                }
+                                that.mainGroupsResultConverter(item, index);
+                            });
+                            that.subGroups = new WinJS.Binding.List(results);
+                        } else {
+                            that.subGroups.length = 0;
+                            results.forEach(function(item, index) {
+                                if (item.INITFragengruppeID === AppData.subGroupId) {
+                                    selIndex = index;
+                                }
+                                that.mainGroupsResultConverter(item, index);
+                                that.subGroups.push(item);
+                            });
+                        }
+                        if (productSubGroups && productSubGroups.winControl) {
+                            productSubGroups.winControl.itemDataSource = that.subGroups.dataSource;
+                            if (productSubGroups.winControl.selection) {
+                                productSubGroups.winControl.selection.set(selIndex);
+                            }
+                            
+                        }
+                    } else if (that.subGroups) {
+                        that.subGroups.length = 0;
+                    }
+                    if (that.binding.zoomedOut) {
+                        that.binding.showSubGroups = false;
+                        that.binding.showMainGroups = that.mainGroups && that.mainGroups.length > 0;
+                    } else {
+                        that.binding.showMainGroups = false;
+                        that.binding.showSubGroups = that.subGroups && that.subGroups.length > 0;
+                    }
+                },
+                function(errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                });
+            };
+            that.selectSubGroups = selectSubGroups;
 
             var selectProductView = function() {
                 return ProductList.productView.select(function (json) {
@@ -1307,7 +1397,10 @@
                     WinJS.Promise.timeout(10).then(function() {
                         that.handleProductViewResult(AppData._prefetchedProductView);
                         AppData._prefetchedProductView = null;
-                        return that.selectMainGroups();
+                        return WinJS.Promise.join({
+                            mainGroupsPromise: that.selectMainGroups(),
+                            subGroupsPromise: that.selectSubGroups()
+                        });
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
                         AppBar.notifyModified = true;
@@ -1383,14 +1476,11 @@
                             // error message already returned
                             return WinJS.Promise.as();
                         } else {
-                            that.selectProductView();
-                        }
-                    }).then(function () {
-                        if (!contactId) {
-                            // error message already returned
-                            return WinJS.Promise.as();
-                        } else {
-                            return that.selectMainGroups();
+                            return WinJS.Promise.join({
+                                mainGroupsPromise: that.selectMainGroups(),
+                                subGroupsPromise: that.selectSubGroups(),
+                                productPromise: that.selectProductView()
+                            });
                         }
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");

@@ -18,13 +18,13 @@
 
 .productmaingroups-container {
     width: 100%;
-    height: 100px;
 }
 
-#productmaingroups {
+.productmaingroups-container .listview {
     width: calc(100% - 50px);
     height: 90px;
     margin-left: 25px;
+    margin-bottom: 10px;
 }
 
 .products-main-group-item {
