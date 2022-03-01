@@ -50,6 +50,10 @@
                     // free languages list
                     that.languages = null;
                 }
+                if (that.animationPromise) {
+                    that.animationPromise.cancel();
+                    that.animationPromise = null;
+                }
             }
 
             var cancelPromises = function () {
@@ -239,6 +243,10 @@
             this.showPicture = showPicture;
             var fadeAnimantion = function (element, bIn) {
                 Log.call(Log.l.trace, "LanguageList.Controller.");
+                if (that.animationPromise) {
+                    that.animationPromise.cancel();
+                    that.animationPromise = null;
+                }
                 if (element && that.binding) {
                     var fnAnimation = bIn ? WinJS.UI.Animation.fadeIn : WinJS.UI.Animation.fadeOut;
                     fnAnimation(element).done(function () {

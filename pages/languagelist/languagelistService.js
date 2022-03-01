@@ -71,12 +71,12 @@
                     KontaktID: AppData.getRecordId("Kontakt"),
                     bExact: true
                 };
-                if (AppData.mainGroupId !== null) {
-                    restriction.INITFragengruppeID1 = AppData.mainGroupId;
-                }
-                if (AppData.subGroupId !== null) {
-                    restriction.INITFragengruppeID = AppData.subGroupId;
-                }
+                //if (AppData.mainGroupId !== null) {
+                //    restriction.INITFragengruppeID1 = AppData.mainGroupId;
+                //}
+                //if (AppData.subGroupId !== null) {
+                //    restriction.INITFragengruppeID = AppData.subGroupId;
+                //}
                 var ret = LanguageList._productView.select(complete, error, restriction, {
                     // select options
                     ordered: true,
