@@ -14,6 +14,8 @@
     "general.october"       : "Oct",
     "general.november"      : "Nov",
     "general.december"      : "Déc",
+    "general.yes"           : "Yes",
+    "general.no"            : "No",
     "general.cancel"        : "Cancel",
 
     "command.backward"      : "Présédent",
@@ -118,6 +120,18 @@
     "photo.title"           : "Carte de visite",
     "photo.comment"         : "Utilisez le bouton Retour sur cette page pour y retourner!",
 
+    "exportcontrol.title"  : "Is your company established in any of EU members countries or (if you are an individual) are you an European citizen?",
+    "exportcontrol.title2" : "Sorry but for export control reasons we cannot provide you by hand the boards.",
+
+    "confirm.title"         : "END-USER STATEMENT<br>WE DECLARE TO STMICROELECTRONICS THAT IN RELATION TO FOLLOWING LIST OF NUCLEO OR DISCOVERY KITS:<br>NUCLEO-H755ZI-Q/NUCLEO-WB35CE/P-NUCLEO-WB55/STM32H7B3I-DK/STM32L562E-DK/STM32MP157C-DK2",
+    "confirm.subtitle"      : "1. these items will only be used for civil end-uses and will not be used in the development, production or use of nuclear, biological or chemical weapons or missiles capable of delivering these weapons;<br>2. these items will not be delivered to any party or person(s), entity or country that is sanctioned or restricted under the applicable export control laws and regulations or International Sanction Programs, nor to any party or person(s) known to be acting on their behalf or in conjunction with;<br>3. these items will not be delivered to any party who is involved directly or indirectly in the development, production or use of nuclear, biological or chemical weapons, or missiles capable of delivering these weapons;<br>4. the End-User is responsible for complying with all relevant export control laws and regulations for the relocation or re-exports of these items.",
+    "confirm.title2"        : "I have read and understood the Privacy Policy which I can either access through the QR code below or read at ST's booth, where a paper copy is available.",
+    "confirm.subtitle2"     : "Privacy Policy",
+    "confirm.privacyurl"    : "https://www.st.com/content/st_com/en/common/privacy-policy.html",
+    "confirm.title3"        : "I want to receive additional information from ST",
+    "confirm.subtitle3"     : "I consent that ST will use the personal data that I have communicated to ST as well as information about my navigation history for marketing purposes relevant to my interests such as newsletters, advertisements or other specific and targeted marketing material about ST products and services*. I understand that I can withdraw my consent at any time through opt-out links embedded in communication I receive or by managing my account settings. I can also exercise other user’s rights at any time as described in the Privacy Policy.<br><br><em>* ST will retain your browsing history and use details of the products and services that you have previously accessed, purchased or downloaded to make suggestions to you for other products and services which ST believes you will also be interested in. * ST uses the personal data that you provide directly to us and through your activity on ST websites in accordance with the Privacy Policy, to send you (directly or via ST local affiliates or distributors) newsletters, advertisements or other specific and targeted marketing material about ST products and services. Your personal data will be provided to local ST affiliates and distributors in countries located in the European Union and outside of the European Union. To send you specific and targeted marketing material, the information that you provide directly to ST and/or through your activity on ST websites may also be combined with other information that ST obtains from you in another context (e.g. if you enter into a business relationship with ST, its local affiliates or distributors).</em>",
+    "confirm.forward"       : "Confirm",
+
     "questionnaire.title"   : "Questionnaire",
     "questionnaire.comment" : "Utilisez le bouton Retour sur cette page pour y retourner!",
     "questionnaire.textarea": "S'il vous plaît entrer votre commentaire ici",
@@ -187,7 +201,8 @@
     "barcode.barcode"       : "Code barre",
     "barcode.placement"     : "Placer svp le code barre dans la case de scan",
     "barcode.emailNeeded"   : "S’il vous plaît, entrez votre adresse e-mail!",
-	"barcode.manualEdit"    : "Capture manuelle",
+    "barcode.scanagain"     : "Scanner à nouveau",
+    "barcode.manualEdit"    : "Capture manuelle",
 
     "settings.title"        : "Design",
     "settings.comment"      : "Utilisez le bouton Retour sur cette page pour y retourner!",
@@ -314,6 +329,9 @@
     "info.contrastValue"    : "Contrast",
     "info.brightnessValue"  : "Brightness [%]",
     "info.focusValue"       : "Focus [%]",
+    "info.barcodeDevice"    : "Barcode scanner",
+    "info.barcodeDeviceId"  : "Périphérique",
+    "info.barcodeDeviceStatus" : "État",
 
 	"infodesk.employee"		: "Personnel",
 	"infodesk.title"		: "Infodesk",

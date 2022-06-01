@@ -21,7 +21,9 @@
                     barcode: null
                 },
                 dataContact: getEmptyDefaultValue(Barcode.contactView.defaultValue),
-                showProgress: false
+                showProgress: false,
+                showScanAgain: !AppData.generalData.useBarcodeScanner,
+                showManualEdit: true
             }]);
 
             this.refreshPromise = null;
@@ -393,10 +395,19 @@
                                 AppData._barcodeType = "vcard";
                                 AppData._barcodeRequest = barcode;
                                 // accelarate replication
-                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                    var numFastReqs = 10;
-                                    AppRepl.replicator.run(numFastReqs);
-                                }
+                                WinJS.Promise.timeout(0).then(function() {
+                                    // do the following in case of success:
+                                    // go on to questionnaire
+                                    if (Barcode.waitingScans > 0) {
+                                        Barcode.dontScan = true;
+                                    } else {
+                                        // accelarate replication
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            var numFastReqs = 10;
+                                            AppRepl.replicator.run(numFastReqs);
+                                        }
+                                    }
+                                });
                                 that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                     that.loadData();
                                 });
@@ -427,10 +438,19 @@
                                 AppData._barcodeType = "barcode";
                                 AppData._barcodeRequest = barcode;
                                 // accelarate replication
-                                if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
-                                    var numFastReqs = 10;
-                                    AppRepl.replicator.run(numFastReqs);
-                                }
+                                WinJS.Promise.timeout(0).then(function () {
+                                    // do the following in case of success:
+                                    // go on to questionnaire
+                                    if (Barcode.waitingScans > 0) {
+                                        Barcode.dontScan = true;
+                                    } else {
+                                        // accelarate replication
+                                        if (AppData._persistentStates.odata.useOffline && AppRepl.replicator) {
+                                            var numFastReqs = 10;
+                                            AppRepl.replicator.run(numFastReqs);
+                                        }
+                                    }
+                                });
                                 that.refreshPromise = WinJS.Promise.timeout(that.refreshWaitTimeMs).then(function () {
                                     that.loadData();
                                 });
@@ -451,6 +471,7 @@
 
             var onBarcodeSuccess = function (result) {
                 Log.call(Log.l.trace, "Barcode.Controller.");
+                Barcode.dontScan = false;
                 if (result.cancelled) {
                     // go back to start
                     WinJS.Promise.timeout(0).then(function () {
@@ -514,21 +535,29 @@
                 });
                 Log.ret(Log.l.trace);
             }
+            this.onBarcodeSuccess = onBarcodeSuccess;
+
 
             var onBarcodeError = function (error) {
                 Log.call(Log.l.error, "Barcode.Controller.");
+                Barcode.dontScan = false;
                 that.updateStates({ errorMessage: JSON.stringify(error) });
-
                 WinJS.Promise.timeout(2000).then(function () {
                     // go back to start
                     WinJS.Navigation.back(1).done( /* Your success and error handlers */);
                 });
                 Log.ret(Log.l.error);
             }
+            this.onBarcodeError = onBarcodeError;
 
             var scanBarcode = function () {
                 Log.call(Log.l.trace, "Barcode.Controller.");
-                if (typeof cordova !== "undefined" &&
+                if (AppData.generalData.useBarcodeScanner && Barcode) {
+                    Barcode.dontScan = true;
+                    if (!Barcode.listening) {
+                        Barcode.startListenDelayed(250);
+                    }
+                } else if (typeof cordova !== "undefined" &&
                     cordova.plugins && cordova.plugins.barcodeScanner &&
                     typeof cordova.plugins.barcodeScanner.scan === "function") {
 
@@ -537,7 +566,7 @@
                         cordova.plugins.barcodeScanner.scan(onBarcodeSuccess, onBarcodeError, {
                             preferFrontCamera: false,
                             prompt: getResourceText("barcode.placement"),
-                            formats: "QR_CODE,DATA_MATRIX,CODE_128,ITF,CODE_39,EAN_8,EAN_13,UPC_E,UPC_A,AZTEC",
+                            formats: "QR_CODE,DATA_MATRIX,CODE_128,ITF,CODE_39,EAN_8,EAN_13,UPC_E,UPC_A,AZTEC,PDF_417",
                             resultDisplayDuration: 0,
                             disableAnimations: true
                         });
@@ -550,7 +579,7 @@
                         , {
                             preferFrontCamera: false,
                             prompt: getResourceText("barcode.placement"),
-                            formats: "QR_CODE,DATA_MATRIX,CODE_128,ITF,CODE_39,EAN_8,EAN_13,UPC_E,UPC_A,AZTEC",
+                            formats: "QR_CODE,DATA_MATRIX,CODE_128,ITF,CODE_39,EAN_8,EAN_13,UPC_E,UPC_A,AZTEC,PDF_417",
                             resultDisplayDuration: 0,
                             disableAnimations: true
                         }
@@ -582,7 +611,7 @@
                                                  svgInfo.element.firstChild, true);
                     }
                 });
-                if (!AppData._persistentStates.useBarcodeScanner) {
+                if (!Barcode.dontScan) {
                     that.scanBarcode();
                 } else {
                     that.loadData();

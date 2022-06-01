@@ -188,7 +188,7 @@ html, body { font-family: "Segoe UI", "Arial"; }
 
 .nx-title--bold {
     /*font-family: "Arial Black", "Arial" !important;*/
-    font-family: "Segoe WP Black", "Arial" !important;
+    font-family: "Segoe WP Bold", "Arial";
     font-weight: bold !important;
     /*
     font-weight: 900 !important;
@@ -205,11 +205,12 @@ html, body { font-family: "Segoe UI", "Arial"; }
     margin-bottom: 20px;
     padding-top:25px;
     */
-    font-family: "Segoe WP Semibold", "Arial" !important;
+    font-family: "Segoe WP Black", "Arial";
     font-weight: 600;
-    color: #000000; 
+    color: #000000;
     margin-top: 35px;
-    display: block; }
+    display: block;
+}
 
 .nx-title_gray {
     /* 

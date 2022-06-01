@@ -27,7 +27,7 @@
         brightnessValue: 20,
         focusValue: 18,
         contrastValue: 0.3,
-        useBarcodeActivity: false,
+        useBarcodeScanner: false,
         barcodeDevice: "",
         logEnabled: false,
         logLevel: 3,
@@ -70,8 +70,10 @@
     // static array of pages for the navigation bar
     Application.navigationBarPages = [
         { id: "start", group: -1, disabled: false },
+        { id: "exportcontrol", group: -1, disabled: false },
         { id: "languagelist", group: -1, disabled: false },
         { id: "productlist", group: -1, disabled: false },
+        { id: "confirm", group: -1, disabled: false },
         { id: "barcode", group: -1, disabled: false },
         { id: "finished", group: -1, disabled: false },
         { id: "failure", group: -1, disabled: false },
@@ -96,19 +98,18 @@
     Application.navigateByIdOverride = function (id, event) {
         Log.call(Log.l.trace, "Application.", "id=" + id);
         if (id === "start") {
-            if (device &&
-                (device.platform === "Android" || device.platform === "windows") &&
-                AppData.generalData.useBarcodeActivity &&
+            if (AppData.generalData.useBarcodeScanner &&
                 Barcode && !Barcode.listening) {
                 Barcode.startListenDelayed(250);
             }
             // clear contactId 
             AppData.setRecordId("Kontakt", null);
-            // re-route directly to productlist page
-            //id = "productlist";
             id = "languagelist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
+            //id = "exportcontrol";
+        } else if (id === "languagelist") {
+            //id = "exportcontrol";
         }
         Log.ret(Log.l.trace);
         return id;

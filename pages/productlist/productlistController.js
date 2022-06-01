@@ -23,6 +23,8 @@
                 count: 0,
                 clickOkDisabled: true,
                 clickOkDisabledInvert: false,
+                showBarcode: false,
+                showCamera: false,
                 version: Application.version,
                 isGrouped: false,
                 continueText: AppData._persistentStates.kioskUsesCamera ? getResourceText("productlist.camera") : getResourceText("productlist.barcode"),
@@ -188,8 +190,8 @@
 
             var mainGroupsResultConverter = function(item, index) {
                 Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
-                item.groupBkgColor = Colors.kioskProductBackgroundColor;
-                var rgb = Colors.hex2rgb(item.groupBkgColor);
+                item.groupBorderColor = Colors.kioskProductBackgroundColor;
+                var rgb = Colors.hex2rgb(Colors.kioskProductBackgroundColor);
                 if (rgb.r > 127 && rgb.g > 127 && rgb.b > 127) {
                     item.groupColor = "#000000";
                 } else {
@@ -198,6 +200,19 @@
                 Log.ret(Log.l.u1);
             };
             that.mainGroupsResultConverter = mainGroupsResultConverter;
+
+            var subGroupsResultConverter = function(item, index) {
+                Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
+                item.groupBorderColor = Colors.kioskProductBackgroundColor;
+                var rgb = Colors.hex2rgb(Colors.kioskProductBackgroundColor);
+                if (rgb.r > 127 && rgb.g > 127 && rgb.b > 127) {
+                    item.groupColor = "#000000";
+                } else {
+                    item.groupColor = "#ffffff";
+                }
+                Log.ret(Log.l.u1);
+            };
+            that.subGroupsResultConverter = subGroupsResultConverter;
 
             var resultConverter = function (item, index) {
                 Log.call(Log.l.u1, "ProductList.Controller.", "index=" + index);
@@ -409,6 +424,16 @@
                 } else {
                     that.binding.clickOkDisabled = true;
                     that.binding.clickOkDisabledInvert = false;
+                }
+                if (that.binding.clickOkDisabled) {
+                    that.binding.showBarcode = false;
+                    that.binding.showCamera = false;
+                } else if (AppData._persistentStates.useBarcodeScanner) {
+                    that.binding.showBarcode = true;
+                    that.binding.showCamera = false;
+                } else {
+                    that.binding.showBarcode = true;
+                    that.binding.showCamera = true;
                 }
                 Log.ret(Log.l.trace);
             }
@@ -1248,7 +1273,7 @@
                                 if (item.INITFragengruppeID === AppData.subGroupId) {
                                     selIndex = index;
                                 }
-                                that.mainGroupsResultConverter(item, index);
+                                that.subGroupsResultConverter(item, index);
                             });
                             that.subGroups = new WinJS.Binding.List(results);
                         } else {
@@ -1257,7 +1282,7 @@
                                 if (item.INITFragengruppeID === AppData.subGroupId) {
                                     selIndex = index;
                                 }
-                                that.mainGroupsResultConverter(item, index);
+                                that.subGroupsResultConverter(item, index);
                                 that.subGroups.push(item);
                             });
                         }
@@ -1369,6 +1394,7 @@
                     that.products = null;
                 }
                 if (!that.products) {
+                    that.binding.zoomedOut = that.binding.isGrouped;
                     Log.print(Log.l.trace, "create new Binding.List of length=" + results.length);
                     results.forEach(function(item, index) {
                         that.resultConverter(item, index);
@@ -1378,8 +1404,10 @@
                     that.productsFiltered = that.productsBase.createFiltered(productFilter);
                     that.products = that.productsFiltered.createGrouped(groupKey, groupData, groupSorter);
                     if (sezoom && sezoom.winControl) {
-                        sezoom.winControl.initiallyZoomedOut = !that.binding.isGrouped;
                         sezoom.winControl.onzoomchanged = that.eventHandlers.onZoomChanged;
+                        if (sezoom.winControl.zoomedOut !== that.binding.zoomedOut) {
+                            sezoom.winControl.zoomedOut = that.binding.zoomedOut;
+                        }
                     }
                     if (listView && listView.winControl) {
                         // multi list selection

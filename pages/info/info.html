@@ -145,6 +145,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.useBarcodeScanner Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDevice'}"></span>
+                        <select id="barcodeDeviceSelect"
+                                class="input_field win-dropdown"
+                                data-win-control="WinJS.UI.Repeater"
+                                data-win-bind="value: generalData.barcodeDevice"
+                                onchange="AppBar.handleEvent('change', 'changeBarcodeDeviceSelect', event)">
+                            <option data-win-bind="value: id; textContent: name"></option>
+                        </select>
+                    </div>
+                    <div class="line-separator" data-win-bind="style.display: generalData.useBarcodeScanner Binding.Converter.toDisplay"></div>
+                    <div class="field_line field_line_odd" data-win-bind="style.display: generalData.useBarcodeScanner Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceId'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: generalData.barcodeDevice"></span>
+                    </div>
+                    <div class="field_line field_line_even" data-win-bind="style.display: generalData.useBarcodeScanner Binding.Converter.toDisplay">
+                        <span class="label win-type-caption portrait_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
+                        <span class="label landscape_only" data-win-res="{textContent: 'info.barcodeDeviceStatus'}"></span>
+                        <span class="input_field win-type-subtitle" data-win-bind="textContent: barcodeDeviceStatus"></span>
+                    </div>
                     <div class="line-separator"></div>
                     <div class="field_line field_line_full">
                         &nbsp;

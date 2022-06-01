@@ -90,7 +90,12 @@
             }).then(function() {
                 that.loadData();
             }).then(function () {
-                Log.print(Log.l.trace, "Splash screen vanished");
+                Log.print(Log.l.trace, "data loaded");
+                if (AppData.generalData.useBarcodeScanner &&
+                    Barcode &&
+                    !Barcode.listening) {
+                    Barcode.startListenDelayed(250);
+                }
             });
             Log.ret(Log.l.trace);
         })

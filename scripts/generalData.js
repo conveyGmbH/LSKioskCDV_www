@@ -1001,7 +1001,7 @@
         waitingScans: 0,
         onBarcodeSuccess: function (result, repeatCount) {
             repeatCount = repeatCount || 0;
-            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount + " result=" + result);
             if (Application.getPageId(nav.location) === "barcode") {
                 if (Barcode.dontScan &&
                     AppBar.scope &&
@@ -1029,7 +1029,7 @@
         },
         onBarcodeError: function (error, repeatCount) {
             repeatCount = repeatCount || 0;
-            Log.call(Log.l.trace, "Barcode.", "repeatCount=" + repeatCount);
+            Log.call(Log.l.error, "Barcode.", "repeatCount=" + repeatCount + " error=" + error);
             if (Application.getPageId(nav.location) === "barcode") {
                 if (Barcode.dontScan &&
                     AppBar.scope &&
@@ -1057,15 +1057,17 @@
         },
         onDeviceConnected: function (result) {
             var id = result && result.id;
-            var status = result && result.status;
-            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            var connectionStatus = result && result.connectionStatus;
+            var ioStatus = result && result.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
             Barcode.startListenDelayed(250);
             Log.ret(Log.l.trace);
         },
         onDeviceConnectFailed: function (error) {
             var id = error && error.id;
-            var status = error && error.status;
-            Log.call(Log.l.trace, "Barcode.", "id=" + id + " status=" + status);
+            var connectionStatus = error && error.connectionStatus;
+            var ioStatus = error && error.ioStatus;
+            Log.call(Log.l.trace, "Barcode.", "id=" + id + " connectionStatus=" + connectionStatus + " ioStatus=" + ioStatus);
             Barcode.startListenDelayed(2000);
             Log.ret(Log.l.trace);
         },
@@ -1103,7 +1105,7 @@
             Log.call(Log.l.trace, "Barcode.");
             var generalData = AppData.generalData;
             if (typeof device === "object" && device.platform === "Android" &&
-                generalData.useBarcodeActivity &&
+                generalData.useBarcodeScanner &&
                 navigator &&
                 navigator.broadcast_intent_plugin &&
                 typeof navigator.broadcast_intent_plugin.listen === "function") {
@@ -1111,7 +1113,7 @@
                 navigator.broadcast_intent_plugin.listen(Barcode.onBarcodeSuccess, Barcode.onBarcodeError);
                 Barcode.listening = true;
             } else if (typeof device === "object" && device.platform === "windows" &&
-                generalData.useBarcodeActivity &&
+                generalData.useBarcodeScanner &&
                 generalData.barcodeDevice &&
                 navigator &&
                 navigator.serialDevice) {
@@ -1180,8 +1182,8 @@
                     }
                 }, function(readError) {
                     Log.print(Log.l.error, "readFromDevice: failed!");
-                    if (readError && readError.id && readError.id === generalData.barcodeDevice) {
-                        Barcode.onBarcodeError(readError.status);
+                    if (readError && readError.id && readError.id === generalData.barcodeDevice && readError.stack) {
+                        Barcode.onBarcodeError(readError.stack);
                     }
                 }, {
                     id: generalData.barcodeDevice,

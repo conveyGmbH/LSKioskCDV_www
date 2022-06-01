@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link href="exportcontrol.css" rel="stylesheet" />
+    <script type="text/javascript" src="exportcontrolService.js"></script>
+    <script type="text/javascript" src="exportcontrolController.js"></script>
+    <script type="text/javascript" src="exportcontrol.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="exportcontrol">
+        <div id="exportcontrolController" class="data-container">
+            <section aria-label="Main content" role="main">
+                <div class="contentarea nx-body">
+                    <div class="nx-title exportcontrol-title animationElement"
+                         data-win-bind="style.display: denied Binding.Converter.toDisplayNone">
+						<span data-win-res="{innerHTML: 'exportcontrol.title'}"></span><br />
+                    </div>
+                    <div class="nx-title exportcontrol-title animationElement"
+                         data-win-bind="style.display: denied Binding.Converter.toDisplay">
+						<span data-win-res="{innerHTML: 'exportcontrol.title2'}"></span><br />
+                    </div>
+                    <div class="nx-title exportcontrol-title animationElement">
+                        <button class="win-button nx-button nx-button--centered exportcontrol-button"
+                                data-win-bind="style.display: denied Binding.Converter.toDisplay"
+                                onclick="AppBar.handleEvent('click', 'clickBack', event)">
+                            <div class="exportcontrol-navigate exportcontrol-navigate-text-container">
+                                <span class="exportcontrol-navigate-text"
+                                      data-win-res="{innerHTML: 'general.cancel'}"></span>
+                            </div>
+                        </button>
+                        <button class="win-button nx-button nx-button--centered exportcontrol-button"
+                                data-win-bind="style.display: denied Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickNo', event)">
+                            <div class="exportcontrol-navigate exportcontrol-navigate-text-container">
+                                <span class="exportcontrol-navigate-text"
+                                      data-win-res="{innerHTML: 'general.no'}"></span>
+                            </div>
+                        </button>
+                        <button class="win-button nx-button nx-button--centered exportcontrol-button"
+                                data-win-bind="style.display: denied Binding.Converter.toDisplayNone"
+                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <div class="exportcontrol-navigate exportcontrol-navigate-text-container">
+                                <span class="exportcontrol-navigate-text"
+                                      data-win-res="{innerHTML: 'general.yes'}"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

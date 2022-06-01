@@ -14,7 +14,7 @@
                 <div class="contentarea nx-body" id="barcodeScreen">
                     <div class="list-header nx-title">
                         <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                data-win-bind="style.display: showScanAgain Binding.Converter.toDisplay"
                                 onclick="AppBar.handleEvent('click', 'clickScan', event)">
                             <div id="portable_barcode_scanner" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'barcode.scanagain'}"></span>
@@ -26,7 +26,7 @@
                                 <span data-win-res="{textContent: 'general.cancel'}"></span>
                             </button>
                             <button class="win-button nx-forward animationElement"
-                                    data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                    data-win-bind="style.display: showManualEdit Binding.Converter.toDisplay"
                                     onclick="AppBar.handleEvent('click', 'clickForward', event)">
                                 <div id="i_hand_touch" class="navigate-image"></div>
                                 <span data-win-res="{textContent: 'barcode.manualEdit'}"></span>

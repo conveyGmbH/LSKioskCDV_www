@@ -19,13 +19,13 @@
                             <span class="nx-subtitle" data-win-res="{innerHTML: 'productlist.subtitle'}"></span>
                         </div>
                         <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                data-win-bind="style.display: showBarcode Binding.Converter.toDisplay"
                                 onclick="AppBar.handleEvent('click', 'clickScan', event)">
                             <div id="portable_barcode_scanner" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'productlist.barcode'}"></span>
                         </button>
                         <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
-                                data-win-bind="style.display: clickOkDisabled Binding.Converter.toDisplayNone"
+                                data-win-bind="style.display: showCamera Binding.Converter.toDisplay"
                                 onclick="AppBar.handleEvent('click', 'clickCamera', event)">
                             <div id="id_card_camera" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'productlist.camera'}"></span>
@@ -46,7 +46,14 @@
                     </div>
                     <div class="products-main-group-template" data-win-control="WinJS.Binding.Template" style="display: none">
                         <div class="products-main-group-item"
-                             data-win-bind="style.borderColor: groupBkgColor">
+                             data-win-bind="style.borderColor: groupBorderColor">
+                            <span class="nx-proitem__title nx-title--upper"
+                                  data-win-bind="textContent: TITLE"></span>
+                        </div>
+                    </div>
+                    <div class="products-sub-group-template" data-win-control="WinJS.Binding.Template" style="display: none">
+                        <div class="products-sub-group-item"
+                             data-win-bind="style.borderColor: groupBorderColor">
                             <span class="nx-proitem__title nx-title--upper"
                                   data-win-bind="textContent: TITLE"></span>
                         </div>
@@ -100,7 +107,7 @@
                     <div class="productmaingroups-container">
                         <div id="productmaingroups"
                              data-win-bind="style.display: showMainGroups Binding.Converter.toDisplay"
-                             class="win-selectionstylefilled listview"
+                             class="win-selectionstylefilled main-groups-list listview"
                              data-win-control="WinJS.UI.ListView"
                              data-win-options="{ itemTemplate: select('.products-main-group-template'),
                         selectionMode: WinJS.UI.SelectionMode.single,
@@ -109,9 +116,9 @@
                         </div>
                         <div id="productsubgroups"
                              data-win-bind="style.display: showSubGroups Binding.Converter.toDisplay"
-                             class="win-selectionstylefilled listview"
+                             class="win-selectionstylefilled sub-groups-list listview"
                              data-win-control="WinJS.UI.ListView"
-                             data-win-options="{ itemTemplate: select('.products-main-group-template'),
+                             data-win-options="{ itemTemplate: select('.products-sub-group-template'),
                         selectionMode: WinJS.UI.SelectionMode.single,
                         tapBehavior: WinJS.UI.TapBehavior.directSelect,
                         layout: { type: WinJS.UI.GridLayout } }">

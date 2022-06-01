@@ -20,14 +20,54 @@
     width: 100%;
 }
 
-.productmaingroups-container .listview {
+.main-groups-list {
+    width: calc(100% - 40px);
+    height: 167px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+}
+.sub-groups-list {
     width: calc(100% - 50px);
-    height: 90px;
+    height: 87px;
     margin-left: 25px;
     margin-bottom: 10px;
+    border-bottom-style: solid;
+    border-bottom-width: 4px;
+}
+
+.main-groups-list .win-itemcontainer.win-selectionstylefilled.win-selected .win-selectionbackground,
+.main-groups-list.win-listview.win-selectionstylefilled .win-selected .win-selectionbackground,
+.sub-groups-list .win-itemcontainer.win-selectionstylefilled.win-selected .win-selectionbackground,
+.sub-groups-list.win-listview.win-selectionstylefilled .win-selected .win-selectionbackground {
+    opacity: 1;
+}
+
+.main-groups-list .win-selectionbackground,
+.sub-groups-list .win-selectionbackground,
+.main-groups-list .win-container,
+.sub-groups-list .win-container,
+.main-groups-list .win-itembox,
+.sub-groups-list .win-itembox {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .products-main-group-item {
+    width: 450px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    font-family: "Segoe UI", "Arial" !important;
+    font-size: 64px !important;
+    line-height: 1.5 !important;
+    border-width: 4px !important;
+    border-style: solid !important;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.products-sub-group-item {
     width: 300px;
     height: 80px;
     display: flex;
@@ -35,13 +75,17 @@
     font-family: "Segoe UI", "Arial" !important;
     font-size: 36px !important;
     line-height: 1.5 !important;
-    border-width: 2px !important;
+    border-width: 4px !important;
     border-style: solid !important;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
-.products-main-group-item .nx-proitem__title {
+.products-main-group-item .nx-proitem__title,
+.products-sub-group-item .nx-proitem__title {
     width: 100%;
     text-align: center;
+    line-height: 0.8em;
 }
 
 

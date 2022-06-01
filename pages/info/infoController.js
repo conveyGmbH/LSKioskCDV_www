@@ -14,6 +14,9 @@
     WinJS.Namespace.define("Info", {
         Controller: WinJS.Class.derive(Application.Controller, function Controller(pageElement, commandList) {
             Log.call(Log.l.trace, "Info.Controller.");
+
+            var isDeviceListOpened = false;
+
             Application.Controller.apply(this, [pageElement, {
                 uploadTS: (AppData.appSettings.odata.replPrevPostMs ?
                 "\/Date(" + AppData.appSettings.odata.replPrevPostMs + ")\/" : null),
@@ -21,14 +24,33 @@
                 "\/Date(" + AppData.appSettings.odata.replPrevSelectMs + ")\/" : null),
                 version: Application.version,
                 environment: "Platform: " + navigator.appVersion,
-                showClipping: true
+                showClipping: true,
+                barcodeDeviceStatus: Barcode.deviceStatus
             }, commandList]);
+
+            this.barcodeDevice = AppData.generalData.barcodeDevice;
+            this.binding.generalData.barcodeDevice = "";
+
+            var barcodeDeviceSelect = pageElement.querySelector("#barcodeDeviceSelect");
+            var nullDevice = { name: "", id: "" };
+            var deviceList = null;
 
             var that = this;
 
             var homepageLink = pageElement.querySelector("#homepageLink");
             if (homepageLink) {
                 homepageLink.innerHTML = "<a href=\"http://" + getResourceText("info.homepage") + "\">" + getResourceText("info.homepage") + "</a>";
+            }
+
+            this.dispose = function () {
+                if (barcodeDeviceSelect && barcodeDeviceSelect.winControl) {
+                    barcodeDeviceSelect.winControl.data = null;
+                }
+                if (isDeviceListOpened &&
+                    navigator.serialDevice &&
+                    typeof navigator.serialDevice.closeDeviceList === "function") {
+                    navigator.serialDevice.closeDeviceList();
+                }
             }
 
             var setupLog = function () {
@@ -95,6 +117,44 @@
                         var toggle = event.currentTarget.winControl;
                         if (toggle) {
                             that.binding.generalData.useBarcodeScanner = toggle.checked;
+                            if (that.binding.generalData.useBarcodeScanner) {
+                                WinJS.Promise.timeout(0).then(function() {
+                                    that.loadData();
+                                });
+                                if (AppData.generalData.barcodeDevice) {
+                                    Barcode.startListenDelayed(250);
+                                }
+                            } else if (typeof Barcode === "object" &&
+                                Barcode.listening &&
+                                typeof Barcode.stopListen === "function") {
+                                Barcode.stopListen();
+                            }
+                        }
+                    }
+                    Log.ret(Log.l.trace);
+                },
+                changeBarcodeDeviceSelect: function(event) {
+                    Log.call(Log.l.trace, "info.Controller.");
+                    if (event.currentTarget && AppBar.notifyModified) {
+                        var prevValue = that.binding.generalData.barcodeDevice;
+                        var value = event.currentTarget.value;
+                        if (prevValue !== value) {
+                            WinJS.Promise.timeout(0).then(function() {
+                                if (typeof Barcode === "object" &&
+                                    typeof Barcode.stopListen === "function") {
+                                    Barcode.stopListen(prevValue);
+                                }
+                                return WinJS.Promise.timeout(500);
+                            }).then(function () {
+                                if (prevValue !== value) {
+                                    that.binding.generalData.barcodeDevice = value;
+                                    if (typeof Barcode === "object" &&
+                                        typeof Barcode.startListenDelayed === "function") {
+                                        Barcode.listening = false;
+                                        Barcode.startListenDelayed(0);
+                                    }
+                                }
+                            });
                         }
                     }
                     Log.ret(Log.l.trace);
@@ -220,9 +280,78 @@
 
             AppData.setErrorMsg(this.binding);
 
+            var setDeviceList = function (newDeviceList) {
+                Log.call(Log.l.trace, "info.Controller.");
+                if (newDeviceList) {
+                    var i, j, numDeviceEntries, bFound = false;
+                    var foundEntries = [];
+                    if (!deviceList) {
+                        deviceList = new WinJS.Binding.List([nullDevice]);
+                        if (barcodeDeviceSelect &&
+                            barcodeDeviceSelect.winControl) {
+                            barcodeDeviceSelect.winControl.data = deviceList;
+                        }
+                    }
+                    // empty entry at start remain2 in list!
+                    for (i = 1, numDeviceEntries = deviceList.length; i < numDeviceEntries; i++) {
+                        var deviceInformation = deviceList.getAt(i);
+                        if (deviceInformation) {
+                            for (j = 0; j < newDeviceList.length; j++) {
+                                if (newDeviceList[j].id === deviceInformation.id) {
+                                    foundEntries[j] = true;
+                                    if (newDeviceList[j].id === that.barcodeDevice) {
+                                        bFound = true;
+                                    }
+                                    break;
+                                }
+                            }
+                            if (!foundEntries[j]) {
+                                deviceList.splice(i, 1);
+                            }
+                        }
+                    }
+                    for (j = 0; j < newDeviceList.length; j++) {
+                        if (!foundEntries[j]) {
+                            deviceList.push(newDeviceList[j]);
+                            if (newDeviceList[j].id === that.barcodeDevice) {
+                                bFound = true;
+                            }
+                        }
+                    }
+                    if (bFound) {
+                        that.binding.generalData.barcodeDevice = that.barcodeDevice;
+                    }
+                }
+                Log.ret(Log.l.trace);
+            }
+            this.setDeviceList = setDeviceList;
+
+            var loadData = function() {
+                Log.call(Log.l.trace, "info.Controller.");
+                var ret = new WinJS.Promise.as().then(function() {
+                    if (that.binding.generalData.useBarcodeScanner &&
+                        navigator.serialDevice &&
+                        typeof navigator.serialDevice.openDeviceList === "function") {
+                        navigator.serialDevice.openDeviceList(that.setDeviceList, function(error) {
+                            Log.print(Log.l.error, "openDeviceList returned " + error);
+                            isDeviceListOpened = false;
+                        }, {
+                            onDeviceListChange: that.setDeviceList
+                        });
+                        isDeviceListOpened = true;
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            this.loadData = loadData;
+
             that.processAll().then(function () {
-                AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Binding wireup page complete");
+                return that.loadData();
+            }).then(function () {
+                Log.print(Log.l.trace, "Data loadad");
+                AppBar.notifyModified = true;
             });
             Log.ret(Log.l.trace);
         }),

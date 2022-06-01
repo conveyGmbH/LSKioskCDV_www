@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link href="confirm.css" rel="stylesheet" />
+    <script type="text/javascript" src="confirmService.js"></script>
+    <script type="text/javascript" src="confirmController.js"></script>
+    <script type="text/javascript" src="confirm.js"></script>
+</head>
+<body class="win-type-body">
+    <div class="confirm">
+        <div id="confirmController" class="data-container">
+            <section aria-label="Main content" role="main">
+                <div class="contentarea nx-body">
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check1 Binding.Mode.twoway"/>
+                            <span class="confirm-title" 
+                                  data-win-res="{innerHTML: 'confirm.title'}"></span><br/>
+                            <span class="nx-subtitle nx-subtitle--left confirm-subtitle" 
+                                  data-win-res="{innerHTML: 'confirm.subtitle'}"></span>
+                        </label>
+                    </div>
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check2 Binding.Mode.twoway" />
+                            <span class="confirm-title confirm-medium" 
+                                  data-win-res="{innerHTML: 'confirm.title2'}"></span><br />
+                            <div class="nx-subtitle nx-subtitle--left confirm-subtitle confirm-small">
+                                <div id="confirm.privacyurl" class="confirm-qrcode-container"></div>
+                                <div id="confirm.privacyurl" class="confirm-qrcode-container-svg"></div>
+                                <span class="win-type-caption" data-win-res="{innerHTML: 'confirm.subtitle2'}"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="nx-title--left animationElement">
+                        <label class="nx-title_black">
+                            <input class="win-checkbox confirm-checkbox" type="checkbox" value="X"
+                                   data-win-bind="checked: check3 Binding.Mode.twoway" />
+                            <span data-win-res="{innerHTML: 'confirm.title3'}"></span><br />
+                            <span class="nx-subtitle nx-subtitle--left confirm-subtitle" data-win-res="{innerHTML: 'confirm.subtitle3'}"></span>
+                        </label>
+                    </div>
+                    <div class="nx-title animationElement">
+                        <button class="win-button nx-button nx-button--centered nx-button--gray confirm-button"
+                                onclick="AppBar.handleEvent('click', 'clickBack', event)">
+                            <div class="confirm-navigate confirm-navigate-text-container">
+                                <span class="confirm-navigate-text"
+                                      data-win-res="{innerHTML: 'general.cancel'}"></span>
+                            </div>
+                        </button>
+                        <button class="win-button nx-button nx-button--centered confirm-button"
+                                data-win-bind="disabled: incomplete" 
+                                onclick="AppBar.handleEvent('click', 'clickOk', event)">
+                            <div class="confirm-navigate confirm-navigate-text-container">
+                                <span class="confirm-navigate-text"
+                                      data-win-res="{innerHTML: 'confirm.forward'}"></span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="error-message"
+                         data-win-bind="style.display: error.displayErrorMsg; textContent: error.errorMsg"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
