@@ -1,34 +1,14 @@
 ﻿/*
     styles for productlist page
 */
-.productlist .nx-title_black {
-    color: #ffffff;
-}
 
-.productlist .nx-cancel span,
-.productlist .nx-forward span {
-    color: #a0a0a0;
-}
-.productlist .event-image {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: auto;
-}
 .productlist .list-header {
-    height: 500px;
-    overflow: hidden;
-}
+    height: 210px;
+    overflow: hidden; }
 
 .productlist .list-header .nx-forward {
-    top: 96px;
-    right: 15px;
+    top: 88px;
 }
-.productlist .list-header .nx-cancel {
-    top: 220px;
-    right: 15px;
-}
-
 .productlist .list-header .nx-button {
     margin-top: 31px !important;
     padding: 10px 60px !important;
@@ -111,27 +91,22 @@
 
 #sezoom {
     width: 100%;
-    height: calc(100% - 508px);
+    height: calc(100% - 218px);
 }
 #productlist .listview {
     width: 100%;
-    height: calc(100% - 508px);
+    height: calc(100% - 218px);
 }
 #productgroups .listview {
     width: 100%;
-    height: calc(100% - 508px);
+    height: calc(100% - 218px);
 }
 
 #productlist .win-itemscontainer {
-    padding-left: 30px; 
+    padding-left: 30px; }
 
-}
-#productlist .win-itembox {
-    background-color: transparent !important;
-}
 #productlist * {
-    border: none !important;
-}
+    border: none !important; }
 #productlist *:after, #productlist *:before {
     border: none !important; }
 
@@ -159,8 +134,7 @@
 }
 
 #productlist .win-surface {
-    margin-left: 30px;
-}
+    margin-left: 0; }
 
 #productlist .win-itembox:after {
     display: none;
@@ -183,14 +157,12 @@
 }
 
 .productlist .nx-title_black {
-    margin-top: 230px; 
+    margin-top: 70px; 
     font-size: 36px;
-    font-weight: normal;
 }
 
 .productlist .nx-title_gray {
-    margin-top: 30px;
-}
+    margin-top: 30px; }
 
 #productlist .win-groupheadercontainer {
     /*margin-top: 30px;*/
@@ -245,7 +217,7 @@
 
 .nx-proitem {
     position: relative;
-   /*margin: 10px 10px;*/ margin: 0;
+    margin: 10px 10px;
     font-family: "Segoe UI", "Arial" !important; }
 .nx-proitem .nx-proitem__img-container {
     width: 445px;
@@ -269,28 +241,23 @@
     text-align: center;
     padding: 20px 15px;
     /*
-white-space: nowrap;
-line-height: 1.44;
-*/
+    white-space: nowrap;
+    line-height: 1.44;
+    */
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 32px;
+    font-size: 25px;
     line-height: 1.1;
     min-height: 60px;
-    text-transform: uppercase;
-    color: black;
-    font-weight: bold;
-    transform: scale(0.7, 1);
-    font-family: "Segoe WP Black", "Arial";
-}
+     }
 .nx-proitem .nx-proitem__overlay {
     position: absolute;
-    left: 130px;
+    left: 0;
     right: 0;
     bottom: 0;
-    top: 10px;
-    width: 341px;
-    height: 341px;
+    top: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
     transition: opacity 200ms; }
 .nx-proitem .nx-proitem__overlay svg {
@@ -306,16 +273,15 @@ line-height: 1.44;
     color: #ffffff; }
 .nx-proitem__overlay_disabled {
     position: absolute;
-    left: 130px;
+    left: 0;
     right: 0;
     bottom: 0;
-    top: 10px;
-    width: 341px;
-    height: 341px;
+    top: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
     background-color: #ffffff;
-    transition: opacity 200ms;
-}
+    transition: opacity 200ms; }
 .win-nonselectable .nx-proitem__overlay_disabled {
     opacity: 0.7; }
 
