@@ -13,23 +13,22 @@
             <section aria-label="Main content" role="main">
                 <div class="contentarea win-type-body">
                     <img class="organizer-image animationElement"
-                         data-win-bind="src: organizerLogoSrc; style.display: organizerLogoSrc Binding.Converter.toDisplay">
+                         data-win-bind="src: organizerLogoSrc; style.display: organizerLogoSrc Binding.Converter.toDisplay"
+                         onclick="AppBar.handleEvent('click', 'clickOk', event)" />
                     <div class="list-header animationElement">
                         <div class="nx-title">
-                            <div class="nx-title_black nx-title--upper nx-title--bold">
-                                <span data-win-res="{innerHTML: 'start.comment'}"
-                                      onclick="AppBar.handleEvent('click', 'clickOk', event)"></span>
+                            <div class="nx-title--upper nx-title--bold">
+                                <span data-win-res="{innerHTML: 'start.language'}"></span>
                             </div>
-                            <!--
-                            <div class="nx-button nx-button--centered nx-title--bold languagelist-button"
+                            <div class="nx-button nx-button--centered languagelist-button"
                                  onclick="AppBar.handleEvent('click', 'clickOk', event)">
                                 <span class="action-continue"></span>
                             </div>
+                            <!--
                             <button class="win-button nx-button nx-button--centered nx-title--bold"
                                     onclick="AppBar.handleEvent('click', 'clickOk', event)">
                                 <span data-win-res="{textContent: 'languagelist.continue'}"></span>
                             </button>
-                            -->
                             <button class="win-button nx-button nx-button--centered languagelist-center-button"
                                     onclick="AppBar.handleEvent('click', 'clickOk', event)">
                                 <div class="languagelist-navigate languagelist-navigate-text-container">
@@ -46,7 +45,12 @@
                                     <div title="hand_point_up" class="languagelist-navigate-image"></div>
                                 </div>
                             </button>
-                            <div class="nx-title_black nx-title--upper nx-title--bold">
+                            -->
+                            <div class="nx-title_color">
+                                <span data-win-res="{innerHTML: 'start.comment'}"
+                                      onclick="AppBar.handleEvent('click', 'clickOk', event)"></span>
+                            </div>
+                            <div class="nx-title_color nx-title--bold">
                                 <span data-win-res="{innerHTML: 'start.commentBottom'}"
                                       onclick="AppBar.handleEvent('click', 'clickOk', event)"></span>
                             </div>

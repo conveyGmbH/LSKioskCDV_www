@@ -30,7 +30,8 @@
                 continueText: AppData._persistentStates.kioskUsesCamera ? getResourceText("productlist.camera") : getResourceText("productlist.barcode"),
                 zoomedOut: true,
                 showMainGroups: false,
-                showSubGroups: false
+                showSubGroups: false,
+                eventLogoSrc: ""
             }]);
             this.nextUrl = null;
             this.loading = false;
@@ -535,15 +536,6 @@
                         } else {
                             that.binding.showMainGroups = false;
                             that.binding.showSubGroups = that.subGroups && that.subGroups.length > 0;
-                            if (productSubGroups && productSubGroups.winControl) {
-                                productSubGroups.winControl.selection.clear();
-                                if (productSubGroups.winControl.itemDataSource) {
-                                    productSubGroups.winControl.itemDataSource.itemFromIndex(0).done(function(curItem) {
-                                        Log.print(Log.l.trace, "calling add selection");
-                                        productSubGroups.winControl.selection.add(curItem);
-                                    });
-                                }
-                            }
                         }
                     }
                     if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
@@ -838,10 +830,22 @@
                                         if (itemBox && itemBox.style) {
                                             var winContainer = itemBox.parentElement;
                                             if (size.width && winContainer) {
+                                                var widthAdd = 0;
+                                                var style = window.getComputedStyle(winContainer);
+                                                if (style) {
+                                                    var marginLeft = style.getPropertyValue("margin-left");
+                                                    if (marginLeft) {
+                                                        widthAdd += parseInt(marginLeft);
+                                                    }
+                                                    var marginRight = style.getPropertyValue("margin-right");
+                                                    if (marginRight) {
+                                                        widthAdd += parseInt(marginRight);
+                                                    }
+                                                }
                                                 if (winContainer.style) {
                                                     winContainer.style.display = "";
                                                 }
-                                                var w = size.width + 20;
+                                                var w = size.width + widthAdd;
                                                 if (itemBox.clientWidth !== w) {
                                                     itemBox.style.width = w.toString() + "px";
                                                 }
@@ -1123,7 +1127,8 @@
                             var docContent =  json.d.DocContentDOCCNT1;
                             if (docContent) {
                                 var sub = docContent.search("\r\n\r\n");
-                                var picture = "data:image/jpeg;base64," + docContent.substr(sub + 4);
+                                var docType = AppData.getDocType(json.d.wFormat);
+                                var picture = "data:" + docType + ";base64," + docContent.substr(sub + 4);
                                 for (var i = ProductList.images.length - 1; i >= 0; i--) {
                                     var imageItem = ProductList.images[i];
                                     if (imageItem && imageItem.DOC1ProduktID === json.d.DOC1ProduktVIEWID) {
@@ -1408,6 +1413,7 @@
                         if (sezoom.winControl.zoomedOut !== that.binding.zoomedOut) {
                             sezoom.winControl.zoomedOut = that.binding.zoomedOut;
                         }
+                        sezoom.winControl.locked = !that.binding.isGrouped;
                     }
                     if (listView && listView.winControl) {
                         // multi list selection
@@ -1500,6 +1506,17 @@
                                 if (json && json.d && json.d.KontaktVIEWID) {
                                     contactId = json.d.KontaktVIEWID;
                                     AppData.setRecordId("Kontakt", contactId);
+                                    if (AppData._userRemoteDataPromise) {
+                                        Log.print(Log.l.info, "Cancelling previous userRemoteDataPromise");
+                                        AppData._userRemoteDataPromise.cancel();
+                                    }
+                                    AppData._userRemoteDataPromise = WinJS.Promise.timeout(100).then(function () {
+                                        Log.print(Log.l.info, "getUserRemoteData: Now, timeout=" + 100 + "s is over!");
+                                        AppData._curGetUserRemoteDataId = 0;
+                                        AppData.getUserRemoteData();
+                                        //Log.print(Log.l.info, "getCRVeranstOption: Now, timeout=" + 100 + "s is over!");
+                                        //AppData.getCRVeranstOption();
+                                    });
                                 } else {
                                     AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                                 }
@@ -1647,12 +1664,18 @@
             }
             this.insertData = insertData;
 
+            AppData.subGroupId = null;
+            AppData.mainGroupId = null;
+
             that.processAll().then(function () {
                 Log.print(Log.l.trace, "Binding wireup page complete");
                // if (AppData._persistentStates.kioskUsesCamera) {
                     Colors.loadSVGImageElements(pageElement, "action-image", 80, "#ffffff");
                 // }
                 Colors.loadSVGImageElements(pageElement, "navigate-image", 65, Colors.textColor);
+                if (AppHeader.controller && AppHeader.controller.binding) {
+                    that.binding.eventLogoSrc = AppHeader.controller.binding.eventLogoSrc;
+                }
                 return that.loadData();
             });
             Log.ret(Log.l.trace);

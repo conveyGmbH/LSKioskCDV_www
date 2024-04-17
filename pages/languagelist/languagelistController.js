@@ -407,18 +407,15 @@
             var loadData = function() {
                 Log.call(Log.l.trace, "LanguageList.Controller.");
                 AppData.setErrorMsg(that.binding);
-                if (that.languages) {
-                    that.languages.length = 0;
-                }
                 var ret = new WinJS.Promise.as().then(function () {
-                    return LanguageList.languageView.select(function (json) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        Log.print(Log.l.trace, "LanguageList.languageView: select success!");
-                        if (json && json.d && json.d.results) {
-                            var results = json.d.results;
-                            that.binding.count = results.length;
-                            if (!that.languages) {
+                    if (!that.languages) {
+                        return LanguageList.languageView.select(function (json) {
+                            // this callback will be called asynchronously
+                            // when the response is available
+                            Log.print(Log.l.trace, "LanguageList.languageView: select success!");
+                            if (json && json.d && json.d.results) {
+                                var results = json.d.results;
+                                that.binding.count = results.length;
                                 // Now, we call WinJS.Binding.List to get the bindable list
                                 that.languages = new WinJS.Binding.List(results);
                                 if (listView.winControl) {
@@ -426,16 +423,26 @@
                                     listView.winControl.itemDataSource = that.languages.dataSource;
                                 }
                             }
-                        }
-                    }, function (errorResponse) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        AppData.setErrorMsg(that.binding, errorResponse);
-                    });
+                        }, function (errorResponse) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                            AppData.setErrorMsg(that.binding, errorResponse);
+                        });
+                    } else {
+                        return WinJS.Promise.as();
+                    }
                 }).then(function () {
-                    that.prefetchProductView();
+                    if (AppHeader.controller && AppHeader.controller.binding) {
+                        that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
+                    }
+                    return WinJS.Promise.timeout(50);
                 }).then(function () {
-                    that.waitForIdleAction();
+                    var pageControl = pageElement.winControl;
+                    if (pageControl && pageControl.updateLayout) {
+                        pageControl.prevWidth = 0;
+                        pageControl.prevHeight = 0;
+                        pageControl.updateLayout.call(pageControl, pageElement);
+                    }
                 });
                 Log.ret(Log.l.trace);
                 return ret;
@@ -455,13 +462,12 @@
                 Colors.loadSVGImageElements(pageElement, "languagelist-navigate-image-black", 512, "#000000", "title", function (svgInfo) {
                 });
                 Log.print(Log.l.trace, "Splash time over");
-                if (AppHeader.controller && AppHeader.controller.binding) {
-                    that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
-                }
                 return Application.pageframe.hideSplashScreen();
             }).then(function () {
                 AppBar.notifyModified = true;
                 Log.print(Log.l.trace, "Data loaded");
+                that.prefetchProductView();
+                that.waitForIdleAction();
             });
             Log.ret(Log.l.trace);
         })

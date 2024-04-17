@@ -11,20 +11,22 @@
     <div class="productlist">
         <div id="listLocalController" class="data-container">
             <section aria-label="Main content" role="main">
+                <img class="event-image"
+                     data-win-bind="src: eventLogoSrc; style.display: eventLogoSrc Binding.Converter.toDisplay">
                 <div class="contentarea nx-body">
                     <div class="list-header nx-title">
-                        <div class="nx-title_black animationElement"
+                        <div class="nx-title_black"
                              data-win-bind="style.display: clickOkDisabledInvert Binding.Converter.toDisplayNone">
                             <span data-win-res="{innerHTML: 'productlist.title'}"></span><br />
                             <span class="nx-subtitle" data-win-res="{innerHTML: 'productlist.subtitle'}"></span>
                         </div>
-                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                        <button class="win-button nx-button nx-button--centered nx-title--bold"
                                 data-win-bind="style.display: showBarcode Binding.Converter.toDisplay"
                                 onclick="AppBar.handleEvent('click', 'clickScan', event)">
                             <div id="portable_barcode_scanner" class="action-image"></div><br />
                             <span data-win-res="{textContent: 'productlist.barcode'}"></span>
                         </button>
-                        <button class="win-button nx-button nx-button--centered nx-title--bold animationElement"
+                        <button class="win-button nx-button nx-button--centered nx-title--bold"
                                 data-win-bind="style.display: showCamera Binding.Converter.toDisplay"
                                 onclick="AppBar.handleEvent('click', 'clickCamera', event)">
                             <div id="id_card_camera" class="action-image"></div><br />

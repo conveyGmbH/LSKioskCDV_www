@@ -80,7 +80,6 @@
         },
 
         updateLayout: function (element, viewState, lastViewState) {
-            /*
             var ret = null;
             var that = this;
             /// <param name="element" domElement="true" />
@@ -89,20 +88,20 @@
             if (element && !that.inResize) {
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var listView = element.querySelector("#languagelist.listview");
-                    if (listView && listView.style) {
+                    var organizerImage = element.querySelector(".organizer-image");
+                    if (organizerImage && organizerImage.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
                             var height = contentarea.clientHeight - 8;
-
+                            var organizerImageLeft = (width - organizerImage.clientWidth) / 2;
                             if (width !== that.prevWidth) {
                                 that.prevWidth = width;
-                                listView.style.width = width.toString() + "px";
+                                organizerImage.style.left = organizerImageLeft.toString() + "px";
                             }
                             if (height !== that.prevHeight) {
                                 that.prevHeight = height;
-                                listView.style.height = height.toString() + "px";
+                                organizerImage.style.left = organizerImageLeft.toString() + "px";
                             }
                         }
                     }
@@ -111,7 +110,6 @@
             }
             Log.ret(Log.l.u1);
             return ret;
-             */
         }
     });
 })();

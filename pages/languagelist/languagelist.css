@@ -1,20 +1,12 @@
 ﻿/*
     styles for languagelist page
 */
-.languagelist .contentarea {
-    background: #ffffff !important;
-}
-
 .languagelist .organizer-image {
     position: absolute;
-    /*
     left: 0;
     top: 178px;
-    width: 100%;
-    height: auto;
-    */
-    left: 50px;
-    top: 50px;
+    width: auto;
+    height: calc(100% - 178px);
 }
 
 .languagelist .list-header {
@@ -26,45 +18,47 @@
 }
 
 .languagelist .nx-title {
+    margin-top: 0;
 }
-.languagelist .list-header {
-    /*
-    color: white;
-    text-align: right;
-    */
-    display: block;
+.languagelist .list-header .nx-title--upper {
     position: absolute;
     left: 0;
-    top: 0;
-    text-align: center;
-    width: 100%;
+    top: 70px;
+    text-align: right;
+    width: calc(100% - 680px);
+    text-transform: none;
 }
-
-.languagelist .list-header .nx-title_black {
-    margin-top: 48px;
-    font-size: 100px;
+.languagelist .languagelist-button {
+    right: 80px;
+    background-color: transparent !important;
 }
-
 .languagelist .list-header .nx-title_color {
-    /*
-color: white;
-*/
-    margin-top: 320px;
+    position: relative;
+    margin-top: 280px;
+    color: white;
     text-align: left;
-    padding-left: 140px;
-    font-size: 120px;
-    display: block;
-    position: absolute;
+    padding-left: 80px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.languagelist .list-header .nx-title_color.nx-title--bold {
+    margin-top: 60px;
+    font-size: 130px;
+    line-height: 1.2;
+}
+.languagelist .list-header .nx-title--bold {
+    font-weight: bold;
 }
 
 .languagelist .list-header .nx-button--centered {
     /*
+margin: 40px auto !important;
+*/
     position: absolute;
     top: 0;
-    right: 20px;
+    right: 0px;
     width: 120px;
     height: 120px;
-    */
 }
 
 .action-continue {
@@ -78,67 +72,6 @@ color: white;
     content: "\E0AF";
 }
 
-
-.languagelist-button {
-    background-color: transparent !important;
-}
-
-.languagelist-center-button {
-    width: 500px;
-    height: 500px;
-    background-color: transparent !important;
-    border-color: transparent !important;
-    overflow: hidden;
-}
-
-.languagelist-navigate-container {
-    margin-top: 30px;
-}
-.languagelist-navigate {
-    display: block;
-    position: relative;
-}
-.languagelist-navigate-text-container {
-    left: 30px;
-    top: 330px;
-}
-.languagelist-navigate-text {
-    font-size: 48px;
-    transition: color 100ms;
-}
-.nx-button:active .languagelist-navigate-text {
-    color: #000000;
-}
-.languagelist-navigate-image-container {
-    left: -80px;
-    top: -80px;
-}
-.languagelist-navigate-image {
-    margin-left: 16px;
-    margin-top: 110px;
-}
-
-.languagelist-navigate-image-black-container {
-    left: -64px;
-    top: -604px;
-    width: 400px;
-    height: 308px;
-    overflow: hidden;
-}
-.languagelist-navigate-image-black {
-    opacity: 0.1;
-    transition: opacity 200ms;
-}
-.nx-button:active .languagelist-navigate-image-black {
-    opacity: 1;
-}
-
-.languagelist-navigate-image-color-container {
-    left: -64px;
-    top: -800px;
-}
-.languagelist-navigate-image-color {
-}
 
 #languagelist .win-container {
     margin-right: 30px;
@@ -160,7 +93,7 @@ color: white;
 
 #languagelist.listview {
     position: absolute !important;
-    right: 40px;
+    right: 220px;
     top: 40px;
     width: 420px;
     height: 140px;
@@ -192,11 +125,3 @@ color: white;
     width: 150px;
 }
 
-
-.languagelist-image {
-    display: block;
-    margin: 20px auto;
-}
-.languagelist .nx-title--bottom {
-    margin-bottom: 30px;
-}
