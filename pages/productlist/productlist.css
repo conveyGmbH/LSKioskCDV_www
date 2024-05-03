@@ -103,7 +103,8 @@
 }
 
 #productlist .win-itemscontainer {
-    padding-left: 30px; }
+    padding-left: 30px;
+}
 
 #productlist * {
     border: none !important; }
@@ -177,7 +178,7 @@
 
 .products-group-item {
     width: 615px;
-    height: 180px;
+    height: 160px;
     display: flex;
     align-items: center;
     font-family: "Segoe UI", "Arial" !important;

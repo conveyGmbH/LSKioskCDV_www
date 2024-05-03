@@ -435,7 +435,7 @@
                     if (AppHeader.controller && AppHeader.controller.binding) {
                         that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
                     }
-                    return WinJS.Promise.timeout(50);
+                    return WinJS.Promise.timeout(150);
                 }).then(function () {
                     var pageControl = pageElement.winControl;
                     if (pageControl && pageControl.updateLayout) {

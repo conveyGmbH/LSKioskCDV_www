@@ -53,8 +53,10 @@
             this.reloadPromise = null;
             this.reloadWaitTimeMs = 500;
 
-            this.scrollIntoViewDelay = 50;
+            this.scrollIntoViewDelay = 10;
             this.scrollIntoViewPromise = null;
+
+            this.updatePicturesInViewPromise = null;
 
            // this.hasSelLimit = false;
 
@@ -69,6 +71,8 @@
             var listView = pageElement.querySelector("#productlist.listview");
             var groupView = pageElement.querySelector("#productgroups.listview");
             var sezoom = pageElement.querySelector("#sezoom");
+            var maxLeadingPages = null;
+            var maxTrailingPages = null;
 
             this.dispose = function () {
                 that.cancelPromises();
@@ -538,15 +542,16 @@
                             that.binding.showSubGroups = that.subGroups && that.subGroups.length > 0;
                         }
                     }
-                    if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
-                        that.scrollIntoView();
-                    }
-                    WinJS.Promise.timeout(50).then(function() {
+                    WinJS.Promise.timeout(150).then(function() {
                         var pageControl = pageElement.winControl;
                         if (pageControl && pageControl.updateLayout) {
                             pageControl.prevWidth = 0;
                             pageControl.prevHeight = 0;
-                            pageControl.updateLayout.call(pageControl, pageElement);
+                            pageControl.updateLayout.call(pageControl, pageElement).then(function () {
+                                if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
+                                    that.scrollIntoViewDelayed();
+                                }
+                            });
                         } 
                     });
                     Log.ret(Log.l.trace);
@@ -699,12 +704,36 @@
                     if (listView &&
                         listView.winControl &&
                         that.products &&
-                        that.products.length > 0 &&
-                        listView.winControl.indexOfFirstVisible >= 0) {
-                        var item = that.products.getAt(listView.winControl.indexOfFirstVisible);
-                        if (item && item.ProduktSelGrpID >= 0) {
-                            that.productSelGrpID = item.ProduktSelGrpID;
-                            Log.print(Log.l.info, "productSelGrpID=" + that.productSelGrpID);
+                        that.products.length > 0) {
+
+                        for (var i = 1; i < that.products.length; i++) {
+                            var scrollPosition = 0;
+                            var element = listView.winControl.elementFromIndex(i);
+                            if (element) {
+                                var itemBox = element.parentElement;
+                                if (itemBox) {
+                                    var winContainer = itemBox.parentElement;
+                                    if (winContainer) {
+                                        var winItemsBlock = winContainer.parentElement;
+                                        if (winItemsBlock) {
+                                            var winItemsContainer = winItemsBlock.parentElement;
+                                            if (winItemsContainer) {
+                                                var winGroupHeaderContainer = winItemsContainer.previousElementSibling;
+                                                scrollPosition = winGroupHeaderContainer && winGroupHeaderContainer.offsetTop ||
+                                                    winItemsContainer.offsetTop;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (scrollPosition > listView.winControl.scrollPosition) {
+                                var item = that.products.getAt(i-1);
+                                if (item && item.ProduktSelGrpID >= 0) {
+                                    that.productSelGrpID = item.ProduktSelGrpID;
+                                    Log.print(Log.l.info, "productSelGrpID=" + that.productSelGrpID);
+                                }
+                                break;
+                            }
                         }
                     }
                     var listControl = productSubGroups.winControl;
@@ -725,9 +754,9 @@
                                             return WinJS.Promise.timeout(50);
                                         }).then(function() {
                                             that.addSelectionToListView();
-                                            if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
-                                                that.scrollIntoView();
-                                            }
+                                            //if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
+                                            //    that.scrollIntoViewDelayed();
+                                            //}
                                         });
                                     }
                                 }
@@ -803,6 +832,15 @@
                         if (listView.winControl.tapBehavior !== WinJS.UI.TapBehavior.toggleSelect) {
                             listView.winControl.tapBehavior = WinJS.UI.TapBehavior.toggleSelect;
                         }
+                        // Double the size of the buffers on both sides
+                        if (!maxLeadingPages) {
+                            maxLeadingPages = listView.winControl.maxLeadingPages * 4;
+                            listView.winControl.maxLeadingPages = maxLeadingPages;
+                        }
+                        if (!maxTrailingPages) {
+                            maxTrailingPages = listView.winControl.maxTrailingPages * 4;
+                            listView.winControl.maxTrailingPages = maxTrailingPages;
+                        }
                         if (listView.winControl.loadingState === "itemsLoading") {
                             /*
                             if (!layout) {
@@ -816,47 +854,43 @@
                             */
                         } else if (listView.winControl.loadingState === "itemsLoaded") {
                             if (that.products && that.products.length > 0) {
-                                var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
-                                var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                                var maxIndex = 2 * indexOfLastVisible - indexOfFirstVisible + 1;
-                                if (maxIndex >= that.binding.count) {
-                                    maxIndex = that.binding.count - 1;
-                                }
-                                for (i = indexOfFirstVisible; i <= maxIndex; i++) {
+                                for (i = 0; i < that.products.length; i++) {
                                     var element = listView.winControl.elementFromIndex(i);
                                     if (element) {
                                         var size = itemInfo(i);
                                         var itemBox = element.parentElement;
                                         if (itemBox && itemBox.style) {
                                             var winContainer = itemBox.parentElement;
-                                            if (size.width && winContainer) {
-                                                var widthAdd = 0;
-                                                var style = window.getComputedStyle(winContainer);
-                                                if (style) {
-                                                    var marginLeft = style.getPropertyValue("margin-left");
-                                                    if (marginLeft) {
-                                                        widthAdd += parseInt(marginLeft);
+                                            if (winContainer) {
+                                                if (size.width > 0) {
+                                                    var widthAdd = 0;
+                                                    var style = window.getComputedStyle(winContainer);
+                                                    if (style) {
+                                                        var marginLeft = style.getPropertyValue("margin-left");
+                                                        if (marginLeft) {
+                                                            widthAdd += parseInt(marginLeft);
+                                                        }
+                                                        var marginRight = style.getPropertyValue("margin-right");
+                                                        if (marginRight) {
+                                                            widthAdd += parseInt(marginRight);
+                                                        }
                                                     }
-                                                    var marginRight = style.getPropertyValue("margin-right");
-                                                    if (marginRight) {
-                                                        widthAdd += parseInt(marginRight);
+                                                    if (winContainer.style) {
+                                                        winContainer.style.display = "";
+                                                    }
+                                                    var w = size.width + widthAdd;
+                                                    if (itemBox.clientWidth !== w) {
+                                                        itemBox.style.width = w.toString() + "px";
+                                                    }
+                                                    if (winContainer.style && winContainer.clientWidth !== w) {
+                                                        winContainer.style.width = w.toString() + "px";
                                                     }
                                                 }
-                                                if (winContainer.style) {
-                                                    winContainer.style.display = "";
-                                                }
-                                                var w = size.width + widthAdd;
-                                                if (itemBox.clientWidth !== w) {
-                                                    itemBox.style.width = w.toString() + "px";
-                                                }
-                                                if (winContainer.style && winContainer.clientWidth !== w) {
-                                                    winContainer.style.width = w.toString() + "px";
-                                                }
-                                            }
-                                            if (size.height > 1 && winContainer) {
-                                                var h = size.height + 120;
-                                                if (itemBox.clientHeight !== h) {
-                                                    itemBox.style.height = h.toString() + "px";
+                                                if (size.height > 1) {
+                                                    var h = size.height + 120;
+                                                    if (itemBox.clientHeight !== h) {
+                                                        itemBox.style.height = h.toString() + "px";
+                                                    }
                                                 }
                                             }
                                         }
@@ -872,6 +906,20 @@
                                             }
                                         }
                                     }
+                                }
+                                var winItemsBlock = null;
+                                var winItemsContainerList = listView.querySelectorAll(".win-itemscontainer");
+                                if (winItemsContainerList) for (i = 0; i < winItemsContainerList.length; i++) {
+                                    var winItemsContainer = winItemsContainerList[i];
+                                    var winItemsBlockList = winItemsContainer.querySelectorAll(".win-itemsblock");
+                                    var itemsContainerHeight = 0;
+                                    if (winItemsBlockList) for (var j = 0; j < winItemsBlockList.length; j++) {
+                                        itemsContainerHeight += winItemsBlockList[j].offsetHeight;
+                                    }
+                                    if (itemsContainerHeight > 0) {
+                                        winItemsContainer.style.height = itemsContainerHeight + "px";
+                                    }
+                                    winItemsContainer.style.width = (listView.clientWidth - 60).toString() + "px";
                                 }
                             }
                             Colors.loadSVGImageElements(listView, "checkmark-image", 136, "#ffffff");
@@ -995,69 +1043,104 @@
             var scrollIntoView = function () {
                 var scrollPosition = 0, indexOfFirstVisible = -1;
                 Log.call(Log.l.info, "ProductList.Controller.", "productSelGrpID=" + that.productSelGrpID);
+                if (that._disposed || that.productSelGrpID < 0) {
+                    Log.ret(Log.l.info, "extra ignored");
+                    return;
+                }
+                if (listView && listView.winControl && that.products && that.products.length > 0) {
+                    for (var i = 0; i < that.products.length; i++) {
+                        var item = that.products.getAt(i);
+                        if (item && item.ProduktSelGrpID === that.productSelGrpID) {
+                            indexOfFirstVisible = i;
+                            Log.print(Log.l.info, "found indexOfFirstVisible=" + indexOfFirstVisible);
+                            break;
+                        }
+                    }
+                    if (indexOfFirstVisible >= 0) {
+                        var element = listView.winControl.elementFromIndex(indexOfFirstVisible);
+                        if (element) {
+                            var itemBox = element.parentElement;
+                            if (itemBox) {
+                                var winContainer = itemBox.parentElement;
+                                if (winContainer) {
+                                    var winItemsBlock = winContainer.parentElement;
+                                    if (winItemsBlock) {
+                                        var winItemsContainer = winItemsBlock.parentElement;
+                                        if (winItemsContainer) {
+                                            var previousElementSibling = winItemsContainer.previousElementSibling;
+                                            if (previousElementSibling) {
+                                                scrollPosition = previousElementSibling.offsetTop;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (listView.winControl.scrollPosition !== scrollPosition) {
+                            Log.print(Log.l.info, "set scrollPosition=" + scrollPosition + " current scrollPosition=" + listView.winControl.scrollPosition + " products.length=" + that.products.length);
+                            listView.winControl.scrollPosition = scrollPosition;
+                        } else {
+                            Log.print(Log.l.info, "already in scrollPosition");
+                        }
+                    } else {
+                        Log.print(Log.l.info, "no group selected");
+                    }
+                } else {
+                    Log.print(Log.l.info, "empty list");
+                }
+                Log.ret(Log.l.info);
+            }
+            this.scrollIntoView = scrollIntoView;
+
+            var scrollIntoViewDelayed = function () {
+                var repeat;
+                Log.call(Log.l.info, "ProductList.Controller.", "productSelGrpID=" + that.productSelGrpID);
                 if (that._disposed || that.scrollIntoViewPromise || that.scrollIntoViewLaterPromise || that.productSelGrpID < 0) {
                     Log.ret(Log.l.info, "extra ignored");
                     return;
                 }
-                if (that.loading ||
-                    listView && listView.winControl && listView.winControl.loadingState !== "complete") {
-                    WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function () {
-                        that.scrollIntoView();
-                    });
-                    Log.ret(Log.l.info, "still loading");
-                    return;
-                }
                 that.scrollIntoViewPromise = WinJS.Promise.timeout(that.scrollIntoViewDelay).then(function delayedscrollIntoView1() {
-                    that.scrollIntoViewPromise = null;
-                    Log.call(Log.l.info, "ProductList.Controller.");
-                    if (listView && listView.winControl && that.products && that.products.length > 0) {
-                        for (var i = 0; i < that.products.length; i++) {
-                            var item = that.products.getAt(i);
-                            if (item && item.ProduktSelGrpID === that.productSelGrpID) {
-                                indexOfFirstVisible = i;
-                                Log.print(Log.l.info, "found indexOfFirstVisible=" + indexOfFirstVisible);
-                                break;
-                            }
-                        }
-                        if (indexOfFirstVisible >= 0 && indexOfFirstVisible < that.products.length) {
-                            Log.print(Log.l.info, "set indexOfFirstVisible=" + indexOfFirstVisible + " current indexOfFirstVisible=" +
-                                listView.winControl.indexOfFirstVisible + " products.length=" + that.products.length);
-                            listView.winControl.indexOfFirstVisible = indexOfFirstVisible;
-                        }
+                    if (that.loading ||
+                        listView && listView.winControl && listView.winControl.loadingState === "itemsLoading" ) {
+                        repeat = false;
                     } else {
-                        Log.print(Log.l.info, "empty list");
+                        that.scrollIntoView();
+                        repeat = true;
                     }
-                    Log.ret(Log.l.info);
                     return WinJS.Promise.timeout(that.scrollIntoViewDelay);
                 }).then(function delayedscrollIntoView2() {
-                    Log.call(Log.l.info, "ProductList.Controller.");
-                    if (indexOfFirstVisible >= 0 && indexOfFirstVisible < that.products.length) {
-                        Log.print(Log.l.info, "resulted indexOfFirstVisible=" + listView.winControl.indexOfFirstVisible + ", wanted " + indexOfFirstVisible);
-                        if (listView && listView.winControl && listView.winControl.indexOfFirstVisible === indexOfFirstVisible) {
-                            Log.print(Log.l.info, "adjust group header");
-                            if (listView && listView.winControl) {
-                                scrollPosition = listView.winControl.scrollPosition;
-                                if (scrollPosition > 100) {
-                                    listView.winControl.scrollPosition = scrollPosition - 100;
-                                } else {
-                                    listView.winControl.scrollPosition = 0;
-                                }
-                            }
-                            that.productSelGrpID = -1;
+                    if (repeat) {
+                        if (that.loading ||
+                            listView && listView.winControl && listView.winControl.loadingState === "itemsLoading") {
+                            repeat = false;
                         } else {
-                            Log.print(Log.l.trace, "try again");
-                            if (listView && listView.winControl) {
-                                scrollPosition = listView.winControl.scrollPosition;
-                                listView.winControl.scrollPosition = scrollPosition + 50;
-                            }
                             that.scrollIntoView();
                         }
+                        return WinJS.Promise.timeout(that.scrollIntoViewDelay);
+                    } else {
+                        return WinJS.Promise.as();
                     }
-                    Log.ret(Log.l.info);
+                }).then(function delayedscrollIntoView3() {
+                    if (repeat) {
+                        if (that.loading ||
+                            listView && listView.winControl && listView.winControl.loadingState === "itemsLoading") {
+                            repeat = false;
+                        } else {
+                            that.scrollIntoView();
+                        }
+                        return WinJS.Promise.timeout(that.scrollIntoViewDelay);
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                }).then(function delayedscrollIntoViewFinal() {
+                    that.scrollIntoViewPromise = null;
+                    if (!repeat) {
+                        that.scrollIntoViewDelayed();
+                    }
                 });
                 Log.ret(Log.l.info);
             }
-            this.scrollIntoView = scrollIntoView;
+            this.scrollIntoViewDelayed = scrollIntoViewDelayed;
 
             var showPicture = function (imageContainer, imageData, bDoAnimation) {
                 Log.call(Log.l.trace, "ProductList.Controller.");
@@ -1109,10 +1192,7 @@
                     }
                 }
                 if (!ret) {
-                    var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
-                    var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                    if (ProductList.images.length > (indexOfLastVisible - indexOfFirstVisible) * 4) {
-                        Log.print(Log.l.trace, "indexOfFirstVisible=" + indexOfFirstVisible + " indexOfLastVisible=" + indexOfLastVisible + " images.length=" + ProductList.images.length + " hit maximum!");
+                    if (ProductList.images.length > 64) {
                         ProductList.images.splice(0, 1);
                     }
                     ProductList.images.push({
@@ -1152,29 +1232,35 @@
 
             var updatePicturesInView = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                if (sezoom && sezoom.winControl && sezoom.winControl.zoomedOut) {
-                    Log.print(Log.l.trace, "zoomedOut: extra ignored!");
-                } else if (that.scrollIntoViewPromise) {
-                    Log.print(Log.l.trace, "scrollIntoViewPromise: extra ignored!");
-                } else if (listView && listView.winControl && listView.winControl.loadingState !== "complete") {
-                    Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState + ": extra ignored!")
-                } else if (that.products && that.products.length > 0) {
-                    var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
-                    var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                    var maxIndex = 2 * indexOfLastVisible - indexOfFirstVisible + 1;
-                    if (maxIndex >= that.binding.count) {
-                        maxIndex = that.binding.count - 1;
-                    }
-                    for (var i = indexOfFirstVisible; i <= maxIndex; i++) {
-                        var element = listView.winControl.elementFromIndex(i);
-                        if (element) {
-                            var listImageConainer = element.querySelector(".list-image-container");
-                            if (listImageConainer && listImageConainer.docId) {
-                                that.loadPicture(listImageConainer.docId, listImageConainer);
+                if (that.updatePicturesInViewPromise) {
+                    that.updatePicturesInViewPromise.cancel();
+                }
+                that.updatePicturesInViewPromise = WinJS.Promise.timeout(250).then(function() {
+                    if (sezoom && sezoom.winControl && sezoom.winControl.zoomedOut) {
+                        Log.print(Log.l.trace, "zoomedOut: extra ignored!");
+                    } else if (that.scrollIntoViewPromise) {
+                        Log.print(Log.l.trace, "scrollIntoViewPromise: extra ignored!");
+                    } else if (listView && listView.winControl && listView.winControl.loadingState !== "complete") {
+                        Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState + ": extra ignored!")
+                    } else if (listView && listView.winControl && that.products && that.products.length > 0) {
+                        var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
+                        var indexOfLastVisible = listView.winControl.indexOfLastVisible;
+                        var maxIndex = indexOfLastVisible + 20;
+                        if (maxIndex >= that.binding.count) {
+                            maxIndex = that.binding.count - 1;
+                        }
+                        for (var i = indexOfFirstVisible; i <= maxIndex; i++) {
+                            var element = listView.winControl.elementFromIndex(i);
+                            if (element) {
+                                var listImageConainer = element.querySelector(".list-image-container");
+                                if (listImageConainer && listImageConainer.docId) {
+                                    that.loadPicture(listImageConainer.docId, listImageConainer);
+                                }
                             }
                         }
                     }
-                }
+                    that.updatePicturesInViewPromise = null;
+                });
                 Log.ret(Log.l.trace);
             }
             this.updatePicturesInView = updatePicturesInView;
