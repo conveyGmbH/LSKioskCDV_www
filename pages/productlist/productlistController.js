@@ -34,6 +34,7 @@
                 eventLogoSrc: ""
             }]);
             this.nextUrl = null;
+            this.nextSelectionUrl = null;
             this.loading = false;
             this.groupLoading = false;
             this.productSelGrpID = -1;
@@ -41,7 +42,6 @@
             this.productsFiltered = null;
             this.productsBase = null;
             this.selection = [];
-            this.prevSelectionIndices = [];
             this.productSelectionGroup = {};
             this.mainGroups = null;
             this.subGroups = null;
@@ -74,8 +74,8 @@
             var maxLeadingPages = null;
             var maxTrailingPages = null;
 
+
             this.dispose = function () {
-                that.cancelPromises();
                 if (productMainGroups && productMainGroups.winControl) {
                     // remove ListView dataSource
                     productMainGroups.winControl.itemDataSource = null;
@@ -108,19 +108,20 @@
                     // free selection
                     that.selection = null;
                 }
+                that.cancelPromises();
             };
 
             var cancelPromises = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                if (that.checkLoadingStatePromise) {
-                    Log.print(Log.l.trace, "cancel previous checkLoadingState Promise");
-                    that.checkLoadingStatePromise.cancel();
-                    that.checkLoadingStatePromise = null;
-                }
                 if (that.scrollIntoViewPromise) {
                     Log.print(Log.l.trace, "cancel previous scrollIntoView Promise");
                     that.scrollIntoViewPromise.cancel();
                     that.scrollIntoViewPromise = null;
+                }
+                if (that.updatePicturesInViewPromise) {
+                    Log.print(Log.l.trace, "cancel previous pictures Promise");
+                    that.updatePicturesInViewPromise.cancel();
+                    that.updatePicturesInViewPromise = null;
                 }
                 if (that.reloadPromise) {
                     Log.print(Log.l.trace, "cancel previous reload Promise");
@@ -139,35 +140,41 @@
             var waitForReloadAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "reloadWaitTimeMs=" + that.reloadWaitTimeMs);
                 that.cancelPromises();
-                that.reloadPromise = WinJS.Promise.timeout(that.reloadWaitTimeMs).then(function () {
-                    Log.print(Log.l.trace, "now reload data!");
-                    that.loadData();
-                });
+                if (!that._disposed) {
+                    that.reloadPromise = WinJS.Promise.timeout(that.reloadWaitTimeMs).then(function () {
+                        Log.print(Log.l.trace, "now reload data!");
+                        that.loadData();
+                    });
+                }
                 Log.ret(Log.l.trace);
             };
             this.waitForReloadAction = waitForReloadAction;
 
             var waitForIdleAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
-                that.cancelPromises();
-                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
-                    Log.print(Log.l.trace, "timeout occurred, check for selection");
-                    // Don't delete empty contacts now
-                    var contactId = AppData.getRecordId("Kontakt");
-                    Log.print(Log.l.trace, "contactId=" + contactId);
-                    if (contactId && !that.binding.clickOkDisabled) {
-                        Log.print(Log.l.trace, "ignore unfinished selection!");
-                        if (Application.navigateByIdOverride("start") === "productlist") {
-                            AppData.setRecordId("Kontakt", null);
-                            that.loadData();
-                        } else {
-                            Application.navigateById("start", event);
-                        }
-                    } /*else if (that.hasSelLimit) {
+                if (that.restartPromise) {
+                    that.restartPromise.cancel();
+                }
+                if (!that._disposed) {
+                    that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
+                        Log.print(Log.l.trace, "timeout occurred, check for selection");
+                        // Don't delete empty contacts now
+                        var contactId = AppData.getRecordId("Kontakt");
+                        Log.print(Log.l.trace, "contactId=" + contactId);
+                        if (contactId && !that.binding.clickOkDisabled) {
+                            Log.print(Log.l.trace, "ignore unfinished selection!");
+                            if (Application.navigateByIdOverride("start") === "productlist") {
+                                AppData.setRecordId("Kontakt", null);
+                                that.loadData();
+                            } else {
+                                Application.navigateById("start", event);
+                            }
+                        } /*else if (that.hasSelLimit) {
                         Log.print(Log.l.trace, "releoad due to selLimit");
                         that.loadData();
                     }*/
-                });
+                    });
+                }
                 Log.ret(Log.l.trace);
             };
             this.waitForIdleAction = waitForIdleAction;
@@ -238,22 +245,22 @@
                     }
                     if (!that.productSelectionGroup[item.ProduktSelGrpID]) {
                         that.productSelectionGroup[item.ProduktSelGrpID] = {
-                            indexes: [],
-                            selIndexes: [],
+                            productIds: [],
+                            selProductIds: [],
                             maxSel: item.ProduktSelektionsMaxSel,
                             mandatory: !!item.ProduktSelektionsMandatory,
                             show: false
                         };
                     }
                     var curGroup = that.productSelectionGroup[item.ProduktSelGrpID];
-                    if (curGroup.indexes && curGroup.selIndexes) {
-                        curGroup.indexes.push(index);
-                        if (curGroup.selIndexes.indexOf(index) >= 0) {
+                    if (curGroup.productIds && curGroup.selProductIds) {
+                        curGroup.productIds.push(item.ProduktID);
+                        if (curGroup.selProductIds.indexOf(item.ProduktID) >= 0) {
                             Log.print(Log.l.u1, "item[" + index + "] is already selected!");
-                        } else if (curGroup.selIndexes.length < curGroup.maxSel) {
-                            Log.print(Log.l.u1, "yet " + (curGroup.maxSel - curGroup.selIndexes.length).toString() + " items selectable");
+                        } else if (curGroup.selProductIds.length < curGroup.maxSel) {
+                            Log.print(Log.l.u1, "yet " + (curGroup.maxSel - curGroup.selProductIds.length).toString() + " items selectable");
                         } else {
-                            Log.print(Log.l.u1, "already " + curGroup.selIndexes.length + " other item(s) in group selected!");
+                            Log.print(Log.l.u1, "already " + curGroup.selProductIds.length + " other item(s) in group selected!");
                             item.disabled = true;
                         }
                     }
@@ -354,57 +361,75 @@
                 return size;
             };
 
-            var setSelectionGroupIndex = function(selGroup, index, selected) {
+            var setSelectionGroupProductIds = function(selGroup, productId, selected) {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                if (selGroup && index >= 0) {
+                if (selGroup && productId) {
+                    if (!selGroup.selProductIds) {
+                        selGroup.selProductIds = [];
+                    }
+                    var index = selGroup.selProductIds.indexOf(productId);
                     if (selected) {
-                        selGroup.selIndexes.push(index);
-                        WinJS.Promise.timeout(0).then(function disableSelection() {
-                            Log.call(Log.l.trace, "ProductList.Controller.");
-                            if (selGroup && selGroup.indexes) {
-                                for (var di = 0; di < selGroup.indexes.length; di++) {
-                                    var sgi = selGroup.indexes[di];
-                                    if (selGroup.selIndexes.indexOf(sgi) >= 0) {
-                                        Log.print(Log.l.u2, "item[" + sgi + "] is already selected!");
-                                    } else if (selGroup.selIndexes.length < selGroup.maxSel) {
-                                        Log.print(Log.l.u2, "yet " + selGroup.maxSel - selGroup.selIndexes.length + " items selectable");
-                                    } else {
-                                        Log.print(Log.l.trace, "already " + selGroup.selIndexes.length + " other item(s) in group selected!");
-                                        var item = that.products.getAt(sgi);
-                                        if (item) {
-                                            item.disabled = true;
-                                            that.products.setAt(sgi, item);
+                        if (index < 0) {
+                            selGroup.selProductIds.push(productId);
+                            if (selGroup.selProductIds.length < selGroup.maxSel) {
+                                Log.print(Log.l.u2, "yet " + selGroup.maxSel - selGroup.selProductIds.length + " items selectable");
+                            } else {
+                                WinJS.Promise.timeout(0).then(function disableSelection() {
+                                    Log.call(Log.l.trace, "ProductList.Controller.");
+                                    if (selGroup && selGroup.productIds && that.products) {
+                                        for (var di = 0; di < selGroup.productIds.length; di++) {
+                                            var sgPid = selGroup.productIds[di];
+                                            if (selGroup.selProductIds.indexOf(sgPid) >= 0) {
+                                                Log.print(Log.l.u2, "item.ProduktID=" + sgPid + " is already selected!");
+                                            } else {
+                                                for (var sgi = 0; sgi < that.products.length; sgi++) {
+                                                    var item = that.products.getAt(sgi);
+                                                    if (item && item.ProduktID === sgPid) {
+                                                        if (!item.disabled) {
+                                                            Log.print(Log.l.u2, "item.ProduktID=" + sgPid + " disable!");
+                                                            item.disabled = true;
+                                                            that.products.setAt(sgi, item);
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    Log.ret(Log.l.trace);
+                                });
+                            }
+                        }
+                    } else {
+                        if (index >= 0) {
+                            selGroup.selProductIds.splice(index, 1);
+                            WinJS.Promise.timeout(0).then(function enableSelection() {
+                                Log.call(Log.l.trace, "ProductList.Controller.");
+                                if (selGroup && selGroup.productIds && that.products) {
+                                    Log.print(Log.l.trace, "item in group deselected - enable all!");
+                                    for (var ei = 0; ei < selGroup.productIds.length; ei++) {
+                                        var sgPid = selGroup.productIds[ei];
+                                        for (var sgi = 0; sgi < that.products.length; sgi++) {
+                                            var item = that.products.getAt(sgi);
+                                            if (item && item.ProduktID === sgPid) {
+                                                if (item.disabled) {
+                                                    Log.print(Log.l.u2, "item.ProduktID=" + sgPid + " enable!");
+                                                    item.disabled = false;
+                                                    that.products.setAt(sgi, item);
+                                                }
+                                                break;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            Log.ret(Log.l.trace);
-                        });
-                    } else {
-                        var prevIndex = selGroup.selIndexes.indexOf(index);
-                        if (prevIndex >= 0) {
-                            selGroup.selIndexes.splice(prevIndex, 1);
+                                Log.ret(Log.l.trace);
+                            });
                         }
-                        WinJS.Promise.timeout(0).then(function enableSelection() {
-                            Log.call(Log.l.trace, "ProductList.Controller.");
-                            if (selGroup && selGroup.indexes) {
-                                for (var ei = 0; ei < selGroup.indexes.length; ei++) {
-                                    var item = that.products.getAt(selGroup.indexes[ei]);
-                                    if (item) { /* && (!item.SelLimit || item.SelCount < item.SelLimit)*/
-                                        //Log.print(Log.l.trace, "only " + item.SelCount + " of limit " + item.SelLimit + " in group selected!");
-                                        Log.print(Log.l.trace, "item in group selected!");
-                                        item.disabled = false;
-                                        that.products.setAt(selGroup.indexes[ei], item);
-                                    }
-                                }
-                            }
-                            Log.ret(Log.l.trace);
-                        });
                     }
                 }
                 Log.ret(Log.l.trace);
             }
-            this.setSelectionGroupIndex = setSelectionGroupIndex;
+            this.setSelectionGroupProductIds = setSelectionGroupProductIds;
             
             var checkOkDisabled = function() {
                 Log.call(Log.l.trace, "ProductList.Controller.");
@@ -413,7 +438,7 @@
                     for (var groupId in that.productSelectionGroup) {
                         if (that.productSelectionGroup.hasOwnProperty(groupId)) {
                             var curGroup = that.productSelectionGroup[groupId];
-                            if (curGroup.mandatory && !curGroup.selIndexes.length) {
+                            if (curGroup.mandatory && (!curGroup.selProductIds || !curGroup.selProductIds.length)) {
                                 bMandatoryMissing = true;
                                 break;
                             }
@@ -444,33 +469,30 @@
             }
             this.checkOkDisabled = checkOkDisabled;
 
-            var addSelectionToListView = function (startIndex) {
+            var addSelectionToListView = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.");
-                that.prevSelectionIndices = [];
                 if (listView && listView.winControl && that.products && that.selection) {
                     var selection = listView.winControl.selection;
                     if (selection) {
-                        var curSelectionIndices = selection.getIndices() || [];
+                        var newSelectionIndexes = [];
                         for (var i = 0; i < that.selection.length; i++) {
-                            if (curSelectionIndices.indexOf(i) < 0) {
-                                var row = that.selection[i];
-                                for (var index = startIndex || 0; index < that.products.length; index++) {
-                                    var item = that.products.getAt(index);
-                                    if (row && row.ProduktID === item.ProduktID) {
-                                        Log.print(Log.l.trace, "selection[" + i + "] ProductID=" + item.ProduktID + ", selected list index=" + index);
-                                        if (item.ProduktSelGrpID) {
-                                            that.setSelectionGroupIndex(that.productSelectionGroup[item.ProduktSelGrpID], index, true);
-                                        }
-                                        var prevNotifyModified = AppBar.notifyModified;
-                                        AppBar.notifyModified = false;
-                                        selection.add(index);
-                                        that.prevSelectionIndices.push(index);
-                                        AppBar.notifyModified = prevNotifyModified;
-                                        break;
+                            var row = that.selection[i];
+                            for (var index = 0; index < that.products.length; index++) {
+                                var item = that.products.getAt(index);
+                                if (row && row.ProduktID === item.ProduktID) {
+                                    Log.print(Log.l.trace, "selection[" + i + "] ProductID=" + item.ProduktID + ", selected list index=" + index);
+                                    if (item.ProduktSelGrpID) {
+                                        that.setSelectionGroupProductIds(that.productSelectionGroup[item.ProduktSelGrpID], item.ProduktID, true);
                                     }
+                                    newSelectionIndexes.push(index);
+                                    break;
                                 }
                             }
                         }
+                        var prevNotifyModified = AppBar.notifyModified;
+                        AppBar.notifyModified = false;
+                        selection.set(newSelectionIndexes);
+                        AppBar.notifyModified = prevNotifyModified;
                     }
                 }
                 that.checkOkDisabled();
@@ -624,6 +646,8 @@
                             if (counter && counter.style) {
                                 counter.style.display = "none";
                             }
+                            var nextUrl = that.nextUrl;
+                            that.nextUrl = null;
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "calling selectNext ProductList.productView...");
                             ProductList.productView.selectNext(function (json) {
@@ -631,7 +655,7 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "ProductList.productView: selectNext success!");
                                 // productView returns object already parsed from json data in response
-                                if (json && json.d) {
+                                if (json && json.d && json.d.results && json.d.results.length > 0) {
                                     if (that.products && that.productsBase) {
                                         that.nextUrl = ProductList.productView.getNextUrl(json);
                                         var results = json.d.results;
@@ -641,10 +665,8 @@
                                             that.productsBase.push(item);
                                             that.binding.count = that.products.length;
                                         });
-                                        that.addSelectionToListView(prevCount);
+                                        that.addSelectionToListView();
                                     }
-                                } else {
-                                    that.nextUrl = null;
                                 }
                             }, function(errorResponse) {
                                 // called asynchronously if an error occurs
@@ -658,7 +680,7 @@
                                 }
                                 that.groupLoading = false;
                                 that.waitForIdleAction();
-                            }, null, that.nextUrl);
+                            }, null, nextUrl);
                         } else {
                             if (progress && progress.style) {
                                 progress.style.display = "none";
@@ -689,7 +711,7 @@
                                             //that.selectProductView();
                                             that.productsBase.notifyReload();
                                             return WinJS.Promise.timeout(50);
-                                        }).then(function() {
+                                        }).then(function () {
                                             that.addSelectionToListView();
                                         });
                                     }
@@ -701,11 +723,7 @@
                 },
                 onSubGroupsSelectionChanged: function(eventInfo) {
                     Log.call(Log.l.trace, "ProductList.Controller.");
-                    if (listView &&
-                        listView.winControl &&
-                        that.products &&
-                        that.products.length > 0) {
-
+                    if (listView && listView.winControl && that.products && that.products.length > 0) {
                         for (var i = 1; i < that.products.length; i++) {
                             var scrollPosition = 0;
                             var element = listView.winControl.elementFromIndex(i);
@@ -754,9 +772,6 @@
                                             return WinJS.Promise.timeout(50);
                                         }).then(function() {
                                             that.addSelectionToListView();
-                                            //if (!that.binding.zoomedOut && that.productSelGrpID >= 0) {
-                                            //    that.scrollIntoViewDelayed();
-                                            //}
                                         });
                                     }
                                 }
@@ -779,41 +794,38 @@
                         } else if (listView && listView.winControl) {
                             var listControl = listView.winControl;
                             if (listControl.selection && that.selection && that.products) {
-                                var i, selIndex, prevIndex, row;
-                                var productSelectionGroup = that.productSelectionGroup || {};
-                                var prevSelectionIndices = that.prevSelectionIndices || [];
                                 var curSelectionIndices = listControl.selection.getIndices() || [];
-                                for (i = 0; i < prevSelectionIndices.length; i++) {
-                                    prevIndex = prevSelectionIndices[i];
-                                    selIndex = curSelectionIndices.indexOf(prevIndex);
-                                    if (selIndex < 0) {
-                                        // get from Binding.List
-                                        row = that.products.getAt(prevIndex);
-                                        if (row) {
-                                            if (row.ProduktSelGrpID) {
-                                                Log.print(Log.l.trace, "deselected prevIndex=" + prevIndex + " from ProduktSelGrpID=" + row.ProduktSelGrpID);
-                                                that.setSelectionGroupIndex(productSelectionGroup[row.ProduktSelGrpID], prevIndex, false);
+                                var productSelectionGroup = that.productSelectionGroup || {};
+                                for (var i = 0; i < that.products.length; i++) {
+                                    // get from Binding.List
+                                    var item = that.products.getAt(i);
+                                    if (item) {
+                                        var prevSelIndex = -1;
+                                        for (var j = 0; j < that.selection.length; j++) {
+                                            var row = that.selection[j];
+                                            if (row && row.ProduktID === item.ProduktID) {
+                                                prevSelIndex = j;
+                                                break;
                                             }
-                                            that.deleteData(row.ProduktID);
+                                        }
+                                        var selIndex = curSelectionIndices.indexOf(i);
+                                        if (selIndex < 0 && prevSelIndex >= 0) {
+                                            // product is not selected && was selected
+                                            if (item.ProduktSelGrpID) {
+                                                Log.print(Log.l.trace, "deselected index=" + i + " from ProduktSelGrpID=" + item.ProduktSelGrpID);
+                                                that.setSelectionGroupProductIds(productSelectionGroup[item.ProduktSelGrpID], item.ProduktID, false);
+                                            }
+                                            that.deleteData(item.ProduktID);
+                                        } else if (selIndex >= 0 && prevSelIndex < 0) {
+                                            // product is selected && was not selected
+                                            if (item.ProduktSelGrpID) {
+                                                Log.print(Log.l.trace, "selected selIndex=" + i + " from ProduktSelGrpID=" + item.ProduktSelGrpID);
+                                                that.setSelectionGroupProductIds(productSelectionGroup[item.ProduktSelGrpID], item.ProduktID, true);
+                                            }
+                                            that.insertData(item.ProduktID);
                                         }
                                     }
                                 }
-                                for (i = 0; i < curSelectionIndices.length; i++) {
-                                    selIndex = curSelectionIndices[i];
-                                    prevIndex = prevSelectionIndices.indexOf(selIndex);
-                                    if (prevIndex < 0) {
-                                        // get from Binding.List
-                                        row = that.products.getAt(selIndex);
-                                        if (row) {
-                                            if (row.ProduktSelGrpID) {
-                                                Log.print(Log.l.trace, "selected selIndex=" + selIndex + " from ProduktSelGrpID=" + row.ProduktSelGrpID);
-                                                that.setSelectionGroupIndex(productSelectionGroup[row.ProduktSelGrpID], selIndex, true);
-                                            }
-                                            that.insertData(row.ProduktID);
-                                        }
-                                    }
-                                }
-                                that.prevSelectionIndices = curSelectionIndices;
                             }
                         }
                     }
@@ -834,14 +846,15 @@
                         }
                         // Double the size of the buffers on both sides
                         if (!maxLeadingPages) {
-                            maxLeadingPages = listView.winControl.maxLeadingPages * 4;
+                            maxLeadingPages = listView.winControl.maxLeadingPages = 8;
                             listView.winControl.maxLeadingPages = maxLeadingPages;
                         }
                         if (!maxTrailingPages) {
-                            maxTrailingPages = listView.winControl.maxTrailingPages * 4;
+                            maxTrailingPages = listView.winControl.maxTrailingPages = 8;
                             listView.winControl.maxTrailingPages = maxTrailingPages;
                         }
                         if (listView.winControl.loadingState === "itemsLoading") {
+                            that.waitForIdleAction();
                             /*
                             if (!layout) {
                                 layout = new Application.ProductListLayout.ProductsLayout;
@@ -907,19 +920,21 @@
                                         }
                                     }
                                 }
-                                var winItemsBlock = null;
                                 var winItemsContainerList = listView.querySelectorAll(".win-itemscontainer");
                                 if (winItemsContainerList) for (i = 0; i < winItemsContainerList.length; i++) {
-                                    var winItemsContainer = winItemsContainerList[i];
-                                    var winItemsBlockList = winItemsContainer.querySelectorAll(".win-itemsblock");
                                     var itemsContainerHeight = 0;
-                                    if (winItemsBlockList) for (var j = 0; j < winItemsBlockList.length; j++) {
-                                        itemsContainerHeight += winItemsBlockList[j].offsetHeight;
+                                    var winItemsContainer = winItemsContainerList[i];
+                                    var childElement = winItemsContainer.firstElementChild;
+                                    while (childElement) {
+                                        itemsContainerHeight += childElement.offsetHeight;
+                                        childElement = childElement.nextElementSibling;
                                     }
-                                    if (itemsContainerHeight > 0) {
+                                    if (itemsContainerHeight > 1 && itemsContainerHeight !== winItemsContainer.clientHeight) {
                                         winItemsContainer.style.height = itemsContainerHeight + "px";
                                     }
-                                    winItemsContainer.style.width = (listView.clientWidth - 60).toString() + "px";
+                                    if (winItemsContainer.clientWidth !== listView.clientWidth - 60) {
+                                        winItemsContainer.style.width = (listView.clientWidth - 60).toString() + "px";
+                                    }
                                 }
                             }
                             Colors.loadSVGImageElements(listView, "checkmark-image", 136, "#ffffff");
@@ -973,6 +988,8 @@
                             if (counter && counter.style) {
                                 counter.style.display = "none";
                             }
+                            var nextUrl = that.nextUrl;
+                            that.nextUrl = null;
                             AppData.setErrorMsg(that.binding);
                             Log.print(Log.l.trace, "calling selectNext ProductList.productView...");
                             ProductList.productView.selectNext(function (json) {
@@ -980,19 +997,17 @@
                                 // when the response is available
                                 Log.print(Log.l.trace, "ProductList.productView: selectNext success!");
                                 // productView returns object already parsed from json data in response
-                                if (json && json.d) {
+                                if (json && json.d && json.d.results && json.d.results.length > 0) {
                                     if (that.products && that.productsBase) {
                                         that.nextUrl = ProductList.productView.getNextUrl(json);
                                         var results = json.d.results;
-                                        var prevCount = that.productsBase.length;
                                         results.forEach(function (item, index) {
                                             that.resultConverter(item, that.binding.count);
-                                            that.binding.count = that.productsBase.push(item);
+                                            that.productsBase.push(item);
+                                            that.binding.count = that.products.length;
                                         });
                                         that.addSelectionToListView();
                                     }
-                                } else {
-                                    that.nextUrl = null;
                                 }
                             }, function(errorResponse) {
                                 // called asynchronously if an error occurs
@@ -1006,7 +1021,7 @@
                                 }
                                 that.loading = false;
                                 that.waitForIdleAction();
-                            }, null, that.nextUrl);
+                            }, null, nextUrl);
                         } else {
                             if (progress && progress.style) {
                                 progress.style.display = "none";
@@ -1238,14 +1253,12 @@
                 that.updatePicturesInViewPromise = WinJS.Promise.timeout(250).then(function() {
                     if (sezoom && sezoom.winControl && sezoom.winControl.zoomedOut) {
                         Log.print(Log.l.trace, "zoomedOut: extra ignored!");
-                    } else if (that.scrollIntoViewPromise) {
-                        Log.print(Log.l.trace, "scrollIntoViewPromise: extra ignored!");
                     } else if (listView && listView.winControl && listView.winControl.loadingState !== "complete") {
-                        Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState + ": extra ignored!")
+                        Log.print(Log.l.trace, "loadingState=" + listView.winControl.loadingState + ": extra ignored!");
                     } else if (listView && listView.winControl && that.products && that.products.length > 0) {
                         var indexOfFirstVisible = listView.winControl.indexOfFirstVisible;
                         var indexOfLastVisible = listView.winControl.indexOfLastVisible;
-                        var maxIndex = indexOfLastVisible + 20;
+                        var maxIndex = indexOfLastVisible + 32;
                         if (maxIndex >= that.binding.count) {
                             maxIndex = that.binding.count - 1;
                         }
@@ -1467,7 +1480,7 @@
             }
             that.selectProductView = selectProductView;
 
-            var handleProductViewResult = function(json) {
+            var handleProductViewResult = function (json) {
                 that.nextUrl = ProductList.productView.getNextUrl(json);
                 var results = json.d.results;
                 var prevIsGrouped = that.binding.isGrouped;
@@ -1527,6 +1540,42 @@
             };
             that.handleProductViewResult = handleProductViewResult;
 
+            var loadNextSelection = function() {
+                Log.call(Log.l.trace, "ProductList.Controller.");
+                var nextSelectionUrl = that.nextSelectionUrl;
+                that.nextSelectionUrl = null;
+                AppData.setErrorMsg(that.binding);
+                Log.print(Log.l.trace, "calling selectNext ProductList.productSelectionView...");
+                var ret = ProductList.productView.selectNext(function (json) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    Log.print(Log.l.trace, "ProductList.productSelectionView: selectNext success!");
+                    if (json && json.d && json.d.results && json.d.results.length > 0) {
+                        that.nextSelectionUrl = ProductList.productSelectionView.getNextUrl(json);
+                        var results = json.d.results;
+                        Log.print(Log.l.trace, "results.length=" + results.length);
+                        if (that.selection) {
+                            that.selection.push(results);
+                        }
+                    } else {
+                        that.nextSelectionUrl = null;
+                    }
+                }, function (errorResponse) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    AppData.setErrorMsg(that.binding, errorResponse);
+                }, null, nextSelectionUrl).then(function() {
+                    if (that.nextSelectionUrl) {
+                        return that.loadNextSelection();
+                    } else {
+                        return WinJS.Promise.as();
+                    }
+                });
+                Log.ret(Log.l.trace);
+                return ret;
+            }
+            that.loadNextSelection = loadNextSelection;
+
             var loadData = function () {
                 var ret;
                 Log.call(Log.l.trace, "ProductList.Controller.");
@@ -1564,6 +1613,8 @@
                         });
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
+                        return WinJS.Promise.timeout(50);
+                    }).then(function () {
                         AppBar.notifyModified = true;
                     });
                     ret = WinJS.Promise.as();
@@ -1615,35 +1666,43 @@
                             return WinJS.Promise.as();
                         }
                     }).then(function () {
-                        that.selection = [];
                         if (!contactId || isNewContact) {
                             // message already returned in case of error
                             // no selection needed in case of new contact
                             return WinJS.Promise.as();
                         } else {
+                            that.nextSelectionUrl = null;
                             return ProductList.productSelectionView.select(function (json) {
                                 // this callback will be called asynchronously
                                 // when the response is available
                                 Log.print(Log.l.trace, "ProductList.productSelectionView: select success!");
                                 // productSelectionView returns object already parsed from json data in response
-                                if (json && json.d) {
+                                if (json && json.d && json.d.results && json.d.results.length > 0) {
+                                    that.nextSelectionUrl = ProductList.productSelectionView.getNextUrl(json);
                                     var results = json.d.results;
-                                    Log.print(Log.l.trace, "count=" + results.count);
+                                    Log.print(Log.l.trace, "results.length=" + results.length);
                                     that.selection = results;
+                                } else {
+                                    that.selection = [];
                                 }
                                 return WinJS.Promise.as();
                             }, function (errorResponse) {
                                 // called asynchronously if an error occurs
                                 // or server returns response with an error status.
                                 AppData.setErrorMsg(that.binding, errorResponse);
+                                that.selection = [];
                                 return WinJS.Promise.as();
                             }, {
                                 KontaktID: contactId
                             });
                         }
                     }).then(function () {
-                        that.prevSelectionIndices = [];
-                        that.productSelectionGroup = {};
+                        if (that.nextSelectionUrl) {
+                            return that.loadNextSelection();
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
                         if (!contactId) {
                             // error message already returned
                             return WinJS.Promise.as();
@@ -1656,6 +1715,8 @@
                         }
                     }).then(function () {
                         Log.print(Log.l.trace, "Data loaded");
+                        return WinJS.Promise.timeout(50);
+                    }).then(function () {
                         AppBar.notifyModified = true;
                     });
                 }
@@ -1668,7 +1729,7 @@
                 var ret;
                 Log.call(Log.l.info, "ProductList.Controller.", "ProduktID=" + productId);
                 var selectionId = null;
-                for (var j = 0; j < that.selection.length; j++) {
+                if (that.selection) for (var j = 0; j < that.selection.length; j++) {
                     var item = that.selection[j];
                     if (productId === item.ProduktID) {
                         selectionId = item.ProduktAuswahlVIEWID;
@@ -1682,12 +1743,17 @@
                             // this callback will be called asynchronously
                             // when the response is available
                         Log.print(Log.l.trace, "productSelectionView: delete success!");
-                        for (var k = 0; k < that.selection.length; k++) {
-                            if (selectionId === that.selection[k].ProduktAuswahlVIEWID) {
-                                Log.print(Log.l.trace, "remove selection[" + k + "]=" + that.selection[k].ProduktAuswahlVIEWID);
-                                that.selection.splice(k, 1);
-                                break;
+                        if (that.selection) {
+                            for (var k = 0; k < that.selection.length; k++) {
+                                if (selectionId === that.selection[k].ProduktAuswahlVIEWID) {
+                                    Log.print(Log.l.trace,
+                                        "remove selection[" + k + "]=" + that.selection[k].ProduktAuswahlVIEWID);
+                                    that.selection.splice(k, 1);
+                                    break;
+                                }
                             }
+                        } else {
+                            that.selection = [];
                         }
                         that.checkOkDisabled();
                         AppBar.triggerDisableHandlers();
@@ -1702,7 +1768,6 @@
                 } else {
                     //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                     ret = WinJS.Promise.as();
-                    that.waitForReloadAction();
                 }
                 Log.ret(Log.l.info);
                 return ret;
@@ -1727,6 +1792,9 @@
                         // contactData returns object already parsed from json data in response
                         if (json && json.d && json.d.ProduktID === productId) {
                             // add to cached selection array
+                            if (!that.selection) {
+                                that.selection = [];
+                            }
                             Log.print(Log.l.trace, "add selection[" + that.selection.length + "]=" + json.d.ProduktAuswahlVIEWID);
                             that.selection.push(json.d);
                             that.checkOkDisabled();
@@ -1743,7 +1811,6 @@
                 } else {
                     //AppData.setErrorMsg(that.binding, { status: 404, statusText: "no data found" });
                     ret = WinJS.Promise.as();
-                    that.waitForReloadAction();
                 }
                 Log.ret(Log.l.info);
                 return ret;

@@ -95,6 +95,19 @@
                 Log.ret(Log.l.trace);
                 return ret;
             },
+            getNextUrl: function (response) {
+                Log.call(Log.l.trace, "ProductList.");
+                var ret = ProductList._productSelectionView.getNextUrl(response);
+                Log.ret(Log.l.trace);
+                return ret;
+            },
+            selectNext: function (complete, error, response, nextUrl) {
+                Log.call(Log.l.trace, "ProductList.");
+                var ret = ProductList._productSelectionView.selectNext(complete, error, response, nextUrl);
+                // this will return a promise to controller
+                Log.ret(Log.l.trace);
+                return ret;
+            },
             deleteRecord: function (complete, error, recordId) {
                 Log.call(Log.l.trace, "ProductList.productSelectionView.");
                 var ret = ProductList._productSelectionView.deleteRecord(complete, error, recordId);

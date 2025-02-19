@@ -89,9 +89,6 @@
                                         showLogo("organizerLogo", organizerDocFormat, organizerDocContent.substr(sub + 4));
                                     }
                                 }
-                                if (AppBar.scope && typeof AppBar.scope.loadData === "function") {
-                                    AppBar.scope.loadData();
-                                }
                             }
                         }, function (errorResponse) {
                             // ignore this here

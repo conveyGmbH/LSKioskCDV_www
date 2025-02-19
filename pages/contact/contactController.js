@@ -122,6 +122,13 @@
                 }
             };
 
+            this.hammerExcludeRect = {
+                left: 0,
+                top: 0,
+                right: 10000,
+                bottom: 10000
+            };
+
             this.disableHandlers = {
                 clickBack: function () {
                     if (WinJS.Navigation.canGoBack === true) {

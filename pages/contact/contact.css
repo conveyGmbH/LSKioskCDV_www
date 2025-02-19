@@ -1,4 +1,10 @@
-﻿.contact-form {
+﻿#contactScreen.contentarea {
+    display: block;
+    position: fixed;
+    min-height: 640px;
+}
+
+.contact-form {
     width: calc(100% - 100px);
     margin-left: 50px;
 }
@@ -32,6 +38,6 @@
     min-width: 100%;
 }
 .contact .nx-title_black {
-    margin-top: 70px; 
+    margin-top: 40px; 
     font-size: 36px;
 }

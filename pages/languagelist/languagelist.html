@@ -12,9 +12,11 @@
         <div id="languagelistController" class="data-container">
             <section aria-label="Main content" role="main">
                 <div class="contentarea win-type-body">
-                    <img class="organizer-image animationElement"
-                         data-win-bind="src: organizerLogoSrc; style.display: organizerLogoSrc Binding.Converter.toDisplay"
-                         onclick="AppBar.handleEvent('click', 'clickOk', event)" />
+                    <div class="organizer-image-container">
+                        <img class="organizer-image animationElement"
+                             data-win-bind="src: organizerLogoSrc; style.display: organizerLogoSrc Binding.Converter.toDisplay"
+                             onclick="AppBar.handleEvent('click', 'clickOk', event)"/>
+                    </div>
                     <div class="list-header animationElement">
                         <div class="nx-title">
                             <div class="nx-title--upper nx-title--bold">

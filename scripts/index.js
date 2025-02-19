@@ -105,9 +105,11 @@
             // clear contactId 
             AppData.setRecordId("Kontakt", null);
             id = "languagelist";
+            //id = "productlist";
         } else if (id === "newlanguagelist") {
             id = "languagelist";
             //id = "exportcontrol";
+            //id = "productlist";
         } else if (id === "languagelist") {
             //id = "exportcontrol";
         }
@@ -118,8 +120,16 @@
     Application.refreshAfterFetchOverride = function() {
         Log.call(Log.l.trace, "Application.");
         AppData.getUserData();
+        AppData._curGetUserRemoteDataId = 0;
         AppData.getUserRemoteData();
         AppData.getContactData();
+        Log.ret(Log.l.trace);
+    };
+
+    Application.onResumeOverride = function () {
+        Log.call(Log.l.trace, "Application.");
+        AppData._curGetUserRemoteDataId = 0;
+        AppData.getUserRemoteData();
         Log.ret(Log.l.trace);
     };
 

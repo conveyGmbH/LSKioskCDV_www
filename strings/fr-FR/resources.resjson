@@ -456,7 +456,7 @@
     "productlist.continue"  : "Continuer",	
     "productlist.barcode"   : "Scanner le code-barres",
     "productlist.camera"    : "Capturer la carte de visite",
-    "productlist.products"  : "Products",
+    "productlist.products"  : "Tout",
 
     "languagelist.title"    : "Envoyez du matériel d'information facilement et facilement!",
     "languagelist.comment"  : "Veuillez sélectionner la langue souhaitée:",

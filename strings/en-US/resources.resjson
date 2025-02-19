@@ -53,8 +53,8 @@
     "tooltip.photo"         : "Capture photo",
 
     "start.title"           : "Start",
-    "start.comment"         : "Click once!<br>Travel light!<br>",
-	"start.commentBottom"         : "Claim your <br> digital documents! <br>",
+    "start.comment"         : "Global Champion",
+	"start.commentBottom"   : "Global<br>Technology",
     "start.buttonContact"   : "recent contact",
     "start.buttonListLocal" : "local",
     "start.buttonListRemote": "uploaded",
@@ -78,7 +78,7 @@
     "start.settings"        : "Change design",
     "start.event"           : "Your event",
     "start.info"            : "Important informations",
-    "start.language"        : "Language",
+    "start.language"        : "Please choose the desired language:",
 
     "contact.title"         : "Please enter your contact data",
     "contact.comment"       : "On this page, use the Back button to go back!",
@@ -457,7 +457,7 @@
     "productlist.continue"  : "Continue",
     "productlist.barcode"   : "Scan barcode",
     "productlist.camera"    : "Capture business card",
-    "productlist.products"  : "Products",
+    "productlist.products"  : "All",
 
     "languagelist.title"    : "CIP, SIP, <br>HOORAY!<br>",
     "languagelist.comment"  : "Please select the desired language:",

@@ -1,12 +1,19 @@
 ﻿/*
     styles for languagelist page
 */
-.languagelist .organizer-image {
+.languagelist .organizer-image-container {
     position: absolute;
     left: 0;
     top: 178px;
-    width: auto;
+    width: 100%;
     height: calc(100% - 178px);
+}
+.languagelist .organizer-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: 100%;
 }
 
 .languagelist .list-header {

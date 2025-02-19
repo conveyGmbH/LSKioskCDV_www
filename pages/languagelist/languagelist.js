@@ -86,23 +86,35 @@
             Log.call(Log.l.u1, pageName + ".");
             // TODO: Respond to changes in viewState.
             if (element && !that.inResize) {
+                var width, height;
                 that.inResize = 1;
                 ret = WinJS.Promise.timeout(0).then(function () {
-                    var organizerImage = element.querySelector(".organizer-image");
-                    if (organizerImage && organizerImage.style) {
+                    var organizerImageContainer = element.querySelector(".organizer-image-container");
+                    if (organizerImageContainer && organizerImageContainer.style) {
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
-                            var width = contentarea.clientWidth;
-                            var height = contentarea.clientHeight - 8;
-                            var organizerImageLeft = (width - organizerImage.clientWidth) / 2;
+                            width = contentarea.clientWidth;
+                            height = contentarea.clientHeight;
                             if (width !== that.prevWidth) {
-                                that.prevWidth = width;
-                                organizerImage.style.left = organizerImageLeft.toString() + "px";
+                                organizerImageContainer.style.width = width.toString() + "px";
                             }
                             if (height !== that.prevHeight) {
-                                that.prevHeight = height;
-                                organizerImage.style.left = organizerImageLeft.toString() + "px";
+                                organizerImageContainer.style.height = (height - 178).toString() + "px";
                             }
+                        }
+                    }
+                    return WinJS.Promise.timeout(50);
+                }).then(function () {
+                    var organizerImage = element.querySelector(".organizer-image");
+                    if (organizerImage && organizerImage.style) {
+                        var organizerImageLeft = (width - organizerImage.clientWidth) / 2;
+                        if (width !== that.prevWidth) {
+                            that.prevWidth = width;
+                            organizerImage.style.left = organizerImageLeft.toString() + "px";
+                        }
+                        if (height !== that.prevHeight) {
+                            that.prevHeight = height;
+                            organizerImage.style.left = organizerImageLeft.toString() + "px";
                         }
                     }
                     that.inResize = 0;

@@ -53,8 +53,8 @@
     "tooltip.photo"         : "Foto aufnehmen",
 
     "start.title"           : "Start",
-    "start.comment"         : "Einmal klicken <br>statt schwer schleppen! <br>",
-	"start.commentBottom"         : "Sichern Sie sich Ihre Unterlagen<br>jetzt digital!<br>",
+    "start.comment"         : "Global Champion",
+    "start.commentBottom"   : "Global<br>Technology",
     "start.buttonContact"   : "Letzter Kontakt",
     "start.buttonListLocal" : "Lokal",
     "start.buttonListRemote": "Hochgeladen",
@@ -79,7 +79,7 @@
     "start.settings"        : "Gestaltung ändern",
     "start.event"           : "Ihre Messe",
     "start.info"            : "Wichtige Hinweise",
-    "start.language"        : "Sprache",
+    "start.language"        : "Bitte wählen Sie die gewünschte Sprache aus:",
 
     "contact.title"         : "Geben Sie bitte Ihre Kontaktdaten ein",
     "contact.comment"       : "Verwende die Zurück-Schaltfläche auf dieser Seite um zurück zu gehen!",
@@ -462,7 +462,7 @@
     "productlist.continue"  : "Weiter",
     "productlist.barcode"   : "Barcode scannen",
     "productlist.camera"    : "Vistenkarte aufnehmen",
-	"productlist.products"  : "Produkte",
+	"productlist.products"  : "Alles",
 
     "languagelist.title"    : "cip, sip, <br>Hurra!",
     "languagelist.comment"  : "Bitte wählen Sie die gewünschte Sprache aus:",

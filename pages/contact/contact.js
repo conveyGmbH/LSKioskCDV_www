@@ -73,7 +73,7 @@
                         var contentarea = element.querySelector(".contentarea");
                         if (contentarea) {
                             var width = contentarea.clientWidth;
-                            var height = contentarea.clientHeight - 8;
+                            var height = contentarea.clientHeight;
                             if (width !== that.prevWidth) {
                                 // ToDo: horizontal layout changes
                                 that.prevWidth = width;

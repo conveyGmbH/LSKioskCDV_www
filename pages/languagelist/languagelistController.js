@@ -28,6 +28,9 @@
             this.restartPromise = null;
             this.idleWaitTimeMs = 120000;
 
+            this.reloadPromise = null;
+            this.reloadWaitTimeMs = 500;
+
             var that = this;
 
             // ListView control
@@ -41,7 +44,6 @@
             }
 
             this.dispose = function () {
-                that.cancelPromises();
                 if (listView && listView.winControl) {
                     // remove ListView dataSource
                     listView.winControl.itemDataSource = null;
@@ -54,6 +56,7 @@
                     that.animationPromise.cancel();
                     that.animationPromise = null;
                 }
+                that.cancelPromises();
             }
 
             var cancelPromises = function () {
@@ -70,21 +73,23 @@
             var waitForIdleAction = function () {
                 Log.call(Log.l.trace, "ProductList.Controller.", "idleWaitTimeMs=" + that.idleWaitTimeMs);
                 that.cancelPromises();
-                that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
-                    Log.print(Log.l.trace, "timeout occurred, check for selection");
-                    // Don't delete empty contacts now
-                    var contactId = AppData.getRecordId("Kontakt");
-                    Log.print(Log.l.trace, "contactId=" + contactId);
-                    if (contactId && !that.binding.clickOkDisabled) {
-                        Log.print(Log.l.trace, "ignore unfinished selection!");
-                        if (Application.navigateByIdOverride("start") === "productlist") {
-                            AppData.setRecordId("Kontakt", null);
-                            that.loadData();
-                        } else {
-                            Application.navigateById("start", event);
+                if (!that._disposed) {
+                    that.restartPromise = WinJS.Promise.timeout(that.idleWaitTimeMs).then(function () {
+                        Log.print(Log.l.trace, "timeout occurred, check for selection");
+                        // Don't delete empty contacts now
+                        var contactId = AppData.getRecordId("Kontakt");
+                        Log.print(Log.l.trace, "contactId=" + contactId);
+                        if (contactId && !that.binding.clickOkDisabled) {
+                            Log.print(Log.l.trace, "ignore unfinished selection!");
+                            if (Application.navigateByIdOverride("start") === "productlist") {
+                                AppData.setRecordId("Kontakt", null);
+                                that.loadData();
+                            } else {
+                                Application.navigateById("start", event);
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 Log.ret(Log.l.trace);
             };
             this.waitForIdleAction = waitForIdleAction;
@@ -404,46 +409,55 @@
             }
             this.prefetchProductView = prefetchProductView;
 
-            var loadData = function() {
+            var loadData = function () {
+                var ret;
                 Log.call(Log.l.trace, "LanguageList.Controller.");
-                AppData.setErrorMsg(that.binding);
-                var ret = new WinJS.Promise.as().then(function () {
-                    if (!that.languages) {
-                        return LanguageList.languageView.select(function (json) {
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            Log.print(Log.l.trace, "LanguageList.languageView: select success!");
-                            if (json && json.d && json.d.results) {
-                                var results = json.d.results;
-                                that.binding.count = results.length;
-                                // Now, we call WinJS.Binding.List to get the bindable list
-                                that.languages = new WinJS.Binding.List(results);
-                                if (listView.winControl) {
-                                    // add ListView dataSource
-                                    listView.winControl.itemDataSource = that.languages.dataSource;
+                if (AppHeader.controller &&
+                    AppHeader.controller.binding &&
+                    !AppHeader.controller.binding.organizerLogoSrc) {
+                    ret = WinJS.Promise.timeout(150).then(function() {
+                        return that.loadData();
+                    });
+                } else {
+                    AppData.setErrorMsg(that.binding);
+                    ret = new WinJS.Promise.as().then(function () {
+                        if (!that.languages) {
+                            return LanguageList.languageView.select(function (json) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                Log.print(Log.l.trace, "LanguageList.languageView: select success!");
+                                if (json && json.d && json.d.results) {
+                                    var results = json.d.results;
+                                    that.binding.count = results.length;
+                                    // Now, we call WinJS.Binding.List to get the bindable list
+                                    that.languages = new WinJS.Binding.List(results);
+                                    if (listView.winControl) {
+                                        // add ListView dataSource
+                                        listView.winControl.itemDataSource = that.languages.dataSource;
+                                    }
                                 }
-                            }
-                        }, function (errorResponse) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                            AppData.setErrorMsg(that.binding, errorResponse);
-                        });
-                    } else {
-                        return WinJS.Promise.as();
-                    }
-                }).then(function () {
-                    if (AppHeader.controller && AppHeader.controller.binding) {
-                        that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
-                    }
-                    return WinJS.Promise.timeout(150);
-                }).then(function () {
-                    var pageControl = pageElement.winControl;
-                    if (pageControl && pageControl.updateLayout) {
-                        pageControl.prevWidth = 0;
-                        pageControl.prevHeight = 0;
-                        pageControl.updateLayout.call(pageControl, pageElement);
-                    }
-                });
+                            }, function (errorResponse) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                AppData.setErrorMsg(that.binding, errorResponse);
+                            });
+                        } else {
+                            return WinJS.Promise.as();
+                        }
+                    }).then(function () {
+                        if (AppHeader.controller && AppHeader.controller.binding) {
+                            that.binding.organizerLogoSrc = AppHeader.controller.binding.organizerLogoSrc;
+                        }
+                        return WinJS.Promise.timeout(150);
+                    }).then(function () {
+                        var pageControl = pageElement.winControl;
+                        if (pageControl && pageControl.updateLayout) {
+                            pageControl.prevWidth = 0;
+                            pageControl.prevHeight = 0;
+                            pageControl.updateLayout.call(pageControl, pageElement);
+                        }
+                    });
+                }
                 Log.ret(Log.l.trace);
                 return ret;
             };
