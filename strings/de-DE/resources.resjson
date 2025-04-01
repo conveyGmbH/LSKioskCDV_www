@@ -53,8 +53,8 @@
     "tooltip.photo"         : "Foto aufnehmen",
 
     "start.title"           : "Start",
-    "start.comment"         : "Global Champion",
-    "start.commentBottom"   : "Global<br>Technology",
+    "start.comment"         : "Für jede Stadt.<br>Für jedes Gebäude.",
+    "start.commentBottom"   : "Für alle.",
     "start.buttonContact"   : "Letzter Kontakt",
     "start.buttonListLocal" : "Lokal",
     "start.buttonListRemote": "Hochgeladen",

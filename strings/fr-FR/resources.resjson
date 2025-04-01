@@ -53,8 +53,8 @@
     "tooltip.photo"         : "Prendre photo",
 
     "start.title"           : "Start",
-    "start.comment"         : "Utilisez les boutons sur cette page pour accéder à d'autres pages!",
-	"start.commentBottom"         : "Einmal klicken <br>statt schwer schleppen! <br>Sichern Sie sich Ihre Unterlagen<br>jetzt digital!<br>",
+    "start.comment"         : "For every city.<br>For every building.",
+    "start.commentBottom"   : "For everybody.",
     "start.buttonContact"   : "Dernier contacts",
     "start.buttonListLocal" : "Locale",
     "start.buttonListRemote": "Téléchargé",

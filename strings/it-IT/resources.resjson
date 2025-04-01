@@ -53,8 +53,8 @@
     "tooltip.photo"         : "Scattare foto",
 
     "start.title"           : "Start",
-    "start.comment"         : "Utilizzate i pulsanti su questa pagina per muoversi tra le pagine!",
-	"start.commentBottom"         : "Einmal klicken <br>statt schwer schleppen! <br>Sichern Sie sich Ihre Unterlagen<br>jetzt digital!<br>",
+    "start.comment"         : "For every city.<br>For every building.",
+    "start.commentBottom"   : "For everybody.",
     "start.buttonContact"   : "Ultimo contatto",
     "start.buttonListLocal" : "Locale",
     "start.buttonListRemote": "Caricato",

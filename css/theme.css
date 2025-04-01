@@ -1,17 +1,38 @@
 ﻿@font-face {
     font-family: 'roboto';
-    src: url("../fonts/Roboto-Regular.ttf") format("truetype"); }
+    src: url("../fonts/Roboto-Regular.ttf") format("truetype");
+}
+@font-face {
+    font-family: "Onest";
+    src: url(../fonts/Onest-Regular.ttf) format("truetype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Onest";
+    src: url(../fonts/Onest-Bold.ttf) format("truetype");
+    font-weight: 700;
+}
+@font-face {
+    font-family: "TT Interphases Pro";
+    src: url(../fonts/TT-Interphases-Pro-Regular.ttf) format("truetype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: "TT Interphases Pro";
+    src: url(../fonts/TT-Interphases-Pro-Bold.ttf) format("truetype");
+    font-weight: 700;
+}
 /*
 html, body { font-family: "Segoe UI", "Arial"; }
 
 .nx-body { font-family: "Segoe UI", "Arial"; }
 */
 html, body {
-    font-family: "Frutiger", "helvetica", "roboto", "arial", "sans-serif";
+    font-family: "TT Interphases Pro", "Onest", "roboto", "Open Sans", "arial", "sans-serif";
 }
 
 .nx-body {
-    font-family: "Frutiger", "helvetica", "roboto", "arial", "sans-serif";
+    font-family: "TT Interphases Pro", "Onest", "roboto", "Open Sans", "arial", "sans-serif";
 }
 
 .display-none {
